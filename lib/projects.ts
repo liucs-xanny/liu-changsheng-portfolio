@@ -1,0 +1,295 @@
+export type GalleryItem = {
+  src: string;
+  title?: string;
+  description?: string;
+  format?: "landscape" | "portrait" | "square";
+};
+
+export type MediaSection = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  items: GalleryItem[];
+};
+
+export type Project = {
+  slug: string;
+  index: string;
+  title: string;
+  english: string;
+  summary: string;
+  role: string;
+  time: string;
+  tags: string[];
+  cover: string;
+  accent: string;
+  overview: string;
+  problem: string;
+  research: string[];
+  strategy: string[];
+  workflow: string[];
+  outputs: string[];
+  result: string;
+  reflection: string;
+  gallery: (string | GalleryItem)[];
+  mediaSections?: MediaSection[];
+  video?: string;
+  videos?: {
+    src: string;
+    title: string;
+    description: string;
+    poster?: string;
+  }[];
+  document?: {
+    src: string;
+    label: string;
+  };
+};
+
+export const projects: Project[] = [
+  {
+    slug: "yuandian",
+    index: "01",
+    title: "原点向导·智绘美家",
+    english: "Origin Guide · Smart Home",
+    summary: "原点新城专属数字人系统",
+    role: "项目组长｜数字人设计、交互体验与技术整合",
+    time: "2026.04—2026.05",
+    tags: ["Digital Human", "RAG", "LiveTalking", "AI Service"],
+    cover: "/images/projects/yuandian/board.webp",
+    accent: "#356FE8",
+    overview: "以品牌专属数字人“原元儿”为智能服务入口，连接文化传播、家居选品与赛事活动。",
+    problem: "原点新城需要一个既能表达品牌文化，又能真正承担问答、推荐和活动引导任务的多终端智能入口。",
+    research: ["提取华夏文明、大地原点、家居产业与科技创新四类文化语义", "梳理文化展厅、家居选品中心、赛事活动三类用户路径", "定义28岁女性数字人的人格、语言与动作规范"],
+    strategy: ["将数字人从“形象IP”升级为品牌服务入口", "用经纬线、聚原点、星芒与赛博纹样建立视觉语言", "针对三类场景配置文化礼装、家居服务装与赛事活动装"],
+    workflow: ["语音/文字输入", "豆包语言大模型", "RAG知识检索", "智能回答", "LiveTalking口型同步", "本地部署"],
+    outputs: ["数字人人物设定与三套服装", "触控大屏与手机端共6个高保真界面", "企业文化问答、户型搭配、家具推荐与AR打卡"],
+    result: "第二十届中国好创意暨全国数字艺术设计大赛原点新城专项大赛数字人赛道全国总决赛一等奖。",
+    reflection: "技术整合的价值不在于堆叠模型，而在于让品牌知识、用户意图与角色表达保持一致。",
+    gallery: [
+      { src: "/images/projects/yuandian/selected/ppt-cover.webp", title: "方案封面", description: "原点向导·智绘美家整体方案入口。", format: "landscape" },
+      { src: "/images/projects/yuandian/selected/technical-framework.webp", title: "技术框架", description: "大模型、RAG、LiveTalking 与多终端服务链路。", format: "landscape" },
+      { src: "/images/projects/yuandian/selected/character-design.webp", title: "数字人角色设定", description: "原元儿人物、服装与品牌文化语义设计。", format: "landscape" },
+      { src: "/images/projects/yuandian/selected/ui-design.webp", title: "文化展厅交互界面", description: "数字人问答、AR 导览与移动端协同体验。", format: "landscape" },
+    ],
+    video: "/media/yuandian-demo.mp4",
+    videos: [
+      {
+        src: "/media/yuandian-demo.mp4",
+        title: "实机交互演示",
+        description: "展示数字人系统、触控界面与核心服务流程。",
+      },
+      {
+        src: "/media/yuandian-avatar.mp4",
+        title: "数字人形象演示",
+        description: "数字人实时呈现与口型同步效果节选。",
+      },
+    ],
+    document: { src: "/docs/projects/yuandian.pdf", label: "查看完整项目方案 PDF" },
+  },
+  {
+    slug: "shanyin",
+    index: "02",
+    title: "山音接力",
+    english: "Mountain Echo Relay",
+    summary: "面向乡村支教流动场景的智能Agent交接系统",
+    role: "项目组长｜用户研究、产品策略与交互设计",
+    time: "2026.03—2026.05",
+    tags: ["AI Agent", "UX Research", "Service Design", "Knowledge Base"],
+    cover: "/images/projects/shanyin/board-1.webp",
+    accent: "#FFB894",
+    overview: "把散落在教师记忆、聊天和文件中的经验，转化为可持续更新的班级知识资产。",
+    problem: "支教教师流动性高，学生学情、班级关系、教学资料与经验在离任时容易断裂。",
+    research: ["访谈8位支教教师与长期驻校教师，每次45—60分钟", "完成46个初始概念、12个主轴范畴与6项核心需求", "结合PEST、竞品、问卷与扎根理论编码"],
+    strategy: ["围绕接任、在岗、离任建立三阶段服务流程", "用语音轻记录降低日常输入负担", "通过隐私分层与交接包控制信息边界"],
+    workflow: ["轻量记录", "意图识别", "结构化归档", "班级知识库", "AI问答与建议", "交接包生成"],
+    outputs: ["三种状态差异化首页", "班级档案、学生档案、AI问答与回忆册", "候鸟达达IP与移动端组件库"],
+    result: "完成从研究、Agent架构到高保真界面及服务触点的完整方案，已投递UXDA及NCDA相关赛事。",
+    reflection: "Agent首先应当减少记录负担并守住隐私边界，其次才是展示智能能力。",
+    gallery: [
+      { src: "/images/projects/shanyin/selected/board-1.webp", title: "项目总览展板", description: "研究、Agent 架构与核心服务流程。", format: "portrait" },
+      { src: "/images/projects/shanyin/selected/board-2.webp", title: "产品与视觉展板", description: "移动端体验、文创衍生与系统结构。", format: "portrait" },
+      { src: "/images/projects/shanyin/selected/board-3.webp", title: "交互流程展板", description: "接任、在岗与离任阶段的产品触点。", format: "portrait" },
+      { src: "/images/projects/shanyin/selected/research-focus-group.webp", title: "利益相关者与焦点小组", description: "从支教关系网络中识别交接断层。", format: "landscape" },
+      { src: "/images/projects/shanyin/selected/research-survey.webp", title: "问卷数据与研究结论", description: "以数据验证教师流动与信息留存问题。", format: "landscape" },
+      { src: "/images/projects/shanyin/selected/information-architecture.webp", title: "产品信息架构", description: "将班级档案、学生信息和 AI 助手组织成清晰结构。", format: "landscape" },
+    ],
+    document: { src: "/docs/projects/shanyin.pdf", label: "查看完整研究与设计 PDF" },
+  },
+  {
+    slug: "nuclear-ai",
+    index: "03",
+    title: "核电站金属构件损伤AI识别系统",
+    english: "Nuclear Component AI Inspection",
+    summary: "工业缺陷仿真数据与YOLO识别工作流",
+    role: "项目组长｜仿真数据生成、工作流设计与模型训练协作",
+    time: "2026.02—至今",
+    tags: ["YOLO", "Blender", "Python", "Synthetic Data"],
+    cover: "/images/projects/nuclear/result.webp",
+    accent: "#77A1FF",
+    overview: "通过参数化三维仿真批量生成损伤数据，并衔接Mask标注、YOLO训练与结果展示。",
+    problem: "真实工业缺陷样本昂贵、稀缺且分布不均，难以稳定覆盖不同损伤形态与尺寸。",
+    research: ["分析管板孔洞边缘、结构纹理与光照造成的识别干扰", "对划痕、凹坑的位置、尺寸、深度和分布进行参数化", "建立渲染图与二维Mask一一匹配的数据结构"],
+    strategy: ["以合成数据补充真实样本缺口", "用节点与Python降低批量生成的重复劳动", "将复杂训练链路转译为可解释的产品工作流"],
+    workflow: ["Blender建模", "损伤参数随机化", "批量渲染", "Mask生成", "YOLO训练", "结果输出"],
+    outputs: ["1000余张损伤渲染图与Mask", "损伤识别Web端界面", "RGB / Mask / YOLO三层结果对照"],
+    result: "系统可识别损伤位置、范围与类别，相关方法拟形成发明专利。",
+    reflection: "设计师在技术项目中的关键作用，是建立可复用流程、清晰界面和跨团队共同语言。",
+    gallery: ["/images/projects/nuclear/rgb.webp", "/images/projects/nuclear/result.webp", "/images/projects/nuclear/system.webp", "/images/projects/nuclear/model.webp"],
+  },
+  {
+    slug: "lechang",
+    index: "04",
+    title: "乐后昌城",
+    english: "Lehou Changcheng",
+    summary: "韶关乐昌农文旅品牌与体验设计",
+    role: "项目组长｜区域品牌策略、IP设计与AIGC内容创作",
+    time: "2026.02—2026.05",
+    tags: ["Brand Experience", "IP Design", "AIGC", "Rural Culture"],
+    cover: "/images/projects/lechang/mv-poster.webp",
+    accent: "#FFB894",
+    overview: "以黄金柰李与丹霞岩石为文化母题，把地方资源组织成可体验、可购买、可传播的品牌系统。",
+    problem: "乐昌资源丰富但认知分散，城市记忆点不足，产品同质化且传播方式单一。",
+    research: ["建立文化识别度、设计转化潜力、传播爆发力三维评价", "识别认知、叙事、渠道、产品与价值五类错位", "研究地貌、农产、非遗、乡村生活与红色文化"],
+    strategy: ["从“过境地”转向“文化消费目的地”", "提出“石间无岁月，李下不急时”品牌理念", "形成资源—文化—品牌—产品—场景—传播链路"],
+    workflow: ["地域资源筛选", "品牌定位", "视觉系统", "石乐乐IP", "文创与空间触点", "AI音乐与视频传播"],
+    outputs: ["Logo、标准色、字体与辅助图形", "石乐乐三视图、毛绒形象、表情与系列服装", "包装、家居、首饰、乡村市集与助农直播场景"],
+    result: "完成区域公共消费品牌、IP、产品与AIGC传播的完整设计，并形成AI音乐和数字MV工作流。",
+    reflection: "区域品牌不是资源清单，而是一套让人愿意停留、消费并分享的体验叙事。",
+    gallery: [
+      { src: "/images/projects/lechang/slides/page-1.webp", title: "乐后昌城项目封面", format: "landscape" },
+      { src: "/images/projects/lechang/selected/creative-market.webp", title: "文创产品展卖厅", description: "PDF 第 47 页：城市文创产品的线下体验与销售空间。", format: "landscape" },
+      { src: "/images/projects/lechang/slides/page-43.webp", title: "石乐乐 IP 形象", format: "landscape" },
+      { src: "/images/projects/lechang/selected/record-materials.webp", title: "唱片物料设计", description: "PDF 第 33 页：围绕《石缝里的光》的唱片与传播物料。", format: "landscape" },
+    ],
+    mediaSections: [
+      {
+        eyebrow: "CITY IP / SHI LELE",
+        title: "石乐乐城市 IP 设计",
+        description: "从丹霞岩石、黄金柰李与乐昌地域性格中提炼角色语言，延展到三视图、表情、服装、毛绒与公共传播触点。",
+        items: [
+          { src: "/images/projects/lechang/ip/ip-0.webp", title: "IP 概念与角色定位", format: "portrait" },
+          { src: "/images/projects/lechang/ip/ip-1.webp", title: "石乐乐造型系统", format: "portrait" },
+          { src: "/images/projects/lechang/ip/ip-2.webp", title: "表情与动作延展", format: "portrait" },
+          { src: "/images/projects/lechang/ip/ip-3.webp", title: "服装与应用场景", format: "portrait" },
+          { src: "/images/projects/lechang/ip/ip-4.webp", title: "IP 完整展示展板", format: "portrait" },
+        ],
+      },
+      {
+        eyebrow: "AIGC MUSIC / DIGITAL MV",
+        title: "AI 音乐与 MV 设计",
+        description: "以地域故事和项目品牌叙事为基础，完成歌词、AI 音乐、视觉分镜与数字 MV 的整合传播实验；上方可直接播放《石缝里的光》成片。",
+        items: [
+          { src: "/images/projects/lechang/aigc/music-video-board.webp", title: "音乐与视频设计展板", description: "记录主题提炼、音乐生成、视觉语言与 MV 制作过程。", format: "portrait" },
+        ],
+      },
+    ],
+    videos: [
+      {
+        src: "/media/lechang-mv.mp4",
+        poster: "/images/projects/lechang/mv-poster.webp",
+        title: "《石缝里的光》数字 MV",
+        description: "结合 Suno AI 音乐、歌词与生成式视频完成的乐昌品牌传播实验。",
+      },
+    ],
+    document: { src: "/docs/projects/lechang.pdf", label: "查看 53 页完整项目汇报" },
+  },
+  {
+    slug: "yueban",
+    index: "05",
+    title: "悦伴",
+    english: "Yueban",
+    summary: "AI赋能的母婴全周期服务设计",
+    role: "项目副组长｜服务研究、产品设计与UI设计",
+    time: "2025.09—2025.12",
+    tags: ["Service Design", "AI Companion", "Smart Hardware", "UI"],
+    cover: "/images/projects/yueban/cover.webp",
+    accent: "#FFB894",
+    overview: "与卓月月子中心合作，以数字平台、智能硬件和线下护理组成长期情感陪伴服务。",
+    problem: "产后情绪波动、身份转变、家庭参与不足与成长记忆流失，无法由短期护理单独解决。",
+    research: ["梳理孕期、入住、护理与离院后的全周期旅程", "绘制利益相关者地图与服务蓝图", "分析用户、家属、护理人员和运营人员的协作关系"],
+    strategy: ["让母婴服务从短期护理转向长期陪伴", "以AI情绪陪伴和语音记录降低表达压力", "用家庭共创增强连接和成长记忆"],
+    workflow: ["孕期连接", "入住建档", "AI陪伴", "家庭互动", "离院交接", "长期成长档案"],
+    outputs: ["悦伴APP与运营后台", "伴悦云灯智能硬件", "时光胶囊、时光墙、纪念相册与家庭共创"],
+    result: "项目成果“悦伴APP”已获得计算机软件著作权。",
+    reflection: "情感型AI必须与真实服务人员、家庭关系和线下触点共同工作。",
+    gallery: [
+      { src: "/images/projects/yueban/selected/service-framework.webp", title: "服务设计思维框架", description: "第三次汇报第 2 页：从母婴全周期问题到服务机会的系统框架。", format: "landscape" },
+      { src: "/images/projects/yueban/selected/user-journey.webp", title: "用户旅程图", description: "第五次汇报第 27 页：梳理用户阶段、触点、情绪与服务机会。", format: "landscape" },
+      "/images/projects/yueban/slides/page-16.webp",
+      "/images/projects/yueban/slides/page-30.webp",
+    ],
+    video: "/media/yueban-flow.mp4",
+    videos: [
+      {
+        src: "/media/yueban-flow.mp4",
+        title: "服务流程模拟",
+        description: "展示数字平台、智能硬件与线下护理触点之间的协作方式。",
+      },
+    ],
+    document: { src: "/docs/projects/yueban.pdf", label: "查看服务设计汇报 PDF" },
+  },
+  {
+    slug: "medical-robot",
+    index: "06",
+    title: "医疗机器人外观与UI设计",
+    english: "Medical Robot & UI",
+    summary: "泌尿及插气管手术机器人外观与交互设计",
+    role: "个人接单项目｜工业设计与交互设计",
+    time: "2023.12—2024.05",
+    tags: ["Medical Robot", "Industrial Design", "UI", "Rhino / Creo"],
+    cover: "/images/projects/medical/intubation-scene.webp",
+    accent: "#D8E4FF",
+    overview: "为福建省立医院相关医疗机器人项目提供泌尿与插气管机器人两套外观及操作端UI方案。",
+    problem: "需要在医疗设备内部结构、操作流程、人体工程学和专业视觉之间建立统一方案。",
+    research: ["理解设备功能、内部结构和操作区域", "协调显示模块、结构件与整体比例", "分析手术室使用环境中的信息层级"],
+    strategy: ["以干净、稳定、可信赖为形态语言", "让外观、操作端UI与场景展示保持一致", "在结构约束内优化关键操作区域"],
+    workflow: ["需求与结构理解", "Rhino形态建模", "Creo结构配合", "KeyShot材质与场景", "操作端UI", "方案整合"],
+    outputs: ["两套医疗机器人外观", "手术室应用场景渲染", "设备状态、功能入口与警示信息界面"],
+    result: "设计成果进入福建省立医院相关医疗机器人项目方案。",
+    reflection: "工业设计与UI不是两个交付物，而是同一个操作体验在物理与数字界面的连续表达。",
+    gallery: [
+      "/images/projects/medical/intubation-scene.webp",
+      "/images/projects/medical/intubation-front.webp",
+      "/images/projects/medical/intubation-back.webp",
+      "/images/projects/medical/urology-scene.webp",
+      "/images/projects/medical/urology-scene-2.webp",
+      "/images/projects/medical/urology-side.webp",
+      "/images/projects/medical/urology-top.webp",
+      "/images/projects/medical/ui.webp",
+    ],
+  },
+  {
+    slug: "zhijing",
+    index: "07",
+    title: "智清镜品牌视觉设计",
+    english: "Zhijing Optical Brand Design",
+    summary: "眼镜品牌全案、价目册与包装设计",
+    role: "个人接单项目｜品牌策略、视觉系统与AIGC视觉设计",
+    time: "2023.07—2024.05",
+    tags: ["Brand Strategy", "Visual Identity", "Packaging", "AIGC"],
+    cover: "/images/projects/zhijing/manual-1.webp",
+    accent: "#FFB894",
+    overview: "从品牌定位出发，建立眼镜品牌的Logo、包装、价目册与终端宣传视觉系统。",
+    problem: "品牌需要在有限拍摄与制作预算下，建立统一、清晰且具有商业辨识度的产品表达。",
+    research: ["分析眼镜消费场景与目标人群的视觉偏好", "梳理产品类别、价格信息与终端展示层级", "评估真人拍摄与AIGC模特素材的成本和一致性"],
+    strategy: ["用统一版式系统组织产品与价格信息", "让包装、价目册和宣传物料保持一致", "以AIGC人眼模特素材补充传统拍摄"],
+    workflow: ["市场与品牌定位", "Logo与基础视觉", "价目册信息架构", "包装设计", "AIGC素材生成", "打样成册"],
+    outputs: ["品牌Logo与基础视觉规范", "产品包装和终端价目册", "AIGC人眼模特与商业展示素材"],
+    result: "完成从品牌定位到印刷成册的商业视觉交付，并降低部分真人拍摄与后期制作成本。",
+    reflection: "AIGC在商业品牌中的价值，是补足素材生产能力，同时仍由统一的品牌规则控制输出。",
+    gallery: [
+      "/images/projects/zhijing/manual-1.webp",
+      "/images/projects/zhijing/manual-2.webp",
+    ],
+    videos: [
+      {
+        src: "/media/zhijing-book.mp4",
+        title: "价目册打印成册效果",
+        description: "真实印刷、装订与翻阅效果展示。",
+      },
+    ],
+  },
+];
+
+export const getProject = (slug: string) => projects.find((project) => project.slug === slug);

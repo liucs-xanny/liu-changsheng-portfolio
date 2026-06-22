@@ -1,0 +1,42 @@
+# Dependencies and generated output
+node_modules/
+.next/
+out/
+tmp/
+.video-tools/
+.pnpm-store/
+
+# Local Codex and editor data
+.agents/
+.codex/
+.repo/
+
+# Local preview files
+portfolio-local*
+*.cmd
+scripts/start-portfolio.vbs
+
+# Original design source folders
+个人网站的设计参考/
+原点向导，智绘美家/
+山音接力/
+服务设计/
+韶关乐昌体验设计工程作业/
+医疗手术机器人/
+智清镜品牌价目册+包装设计/
+yolo识别项目截图展示/
+
+# Original documents and source media
+*.psd
+刘昌盛-作品集-封面.png
+刘昌盛 个人正面证件照.jpg
+作品集封面里的背景视频（左右看的男孩要跟随鼠标移动）.mp4
+从左往又看的封面视频.mp4
+头发飘动版.mp4
+刘昌盛个人网页作品集开发文档.pdf
+刘昌盛简历（详细版）.pdf
+
+# Superseded generated cover videos kept locally
+public/media/cover-character.mp4
+public/media/cover-gaze-scrub-v2.mp4
+public/media/cover-gaze-scrub-v3.mp4

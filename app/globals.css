@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --ink: #11100e;
+  --paper: #f4e8dc;
+  --blue: #356fe8;
+  --peach: #ffb894;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--ink); }
+body { margin: 0; background: var(--ink); color: var(--paper); font-family: Arial, "Noto Sans SC", sans-serif; overflow-x: hidden; }
+::selection { background: var(--peach); color: var(--ink); }
+a, button { -webkit-tap-highlight-color: transparent; }
+
+@layer components {
+  .eyebrow { @apply text-[10px] tracking-[.22em] text-peach md:text-xs; }
+  .section-title { @apply mt-5 font-display text-5xl leading-[.86] tracking-[-.07em] md:text-8xl lg:text-9xl; }
+  .panel { @apply rounded-[1.5rem] border border-paper/10 bg-[#1a1916] p-7 shadow-[inset_0_1px_0_rgba(255,255,255,.04)]; }
+  .contact-button { @apply rounded-full border border-paper/25 px-5 py-3 text-[10px] tracking-[.15em] transition hover:border-peach hover:bg-peach hover:text-ink; }
+  .case-lead { @apply max-w-4xl text-2xl leading-relaxed text-paper/75 md:text-4xl; }
+  .viewer-control { @apply rounded-full border border-paper/20 bg-black/60 px-3 py-2 text-[10px] tracking-wider text-paper transition hover:border-peach hover:text-peach md:px-4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
