@@ -13,6 +13,7 @@ tmp/
 
 # Local preview files
 portfolio-local*
+portfolio-admin*
 *.cmd
 scripts/start-portfolio.vbs
 

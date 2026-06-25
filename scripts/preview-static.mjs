@@ -1,9 +1,11 @@
 import { createServer } from "node:http";
-import { createReadStream, existsSync, statSync } from "node:fs";
+import { createReadStream, existsSync, statSync, writeFileSync } from "node:fs";
 import { extname, join, normalize } from "node:path";
 
 const root = join(process.cwd(), "out");
-const port = Number(process.env.PORT || 4173);
+const startPort = Number(process.env.PORT || 4173);
+const basePath = (process.env.BASE_PATH || "/liu-changsheng-portfolio").replace(/\/+$/, "");
+const urlFile = join(process.cwd(), "portfolio-local-url.txt");
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -29,7 +31,12 @@ if (!existsSync(root)) {
 }
 
 function resolveFile(urlPath) {
-  const cleanPath = decodeURIComponent(urlPath.split("?")[0]).replace(/^\/+/, "");
+  const pathname = decodeURIComponent(urlPath.split("?")[0]);
+  const localPath =
+    basePath && (pathname === basePath || pathname.startsWith(`${basePath}/`))
+      ? pathname.slice(basePath.length) || "/"
+      : pathname;
+  const cleanPath = localPath.replace(/^\/+/, "");
   const safePath = normalize(cleanPath).replace(/^(\.\.(\\|\/|$))+/, "");
   let filePath = join(root, safePath);
 
@@ -84,14 +91,24 @@ const server = createServer((request, response) => {
 
 server.on("error", (error) => {
   if (error.code === "EADDRINUSE") {
-    console.log(`Portfolio is already running at http://localhost:${port}`);
-    process.exit(0);
+    const nextPort = Number(server.currentPort || startPort) + 1;
+    if (nextPort <= startPort + 10) {
+      listen(nextPort);
+      return;
+    }
   }
   console.error(error);
   process.exit(1);
 });
 
-server.listen(port, "127.0.0.1", () => {
-  console.log(`Portfolio is running at http://localhost:${port}`);
-  console.log("Run the stop shortcut to close the local server.");
-});
+function listen(port) {
+  server.currentPort = port;
+  server.listen(port, "127.0.0.1", () => {
+    const url = `http://127.0.0.1:${port}${basePath}/`;
+    writeFileSync(urlFile, url, "utf8");
+    console.log(`Portfolio is running at ${url}`);
+    console.log("Run the stop shortcut to close the local server.");
+  });
+}
+
+listen(startPort);
