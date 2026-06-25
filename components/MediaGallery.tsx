@@ -2,6 +2,7 @@
 
 import type { GalleryItem, Project } from "@/lib/projects";
 import { AnimatePresence, motion } from "framer-motion";
+import { assetPath } from "@/lib/assets";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
@@ -26,7 +27,6 @@ export function MediaGallery({ project }: { project: Project }) {
   const [activeImage, setActiveImage] = useState<number | null>(null);
   const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(1);
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
   const videos = project.videos ?? (project.video ? [{
     src: project.video,
     title: "项目演示视频",
@@ -64,7 +64,7 @@ export function MediaGallery({ project }: { project: Project }) {
           className={`group relative overflow-hidden rounded-[2rem] border border-paper/15 bg-white/[.045] text-left ${cardClass(item.format)}`}
         >
           <Image
-            src={item.src}
+            src={assetPath(item.src)}
             alt={item.title ?? `${project.title} 项目资料 ${index + 1}`}
             fill
             sizes={item.format === "portrait" ? "(max-width: 768px) 100vw, 33vw" : "(max-width: 768px) 100vw, 50vw"}
@@ -92,10 +92,10 @@ export function MediaGallery({ project }: { project: Project }) {
                 controls
                 playsInline
                 preload="metadata"
-                poster={video.poster ? `${basePath}${video.poster}` : `${basePath}${project.cover}`}
+                poster={assetPath(video.poster ?? project.cover)}
                 className="aspect-video w-full bg-black object-contain"
               >
-                <source src={`${basePath}${video.src}`} type="video/mp4" />
+                <source src={assetPath(video.src)} type="video/mp4" />
               </video>
               <div className="p-6 md:flex md:items-end md:justify-between">
                 <h3 className="text-xl">{video.title}</h3>
@@ -129,7 +129,7 @@ export function MediaGallery({ project }: { project: Project }) {
 
       {project.document && (
         <a
-          href={`${basePath}${project.document.src}`}
+          href={assetPath(project.document.src)}
           target="_blank"
           rel="noreferrer"
           className="flex items-center justify-between rounded-[2rem] border border-paper/20 p-7 transition hover:border-peach hover:bg-peach hover:text-ink"
@@ -191,7 +191,7 @@ export function MediaGallery({ project }: { project: Project }) {
               onClick={(event) => event.stopPropagation()}
             >
               <Image
-                src={allItems[activeImage].src}
+                src={assetPath(allItems[activeImage].src)}
                 alt={allItems[activeImage].title ?? `${project.title} 放大资料`}
                 fill
                 sizes="90vw"

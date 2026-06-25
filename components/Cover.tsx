@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
+import { assetPath } from "@/lib/assets";
 import Image from "next/image";
 import { useRef, useState } from "react";
 
@@ -13,7 +14,6 @@ export function Cover() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.12], [1, 0.96]);
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
   return (
     <motion.section
@@ -45,7 +45,7 @@ export function Cover() {
     >
       <div className="absolute inset-0">
         <Image
-          src="/images/cover/character-clean.webp"
+          src={assetPath("/images/cover/character-clean.webp")}
           alt="蓝色插画角色"
           fill
           priority
@@ -66,7 +66,7 @@ export function Cover() {
             }
           }}
         >
-          <source src={`${basePath}/media/cover-gaze-hair-v4.mp4`} type="video/mp4" />
+          <source src={assetPath("/media/cover-gaze-hair-v4.mp4")} type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-[#11100e]" />
       </div>

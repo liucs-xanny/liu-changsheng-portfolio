@@ -1,6 +1,7 @@
 "use client";
 
 import { projects } from "@/lib/projects";
+import { assetPath } from "@/lib/assets";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
@@ -34,7 +35,7 @@ export function ProjectArchive() {
       <div className="relative z-10 mx-auto max-w-7xl pb-24">
         {projects.map((project) => (
           <article key={project.slug} className="archive-card sticky top-[12vh] mb-[28vh] h-[68vh] overflow-hidden rounded-[2rem] border border-paper/15 bg-[#1b1916]/95 shadow-[0_-24px_80px_rgba(0,0,0,.45)] backdrop-blur-xl">
-            <Image src={project.cover} alt={project.title} fill className={`object-cover opacity-35 transition duration-700 hover:scale-105 hover:opacity-65 ${project.slug === "medical-robot" ? "object-top" : ""}`} />
+            <Image src={assetPath(project.cover)} alt={project.title} fill className={`object-cover opacity-35 transition duration-700 hover:scale-105 hover:opacity-65 ${project.slug === "medical-robot" ? "object-top" : ""}`} />
             <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/45 to-transparent" />
             <div className="absolute inset-0 flex flex-col justify-between p-7 md:p-12">
               <div className="flex items-start justify-between"><span className="font-display text-7xl text-paper/15 md:text-9xl">{project.index}</span><span className="text-xs tracking-[.18em] text-peach">{project.time}</span></div>

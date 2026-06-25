@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { assetPath } from "@/lib/assets";
 import Image from "next/image";
 
 const tags = ["AI Agent", "Digital Human", "RAG", "YOLO", "UX Research", "Service Design", "Brand Experience", "Industrial Design", "AIGC"];
@@ -23,7 +24,7 @@ export function Dashboard() {
           <div className="grid min-h-0 flex-1 grid-cols-[.88fr_1.12fr] gap-px bg-paper/15">
             <div className="relative bg-white">
               <Image
-                src="/images/cover/portrait.webp"
+                src={assetPath("/images/cover/portrait.webp")}
                 alt="刘昌盛职业证件照"
                 fill
                 sizes="(max-width: 768px) 45vw, 15vw"
@@ -33,7 +34,7 @@ export function Dashboard() {
             </div>
             <div className="relative bg-[#d8d3cb]">
               <Image
-                src="/images/cover/portrait-reading.webp"
+                src={assetPath("/images/cover/portrait-reading.webp")}
                 alt="刘昌盛阅读中的职业形象照"
                 fill
                 sizes="(max-width: 768px) 55vw, 19vw"

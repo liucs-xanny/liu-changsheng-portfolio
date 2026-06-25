@@ -1,3 +1,4 @@
+import { assetPath } from "@/lib/assets";
 import Image from "next/image";
 
 const timeline = [
@@ -9,7 +10,6 @@ const timeline = [
 ];
 
 export function ExperienceContact() {
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
   return (
     <>
       <section className="relative z-10 bg-paper px-5 py-28 text-ink md:px-10 lg:px-16">
@@ -20,14 +20,14 @@ export function ExperienceContact() {
         </div>
       </section>
       <footer id="contact" className="relative z-10 min-h-screen overflow-hidden bg-ink px-5 py-28 md:px-10 lg:px-16">
-        <Image src="/images/cover/cover.webp" alt="" fill className="object-cover opacity-20" />
+        <Image src={assetPath("/images/cover/cover.webp")} alt="" fill className="object-cover opacity-20" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/90 to-transparent" />
         <div className="relative flex min-h-[70vh] max-w-6xl flex-col justify-between">
           <div><p className="eyebrow">06 / CONTACT</p><h2 className="mt-8 max-w-5xl font-display text-[12vw] leading-[.82] tracking-[-.08em] md:text-[9vw]">LET&apos;S BUILD<br /><span className="text-blue">FUTURE</span> PRODUCTS<br />TOGETHER.</h2></div>
           <div className="mt-16 grid gap-8 border-t border-paper/15 pt-8 md:grid-cols-2">
             <div><p className="text-3xl">刘昌盛</p><p className="mt-2 text-sm text-paper/50">AI Product Experience Designer<br />Guangzhou</p></div>
             <div className="flex flex-wrap items-start gap-3 md:justify-end">
-              <a href={`${basePath}/docs/resume.pdf`} download className="contact-button">DOWNLOAD RESUME</a>
+              <a href={assetPath("/docs/resume.pdf")} download className="contact-button">DOWNLOAD RESUME</a>
               <a href="mailto:858572182@qq.com" className="contact-button">SEND EMAIL</a>
               <a href="#top" className="contact-button">BACK TO TOP</a>
             </div>
