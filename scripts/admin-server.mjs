@@ -5,6 +5,7 @@ import { spawn, spawnSync } from "node:child_process";
 
 const root = process.cwd();
 const publicRoot = join(root, "public");
+const projectsFile = join(root, "data", "projects.json");
 const port = Number(process.env.ADMIN_PORT || 4188);
 const nodeExe = process.execPath;
 
@@ -108,186 +109,61 @@ function gitStatus() {
   return result.ok ? result.output || "Clean" : result.output || "Unable to read git status.";
 }
 
+function readProjects() {
+  if (!existsSync(projectsFile)) return [];
+  return JSON.parse(readFileSync(projectsFile, "utf8"));
+}
+
+function writeProjects(projects) {
+  mkdirSync(join(root, "data"), { recursive: true });
+  writeFileSync(projectsFile, JSON.stringify(projects, null, 2), "utf8");
+}
+
+function normalizeList(value) {
+  if (Array.isArray(value)) return value.map((item) => String(item).trim()).filter(Boolean);
+  return String(value || "")
+    .split(/\r?\n|,/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function normalizeProject(project) {
+  return {
+    hidden: Boolean(project.hidden),
+    slug: String(project.slug || "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "-").replace(/-+/g, "-"),
+    index: String(project.index || ""),
+    title: String(project.title || "Untitled Project"),
+    english: String(project.english || ""),
+    summary: String(project.summary || ""),
+    role: String(project.role || ""),
+    time: String(project.time || ""),
+    tags: normalizeList(project.tags),
+    cover: String(project.cover || ""),
+    accent: String(project.accent || "#356FE8"),
+    overview: String(project.overview || ""),
+    problem: String(project.problem || ""),
+    research: normalizeList(project.research),
+    strategy: normalizeList(project.strategy),
+    workflow: normalizeList(project.workflow),
+    outputs: normalizeList(project.outputs),
+    result: String(project.result || ""),
+    reflection: String(project.reflection || ""),
+    gallery: Array.isArray(project.gallery) ? project.gallery : [],
+    mediaSections: Array.isArray(project.mediaSections) ? project.mediaSections : undefined,
+    videos: Array.isArray(project.videos) ? project.videos : undefined,
+    video: project.video ? String(project.video) : undefined,
+    document: project.document?.src ? project.document : undefined,
+  };
+}
+
+function publicFolderForUpload(slug, target) {
+  if (target === "video") return "media";
+  if (target === "document") return "docs/projects";
+  return `images/projects/${slug}/selected`;
+}
+
 function adminHtml() {
-  return `<!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>刘昌盛作品集管理后台</title>
-  <style>
-    :root { color-scheme: dark; --bg:#11100e; --panel:#191714; --line:rgba(244,232,220,.16); --text:#f4e8dc; --muted:rgba(244,232,220,.56); --blue:#356fe8; --peach:#ffb894; }
-    * { box-sizing: border-box; }
-    body { margin:0; background: radial-gradient(circle at top left, rgba(53,111,232,.18), transparent 32rem), var(--bg); color:var(--text); font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-    main { width:min(1180px, calc(100vw - 32px)); margin:0 auto; padding:32px 0 56px; }
-    header { display:flex; justify-content:space-between; gap:24px; align-items:flex-end; margin-bottom:24px; }
-    h1 { margin:0; font-size:clamp(32px, 6vw, 72px); line-height:.9; letter-spacing:-.06em; }
-    h2 { margin:0 0 16px; font-size:20px; }
-    p { color:var(--muted); line-height:1.7; }
-    .grid { display:grid; grid-template-columns: repeat(12, 1fr); gap:14px; }
-    .panel { grid-column: span 6; border:1px solid var(--line); background:rgba(25,23,20,.82); border-radius:24px; padding:22px; backdrop-filter: blur(14px); }
-    .wide { grid-column: span 12; }
-    .third { grid-column: span 4; }
-    button, select, input { border:1px solid var(--line); background:#0e0d0b; color:var(--text); border-radius:999px; padding:11px 16px; }
-    button { cursor:pointer; transition:.2s ease; }
-    button:hover { border-color:var(--peach); color:var(--peach); transform:translateY(-1px); }
-    .primary { background:var(--peach); color:#11100e; border-color:var(--peach); font-weight:700; }
-    .danger:hover { border-color:#ff7373; color:#ff7373; }
-    .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .status { white-space:pre-wrap; min-height:96px; max-height:260px; overflow:auto; background:#0b0a09; border:1px solid var(--line); border-radius:18px; padding:14px; color:var(--muted); font:12px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; }
-    .assets { display:grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap:12px; }
-    .asset { border:1px solid var(--line); border-radius:18px; padding:10px; min-height:120px; background:#11100e; overflow:hidden; }
-    .asset img, .asset video { width:100%; height:110px; object-fit:cover; border-radius:12px; background:#050505; }
-    .asset small { display:block; color:var(--muted); word-break:break-all; margin-top:8px; }
-    label { display:block; color:var(--muted); font-size:12px; margin-bottom:8px; letter-spacing:.08em; text-transform:uppercase; }
-    .hint { font-size:13px; }
-    @media (max-width: 820px) { .panel, .third { grid-column: span 12; } header { display:block; } }
-  </style>
-</head>
-<body>
-  <main>
-    <header>
-      <div>
-        <p>LOCAL DESIGNER OPERATING SYSTEM</p>
-        <h1>Portfolio<br/>Admin</h1>
-      </div>
-      <div class="row">
-        <button onclick="refresh()">刷新状态</button>
-        <button class="primary" onclick="action('open-admin')">重新打开后台</button>
-      </div>
-    </header>
-
-    <section class="grid">
-      <article class="panel third">
-        <h2>作品集预览</h2>
-        <p class="hint">启动或关闭本地作品集服务器。推荐以后都从这里打开。</p>
-        <div class="row">
-          <button class="primary" onclick="action('preview')">打开作品集</button>
-          <button class="danger" onclick="action('close-preview')">关闭作品集</button>
-        </div>
-      </article>
-
-      <article class="panel third">
-        <h2>生成网站</h2>
-        <p class="hint">更换素材后，点这里重新生成 out 文件夹。</p>
-        <div class="row">
-          <button onclick="action('build')">重新生成</button>
-        </div>
-      </article>
-
-      <article class="panel third">
-        <h2>同步 GitHub</h2>
-        <p class="hint">会自动提交本地改动并推送到 main，然后 GitHub Actions 会部署。</p>
-        <div class="row">
-          <button onclick="action('publish')">上传发布</button>
-        </div>
-      </article>
-
-      <article class="panel wide">
-        <h2>状态</h2>
-        <div id="status" class="status">Loading...</div>
-      </article>
-
-      <article class="panel wide">
-        <h2>素材管理</h2>
-        <p class="hint">先选 public 下的目标文件夹，再上传图片、视频或 PDF。文件名会自动清理成英文安全格式。</p>
-        <div class="row">
-          <select id="folder" onchange="loadAssets()">
-            <option value="images/cover">首页 / 个人照片</option>
-            <option value="images/projects/yuandian/selected">原点向导精选图</option>
-            <option value="images/projects/shanyin/selected">山音接力精选图</option>
-            <option value="images/projects/lechang/selected">乐后昌城精选图</option>
-            <option value="images/projects/yueban/selected">悦伴精选图</option>
-            <option value="images/projects/medical">医疗机器人</option>
-            <option value="images/projects/zhijing">智清镜</option>
-            <option value="media">视频素材</option>
-            <option value="docs/projects">项目 PDF</option>
-          </select>
-          <input id="file" type="file" />
-          <button onclick="upload()">上传到当前文件夹</button>
-        </div>
-        <div id="assets" class="assets" style="margin-top:18px"></div>
-      </article>
-
-      <article class="panel wide">
-        <h2>下一版：项目编辑表单</h2>
-        <p>这一版先把“启动、生成、上传、素材替换”打通。下一版我建议把项目文案迁到 <code>data/projects.json</code>，后台就能直接编辑标题、简介、标签、排序和项目段落。这样会更安全，也更像真正 CMS。</p>
-      </article>
-    </section>
-  </main>
-
-  <script>
-    async function api(path, options) {
-      const response = await fetch(path, options);
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(data.error || '请求失败');
-      return data;
-    }
-
-    async function refresh() {
-      const data = await api('/api/status');
-      document.getElementById('status').textContent =
-        '作品集地址: ' + (data.portfolioUrl || '未启动') + '\\n\\n' +
-        'Git 状态:\\n' + data.gitStatus + '\\n\\n' +
-        '最近操作:\\n' + (data.lastLog || '暂无');
-    }
-
-    async function action(name) {
-      const box = document.getElementById('status');
-      box.textContent = '正在执行：' + name + ' ...';
-      try {
-        const data = await api('/api/action', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: name })
-        });
-        box.textContent = data.output || '完成';
-        setTimeout(refresh, 800);
-      } catch (error) {
-        box.textContent = error.message;
-      }
-    }
-
-    async function loadAssets() {
-      const folder = document.getElementById('folder').value;
-      const data = await api('/api/assets?folder=' + encodeURIComponent(folder));
-      const container = document.getElementById('assets');
-      container.innerHTML = data.items.map((item) => {
-        const src = item.path;
-        const preview = item.kind === 'folder'
-          ? '<p>📁 文件夹</p>'
-          : ['.png','.jpg','.jpeg','.webp','.svg'].includes(item.extension)
-            ? '<img src="' + src + '" alt="">'
-            : ['.mp4','.webm'].includes(item.extension)
-              ? '<video src="' + src + '" muted></video>'
-              : '<p>📄 文件</p>';
-        return '<div class="asset">' + preview + '<small>' + item.path + '</small></div>';
-      }).join('');
-    }
-
-    async function upload() {
-      const input = document.getElementById('file');
-      const file = input.files[0];
-      if (!file) return alert('先选择一个文件');
-      const folder = document.getElementById('folder').value;
-      const response = await fetch('/api/upload?folder=' + encodeURIComponent(folder), {
-        method: 'POST',
-        headers: { 'x-file-name': encodeURIComponent(file.name) },
-        body: file
-      });
-      const data = await response.json();
-      if (!response.ok) return alert(data.error || '上传失败');
-      input.value = '';
-      await loadAssets();
-      await refresh();
-      alert('已上传：' + data.path);
-    }
-
-    refresh();
-    loadAssets();
-  </script>
-</body>
-</html>`;
+  return readFileSync(join(root, "scripts", "admin-ui.html"), "utf8");
 }
 
 async function readBody(request) {
@@ -306,7 +182,10 @@ const server = createServer(async (request, response) => {
       return;
     }
 
-    if (request.method === "GET" && url.pathname.startsWith("/images/") || request.method === "GET" && url.pathname.startsWith("/media/") || request.method === "GET" && url.pathname.startsWith("/docs/")) {
+    if (
+      request.method === "GET" &&
+      (url.pathname.startsWith("/images/") || url.pathname.startsWith("/media/") || url.pathname.startsWith("/docs/"))
+    ) {
       const filePath = safePublicPath(url.pathname);
       if (!existsSync(filePath) || !statSync(filePath).isFile()) return text(response, "Not found", 404);
       response.writeHead(200, { "Content-Type": mimeTypes[extname(filePath).toLowerCase()] || "application/octet-stream" });
@@ -321,6 +200,118 @@ const server = createServer(async (request, response) => {
         gitStatus: gitStatus(),
         lastLog: existsSync(lastLogPath) ? readFileSync(lastLogPath, "utf8").slice(-5000) : "",
       });
+      return;
+    }
+
+    if (request.method === "GET" && url.pathname === "/api/projects") {
+      json(response, { projects: readProjects() });
+      return;
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/project") {
+      const body = JSON.parse((await readBody(request)).toString("utf8") || "{}");
+      const incoming = normalizeProject(body.project || {});
+      if (!incoming.slug) return json(response, { error: "项目 slug 不能为空。" }, 400);
+
+      const projects = readProjects();
+      const index = projects.findIndex((project) => project.slug === incoming.slug);
+      if (index < 0) return json(response, { error: "没有找到这个项目。" }, 404);
+
+      projects[index] = incoming;
+      writeProjects(projects);
+      json(response, { project: incoming, projects });
+      return;
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/project/new") {
+      const body = JSON.parse((await readBody(request)).toString("utf8") || "{}");
+      const slug = String(body.slug || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9-]/g, "-")
+        .replace(/-+/g, "-");
+      if (!slug) return json(response, { error: "请输入英文项目 ID，例如 new-ai-project。" }, 400);
+
+      const projects = readProjects();
+      if (projects.some((project) => project.slug === slug)) {
+        return json(response, { error: "这个项目 ID 已经存在。" }, 400);
+      }
+
+      const project = normalizeProject({
+        hidden: true,
+        slug,
+        index: String(projects.length + 1).padStart(2, "0"),
+        title: body.title || "新项目",
+        english: body.english || "",
+        summary: "一句话说明这个项目。",
+        role: "",
+        time: "",
+        tags: [],
+        cover: "",
+        accent: "#356FE8",
+        overview: "",
+        problem: "",
+        research: [],
+        strategy: [],
+        workflow: [],
+        outputs: [],
+        result: "",
+        reflection: "",
+        gallery: [],
+      });
+
+      projects.push(project);
+      writeProjects(projects);
+      mkdirSync(safePublicPath(`images/projects/${slug}/selected`), { recursive: true });
+      json(response, { project, projects });
+      return;
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/project/order") {
+      const body = JSON.parse((await readBody(request)).toString("utf8") || "{}");
+      const { slug, direction } = body;
+      const projects = readProjects();
+      const index = projects.findIndex((project) => project.slug === slug);
+      const nextIndex = direction === "up" ? index - 1 : index + 1;
+      if (index < 0 || nextIndex < 0 || nextIndex >= projects.length) {
+        return json(response, { projects });
+      }
+      [projects[index], projects[nextIndex]] = [projects[nextIndex], projects[index]];
+      writeProjects(projects);
+      json(response, { projects });
+      return;
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/project-upload") {
+      const slug = String(url.searchParams.get("slug") || "");
+      const target = String(url.searchParams.get("target") || "gallery");
+      const projects = readProjects();
+      const project = projects.find((item) => item.slug === slug);
+      if (!project) return json(response, { error: "没有找到这个项目。" }, 404);
+
+      const folder = publicFolderForUpload(slug, target);
+      const targetFolder = safePublicPath(folder);
+      mkdirSync(targetFolder, { recursive: true });
+      const originalName = decodeURIComponent(request.headers["x-file-name"] || "asset.bin");
+      const fileName = slugifyFileName(originalName);
+      const targetPath = join(targetFolder, fileName);
+      writeFileSync(targetPath, await readBody(request));
+      const publicPath = `/${relative(publicRoot, targetPath).replace(/\\/g, "/")}`;
+
+      if (target === "cover") {
+        project.cover = publicPath;
+      } else if (target === "gallery") {
+        project.gallery = Array.isArray(project.gallery) ? project.gallery : [];
+        project.gallery.push({ src: publicPath, title: "", description: "", format: "landscape" });
+      } else if (target === "video") {
+        project.videos = Array.isArray(project.videos) ? project.videos : [];
+        project.videos.push({ src: publicPath, title: "项目视频", description: "" });
+      } else if (target === "document") {
+        project.document = { src: publicPath, label: "查看完整项目 PDF" };
+      }
+
+      writeProjects(projects);
+      json(response, { path: publicPath, project, projects });
       return;
     }
 

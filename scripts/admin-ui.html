@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>刘昌盛作品集管理后台</title>
+  <style>
+    :root { color-scheme: dark; --bg:#11100e; --panel:#191714; --line:rgba(244,232,220,.16); --text:#f4e8dc; --muted:rgba(244,232,220,.56); --blue:#356fe8; --peach:#ffb894; --red:#ff7b7b; }
+    * { box-sizing: border-box; }
+    body { margin:0; background: radial-gradient(circle at top left, rgba(53,111,232,.2), transparent 30rem), var(--bg); color:var(--text); font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    main { width:min(1440px, calc(100vw - 28px)); margin:0 auto; padding:26px 0 56px; }
+    header { display:flex; justify-content:space-between; gap:24px; align-items:flex-end; margin-bottom:18px; }
+    h1 { margin:0; font-size:clamp(34px, 5vw, 68px); line-height:.88; letter-spacing:-.06em; }
+    h2, h3 { margin:0; }
+    p { color:var(--muted); line-height:1.7; }
+    button, input, textarea, select { border:1px solid var(--line); background:#0d0c0a; color:var(--text); border-radius:16px; padding:11px 13px; font:inherit; }
+    textarea { min-height:92px; resize:vertical; line-height:1.65; }
+    input, textarea, select { width:100%; }
+    button { width:auto; cursor:pointer; border-radius:999px; transition:.2s ease; }
+    button:hover { border-color:var(--peach); color:var(--peach); transform:translateY(-1px); }
+    .primary { background:var(--peach); color:#11100e; border-color:var(--peach); font-weight:800; }
+    .blue { background:var(--blue); border-color:var(--blue); color:white; }
+    .danger:hover { color:var(--red); border-color:var(--red); }
+    .layout { display:grid; grid-template-columns: 320px 1fr; gap:14px; align-items:start; }
+    .panel { border:1px solid var(--line); background:rgba(25,23,20,.82); border-radius:26px; padding:18px; backdrop-filter: blur(14px); }
+    .toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+    .sidebar { position:sticky; top:14px; max-height:calc(100vh - 28px); overflow:auto; }
+    .project-btn { width:100%; text-align:left; display:block; border-radius:18px; margin-top:8px; padding:14px; background:#11100e; }
+    .project-btn.active { border-color:var(--peach); background:rgba(255,184,148,.12); }
+    .project-btn small { display:block; color:var(--muted); margin-top:4px; }
+    .hidden-badge { color:var(--red); font-size:11px; margin-left:6px; }
+    .grid { display:grid; grid-template-columns: repeat(12, 1fr); gap:12px; }
+    .field { grid-column: span 6; }
+    .field.full { grid-column: span 12; }
+    .field.third { grid-column: span 4; }
+    label { display:block; color:var(--muted); font-size:12px; letter-spacing:.08em; text-transform:uppercase; margin:14px 0 7px; }
+    .hint { font-size:13px; color:var(--muted); margin:8px 0 0; }
+    .status { white-space:pre-wrap; min-height:86px; max-height:230px; overflow:auto; background:#080807; border:1px solid var(--line); border-radius:18px; padding:13px; color:var(--muted); font:12px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .media-list { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:12px; }
+    .media-card { border:1px solid var(--line); border-radius:18px; padding:10px; background:#11100e; }
+    .media-card img, .media-card video { width:100%; aspect-ratio:16/10; object-fit:contain; background:#050505; border-radius:12px; }
+    .media-card small { display:block; color:var(--muted); word-break:break-all; margin:8px 0; }
+    .split { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .empty { border:1px dashed var(--line); border-radius:18px; padding:18px; color:var(--muted); }
+    @media (max-width: 960px) { .layout { grid-template-columns:1fr; } .sidebar { position:relative; max-height:none; } .field, .field.third { grid-column:span 12; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p>LOCAL PORTFOLIO CMS / V2</p>
+        <h1>Project<br/>Editor</h1>
+      </div>
+      <div class="toolbar">
+        <button onclick="runAction('preview')" class="primary">打开作品集</button>
+        <button onclick="runAction('close-preview')">关闭预览</button>
+        <button onclick="runAction('build')">重新生成</button>
+        <button onclick="runAction('publish')" class="blue">上传 GitHub</button>
+      </div>
+    </header>
+
+    <section class="layout">
+      <aside class="panel sidebar">
+        <div class="toolbar">
+          <button onclick="loadAll()">刷新</button>
+          <button onclick="newProject()" class="primary">新建项目</button>
+        </div>
+        <p class="hint">选中一个项目后，在右侧直接修改文案、标签、图片、视频和 PDF。</p>
+        <div id="projectList"></div>
+      </aside>
+
+      <section class="panel">
+        <div class="toolbar" style="justify-content:space-between">
+          <div>
+            <h2 id="editorTitle">选择一个项目</h2>
+            <p id="editorHint" class="hint">隐藏项目不会出现在公开作品集里，但资料会保留。</p>
+          </div>
+          <div class="toolbar">
+            <button onclick="moveProject('up')">上移</button>
+            <button onclick="moveProject('down')">下移</button>
+            <button onclick="saveProject()" class="primary">保存修改</button>
+          </div>
+        </div>
+
+        <div id="editor" style="margin-top:14px"></div>
+
+        <article style="margin-top:18px">
+          <h3>运行状态</h3>
+          <div id="status" class="status">Loading...</div>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    let projects = [];
+    let currentSlug = "";
+    let current = null;
+
+    const $ = (id) => document.getElementById(id);
+    const lines = (value) => Array.isArray(value) ? value.join('\\n') : '';
+    const splitLines = (value) => String(value || '').split(/\\r?\\n|,/).map((item) => item.trim()).filter(Boolean);
+
+    async function api(path, options) {
+      const response = await fetch(path, options);
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || '请求失败');
+      return data;
+    }
+
+    function projectName(project) {
+      return (project.index ? project.index + ' / ' : '') + (project.title || project.slug);
+    }
+
+    async function loadAll(keepSlug = currentSlug) {
+      const data = await api('/api/projects');
+      projects = data.projects || [];
+      currentSlug = keepSlug && projects.some((item) => item.slug === keepSlug) ? keepSlug : (projects[0]?.slug || "");
+      current = projects.find((item) => item.slug === currentSlug) || null;
+      renderList();
+      renderEditor();
+      refreshStatus();
+    }
+
+    function renderList() {
+      $('projectList').innerHTML = projects.map((project) => `
+        <button class="project-btn ${project.slug === currentSlug ? 'active' : ''}" onclick="selectProject('${project.slug}')">
+          ${projectName(project)} ${project.hidden ? '<span class="hidden-badge">已隐藏</span>' : ''}
+          <small>${project.slug}${project.tags?.length ? ' · ' + project.tags.join(' / ') : ''}</small>
+        </button>
+      `).join('');
+    }
+
+    function selectProject(slug) {
+      currentSlug = slug;
+      current = projects.find((item) => item.slug === slug);
+      renderList();
+      renderEditor();
+    }
+
+    function field(id, label, value, type = 'input') {
+      if (type === 'textarea') return `<label>${label}</label><textarea id="${id}">${escapeHtml(value || '')}</textarea>`;
+      return `<label>${label}</label><input id="${id}" value="${escapeHtml(value || '')}" />`;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
+    }
+
+    function renderEditor() {
+      if (!current) {
+        $('editor').innerHTML = '<div class="empty">还没有项目。</div>';
+        return;
+      }
+      $('editorTitle').textContent = projectName(current);
+      $('editorHint').textContent = current.hidden ? '当前项目已隐藏，不会显示在公开作品集中。' : '当前项目会显示在公开作品集中。';
+
+      $('editor').innerHTML = `
+        <div class="grid">
+          <div class="field third">${field('title', '项目中文名', current.title)}</div>
+          <div class="field third">${field('english', '英文名 / 副标题', current.english)}</div>
+          <div class="field third">${field('time', '项目时间', current.time)}</div>
+          <div class="field full">${field('summary', '一句话简介', current.summary)}</div>
+          <div class="field full">${field('role', '我的角色', current.role)}</div>
+          <div class="field">${field('tags', '标签（用逗号或换行分隔）', (current.tags || []).join(', '))}</div>
+          <div class="field">${field('accent', '强调色', current.accent || '#356FE8')}</div>
+          <div class="field full">
+            <label><input id="hidden" type="checkbox" style="width:auto" ${current.hidden ? 'checked' : ''}/> 隐藏这个项目</label>
+            <p class="hint">隐藏后不会在首页项目列表和详情路由出现，适合针对不同简历版本临时收起。</p>
+          </div>
+          <div class="field full">${field('overview', 'Overview', current.overview, 'textarea')}</div>
+          <div class="field full">${field('problem', 'Problem', current.problem, 'textarea')}</div>
+          <div class="field">${field('research', 'Research（每行一条）', lines(current.research), 'textarea')}</div>
+          <div class="field">${field('strategy', 'Strategy（每行一条）', lines(current.strategy), 'textarea')}</div>
+          <div class="field">${field('workflow', 'Workflow（每行一条）', lines(current.workflow), 'textarea')}</div>
+          <div class="field">${field('outputs', 'Design Output（每行一条）', lines(current.outputs), 'textarea')}</div>
+          <div class="field full">${field('result', 'Result', current.result, 'textarea')}</div>
+          <div class="field full">${field('reflection', 'Reflection', current.reflection, 'textarea')}</div>
+        </div>
+
+        <hr style="border:0;border-top:1px solid var(--line);margin:22px 0" />
+        <h3>封面图</h3>
+        <p class="hint">封面图会用于首页项目抽屉和项目详情顶部。</p>
+        <div class="media-card" style="max-width:420px;margin-top:10px">
+          ${current.cover ? `<img src="${current.cover}" alt="">` : '<div class="empty">暂无封面</div>'}
+          <small>${current.cover || '未设置'}</small>
+          <input id="coverFile" type="file" accept="image/*" />
+          <button onclick="uploadToProject('cover','coverFile')">替换封面图</button>
+        </div>
+
+        <hr style="border:0;border-top:1px solid var(--line);margin:22px 0" />
+        <div class="toolbar" style="justify-content:space-between">
+          <h3>项目展示图</h3>
+          <div class="toolbar">
+            <input id="galleryFile" type="file" accept="image/*" />
+            <button onclick="uploadToProject('gallery','galleryFile')">添加展示图</button>
+          </div>
+        </div>
+        <div id="galleryList" class="media-list" style="margin-top:12px"></div>
+
+        <hr style="border:0;border-top:1px solid var(--line);margin:22px 0" />
+        <div class="toolbar" style="justify-content:space-between">
+          <h3>视频</h3>
+          <div class="toolbar">
+            <input id="videoFile" type="file" accept="video/*" />
+            <button onclick="uploadToProject('video','videoFile')">添加视频</button>
+          </div>
+        </div>
+        <div id="videoList" class="media-list" style="margin-top:12px"></div>
+
+        <hr style="border:0;border-top:1px solid var(--line);margin:22px 0" />
+        <h3>项目 PDF</h3>
+        <p class="hint">用于详情页底部“查看完整项目 PDF”。</p>
+        <div class="media-card" style="max-width:520px;margin-top:10px">
+          <small>${current.document?.src || '未设置 PDF'}</small>
+          <input id="docLabel" value="${escapeHtml(current.document?.label || '查看完整项目 PDF')}" />
+          <input id="docFile" type="file" accept="application/pdf" />
+          <button onclick="uploadToProject('document','docFile')">替换 PDF</button>
+        </div>
+      `;
+      renderGallery();
+      renderVideos();
+    }
+
+    function normalizeGalleryItem(item) {
+      return typeof item === 'string' ? { src: item, title: '', description: '', format: 'landscape' } : item;
+    }
+
+    function renderGallery() {
+      const items = (current.gallery || []).map(normalizeGalleryItem);
+      $('galleryList').innerHTML = items.length ? items.map((item, index) => `
+        <div class="media-card">
+          <img src="${item.src}" alt="">
+          <small>${item.src}</small>
+          <input value="${escapeHtml(item.title || '')}" placeholder="图片标题" onchange="updateGallery(${index}, 'title', this.value)" />
+          <textarea placeholder="图片说明" onchange="updateGallery(${index}, 'description', this.value)">${escapeHtml(item.description || '')}</textarea>
+          <select onchange="updateGallery(${index}, 'format', this.value)">
+            <option value="landscape" ${item.format === 'landscape' || !item.format ? 'selected' : ''}>横图 / PPT</option>
+            <option value="portrait" ${item.format === 'portrait' ? 'selected' : ''}>竖图 / A3展板</option>
+            <option value="square" ${item.format === 'square' ? 'selected' : ''}>方图</option>
+          </select>
+          <button class="danger" onclick="removeGallery(${index})">移除这张图</button>
+        </div>
+      `).join('') : '<div class="empty">还没有展示图，点右上角添加。</div>';
+    }
+
+    function renderVideos() {
+      const items = current.videos || (current.video ? [{ src: current.video, title: '项目视频', description: '' }] : []);
+      current.videos = items;
+      $('videoList').innerHTML = items.length ? items.map((item, index) => `
+        <div class="media-card">
+          <video src="${item.src}" controls></video>
+          <small>${item.src}</small>
+          <input value="${escapeHtml(item.title || '')}" placeholder="视频标题" onchange="updateVideo(${index}, 'title', this.value)" />
+          <textarea placeholder="视频说明" onchange="updateVideo(${index}, 'description', this.value)">${escapeHtml(item.description || '')}</textarea>
+          <button class="danger" onclick="removeVideo(${index})">移除这个视频</button>
+        </div>
+      `).join('') : '<div class="empty">还没有视频，点右上角添加。</div>';
+    }
+
+    function updateGallery(index, key, value) {
+      current.gallery = (current.gallery || []).map(normalizeGalleryItem);
+      current.gallery[index][key] = value;
+    }
+
+    function removeGallery(index) {
+      current.gallery = (current.gallery || []).map(normalizeGalleryItem);
+      current.gallery.splice(index, 1);
+      renderGallery();
+    }
+
+    function updateVideo(index, key, value) {
+      current.videos[index][key] = value;
+    }
+
+    function removeVideo(index) {
+      current.videos.splice(index, 1);
+      renderVideos();
+    }
+
+    function collectProject() {
+      const project = { ...current };
+      for (const id of ['title','english','time','summary','role','accent','overview','problem','result','reflection']) {
+        project[id] = $(id).value;
+      }
+      project.hidden = $('hidden').checked;
+      project.tags = splitLines($('tags').value);
+      project.research = splitLines($('research').value);
+      project.strategy = splitLines($('strategy').value);
+      project.workflow = splitLines($('workflow').value);
+      project.outputs = splitLines($('outputs').value);
+      project.document = project.document?.src ? { ...project.document, label: $('docLabel').value || '查看完整项目 PDF' } : undefined;
+      return project;
+    }
+
+    async function saveProject() {
+      if (!current) return;
+      const project = collectProject();
+      const data = await api('/api/project', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ project })
+      });
+      projects = data.projects;
+      current = data.project;
+      currentSlug = current.slug;
+      renderList();
+      renderEditor();
+      await refreshStatus();
+      alert('已保存。记得点“重新生成”再预览/发布。');
+    }
+
+    async function uploadToProject(target, inputId) {
+      if (!current) return;
+      await saveWithoutAlert();
+      const input = $(inputId);
+      const file = input.files[0];
+      if (!file) return alert('先选择一个文件');
+      const response = await fetch('/api/project-upload?slug=' + encodeURIComponent(current.slug) + '&target=' + encodeURIComponent(target), {
+        method: 'POST',
+        headers: { 'x-file-name': encodeURIComponent(file.name) },
+        body: file
+      });
+      const data = await response.json();
+      if (!response.ok) return alert(data.error || '上传失败');
+      input.value = '';
+      projects = data.projects;
+      current = data.project;
+      renderList();
+      renderEditor();
+      alert('已上传并绑定到当前项目：' + data.path);
+    }
+
+    async function saveWithoutAlert() {
+      const project = collectProject();
+      const data = await api('/api/project', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ project })
+      });
+      projects = data.projects;
+      current = data.project;
+    }
+
+    async function newProject() {
+      const title = prompt('项目中文名，例如：新 AI 产品设计');
+      if (!title) return;
+      const slug = prompt('项目英文 ID，只能英文/数字/短横线，例如：new-ai-product');
+      if (!slug) return;
+      const data = await api('/api/project/new', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, slug })
+      });
+      projects = data.projects;
+      currentSlug = data.project.slug;
+      current = data.project;
+      renderList();
+      renderEditor();
+      alert('新项目已创建，默认隐藏。编辑完成后取消隐藏即可发布。');
+    }
+
+    async function moveProject(direction) {
+      if (!current) return;
+      const data = await api('/api/project/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: current.slug, direction })
+      });
+      projects = data.projects;
+      current = projects.find((item) => item.slug === currentSlug);
+      renderList();
+    }
+
+    async function runAction(action) {
+      $('status').textContent = '正在执行：' + action + ' ...';
+      try {
+        const data = await api('/api/action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action })
+        });
+        $('status').textContent = data.output || '完成';
+        setTimeout(refreshStatus, 900);
+      } catch (error) {
+        $('status').textContent = error.message;
+      }
+    }
+
+    async function refreshStatus() {
+      const data = await api('/api/status');
+      $('status').textContent =
+        '作品集地址: ' + (data.portfolioUrl || '未启动') + '\\n\\n' +
+        'Git 状态:\\n' + data.gitStatus + '\\n\\n' +
+        '最近操作:\\n' + (data.lastLog || '暂无');
+    }
+
+    loadAll();
+  </script>
+</body>
+</html>
