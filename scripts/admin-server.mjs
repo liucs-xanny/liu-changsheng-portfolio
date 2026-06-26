@@ -80,6 +80,15 @@ function startDetached(command, args, stdoutFile, stderrFile) {
   child.unref();
 }
 
+function openPortfolioServer() {
+  spawn("cmd", ["/c", `start "Portfolio Local Server" /min cmd /k ""${nodeExe}" "scripts\\preview-static.mjs""`], {
+    cwd: root,
+    detached: true,
+    stdio: "ignore",
+    windowsHide: true,
+  }).unref();
+}
+
 function listAssets(folder = "") {
   const target = safePublicPath(folder);
   if (!existsSync(target)) return [];
@@ -338,7 +347,7 @@ const server = createServer(async (request, response) => {
       let result = { ok: true, output: "" };
 
       if (action === "preview") {
-        startDetached(nodeExe, ["scripts/preview-static.mjs"], "portfolio-local.log", "portfolio-local-error.log");
+        openPortfolioServer();
         result.output = "作品集预览已启动。稍等 1 秒后会自动打开浏览器。";
         setTimeout(() => {
           const url = portfolioUrl() || "http://127.0.0.1:4173/liu-changsheng-portfolio/";
