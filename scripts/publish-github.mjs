@@ -68,9 +68,23 @@ if (status.output) {
   console.log("No local changes to commit.");
 }
 
-const push = run(["push", "-u", "origin", "main"]);
-if (!push.ok) {
+let push = { ok: false, output: "", status: 1 };
+
+for (let attempt = 1; attempt <= 3; attempt += 1) {
+  push = run(["-c", "http.version=HTTP/1.1", "push", "-u", "origin", "main"], {
+    timeout: 300000,
+  });
+  if (push.ok) break;
+
+  console.error(`Push attempt ${attempt} failed.`);
   console.error(push.output || "Unable to push to GitHub.");
+  if (attempt < 3) {
+    console.error("Retrying...");
+  }
+}
+
+if (!push.ok) {
+  console.error("Upload did not finish. Your local commit is safe; please retry when the network is stable.");
   process.exit(push.status || 1);
 }
 
