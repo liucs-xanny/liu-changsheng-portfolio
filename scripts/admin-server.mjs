@@ -57,7 +57,6 @@ function run(command, args, timeout = 120000) {
   const result = spawnSync(command, args, {
     cwd: root,
     encoding: "utf8",
-    shell: true,
     timeout,
   });
 
@@ -368,7 +367,7 @@ const server = createServer(async (request, response) => {
       }
 
       writeFileSync(join(root, "portfolio-admin-last.log"), result.output || "", "utf8");
-      json(response, result, result.ok ? 200 : 500);
+      json(response, result.ok ? result : { ...result, error: result.output || "Action failed." }, result.ok ? 200 : 500);
       return;
     }
 
