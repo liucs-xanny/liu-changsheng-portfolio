@@ -1,5 +1,5 @@
 import { createServer } from "node:http";
-import { createReadStream, createWriteStream, existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { createReadStream, createWriteStream, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { basename, extname, join, normalize, relative } from "node:path";
 import { spawn, spawnSync } from "node:child_process";
 
@@ -79,13 +79,40 @@ function startDetached(command, args, stdoutFile, stderrFile) {
   child.unref();
 }
 
-function openPortfolioServer() {
-  spawn("cmd", ["/c", `start "Portfolio Local Server" /min cmd /k ""${nodeExe}" "scripts\\preview-static.mjs""`], {
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function waitForPortfolioUrl(timeout = 6000) {
+  const deadline = Date.now() + timeout;
+  while (Date.now() < deadline) {
+    const url = portfolioUrl();
+    if (url) return url;
+    await sleep(250);
+  }
+  return portfolioUrl();
+}
+
+function openUrl(url) {
+  spawn("cmd", ["/c", "start", "", url], {
     cwd: root,
     detached: true,
     stdio: "ignore",
     windowsHide: true,
   }).unref();
+}
+
+function openPortfolioServer() {
+  const urlPath = join(root, "portfolio-local-url.txt");
+  if (existsSync(urlPath)) rmSync(urlPath, { force: true });
+
+  const out = createWriteStream(join(root, "portfolio-local.log"), { flags: "a" });
+  const err = createWriteStream(join(root, "portfolio-local-error.log"), { flags: "a" });
+  const child = spawn(nodeExe, ["scripts/preview-static.mjs"], {
+    cwd: root,
+    detached: true,
+    stdio: ["ignore", out, err],
+    windowsHide: true,
+  });
+  child.unref();
 }
 
 function listAssets(folder = "") {
@@ -347,11 +374,13 @@ const server = createServer(async (request, response) => {
 
       if (action === "preview") {
         openPortfolioServer();
-        result.output = "作品集预览已启动。稍等 1 秒后会自动打开浏览器。";
-        setTimeout(() => {
-          const url = portfolioUrl() || "http://127.0.0.1:4173/liu-changsheng-portfolio/";
-          spawn("cmd", ["/c", "start", "", url], { detached: true, stdio: "ignore", windowsHide: true }).unref();
-        }, 900);
+        const portfolio = await waitForPortfolioUrl();
+        if (!portfolio) {
+          result = { ok: false, output: "作品集本地服务器没有启动成功，请查看 portfolio-local-error.log。" };
+        } else {
+          openUrl(portfolio);
+          result.output = `作品集已打开：${portfolio}`;
+        }
       } else if (action === "close-preview") {
         result = run("powershell", ["-NoProfile", "-Command", "$connections = Get-NetTCPConnection -LocalPort (4173..4183) -State Listen -ErrorAction SilentlyContinue; if ($connections) { $connections | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }; 'Portfolio server stopped.' } else { 'Portfolio server is not running.' }; if (Test-Path 'portfolio-local-url.txt') { Remove-Item 'portfolio-local-url.txt' -Force }"], 20000);
       } else if (action === "build") {
@@ -359,7 +388,7 @@ const server = createServer(async (request, response) => {
       } else if (action === "publish") {
         result = run(nodeExe, ["scripts/publish-github.mjs"], 180000);
       } else if (action === "open-admin") {
-        spawn("cmd", ["/c", "start", "", `http://127.0.0.1:${port}/`], { detached: true, stdio: "ignore", windowsHide: true }).unref();
+        openUrl(`http://127.0.0.1:${port}/`);
         result.output = "后台已重新打开。";
       } else {
         json(response, { error: "Unknown action." }, 400);

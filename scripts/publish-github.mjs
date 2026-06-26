@@ -1,13 +1,39 @@
 import { spawnSync } from "node:child_process";
+import { existsSync } from "node:fs";
 
 const cwd = process.cwd();
 const gitArgs = ["--git-dir=.repo", "--work-tree=."];
+const gitCandidates = [
+  process.env.GIT_EXE,
+  "git",
+  "C:\\Program Files\\Git\\cmd\\git.exe",
+  "C:\\Program Files (x86)\\Git\\cmd\\git.exe",
+  "D:\\研究生阶段\\Git\\cmd\\git.exe",
+].filter(Boolean);
+
+function findGit() {
+  for (const candidate of gitCandidates) {
+    if (candidate !== "git" && !existsSync(candidate)) continue;
+    const result = spawnSync(candidate, ["--version"], {
+      cwd,
+      encoding: "utf8",
+    });
+    if (result.status === 0) return candidate;
+  }
+  return "";
+}
+
+const git = findGit();
+
+if (!git) {
+  console.error("Git was not found. Please install Git or set GIT_EXE to your git.exe path.");
+  process.exit(1);
+}
 
 function run(args, options = {}) {
-  const result = spawnSync("git", [...gitArgs, ...args], {
+  const result = spawnSync(git, [...gitArgs, ...args], {
     cwd,
     encoding: "utf8",
-    shell: true,
     ...options,
   });
 
