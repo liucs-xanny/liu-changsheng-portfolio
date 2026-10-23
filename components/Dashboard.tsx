@@ -2,9 +2,8 @@
 
 import { motion } from "framer-motion";
 import { assetPath } from "@/lib/assets";
+import { profile } from "@/lib/profile";
 import Image from "next/image";
-
-const tags = ["AI Agent", "Digital Human", "RAG", "YOLO", "UX Research", "Service Design", "Brand Experience", "Industrial Design", "AIGC"];
 
 export function Dashboard() {
   return (
@@ -24,8 +23,8 @@ export function Dashboard() {
           <div className="grid min-h-0 flex-1 grid-cols-[.88fr_1.12fr] gap-px bg-paper/15">
             <div className="relative bg-white">
               <Image
-                src={assetPath("/images/cover/portrait.webp")}
-                alt="刘昌盛职业证件照"
+                src={assetPath(profile.portraits.formal)}
+                alt={`${profile.name}职业证件照`}
                 fill
                 sizes="(max-width: 768px) 45vw, 15vw"
                 className="object-contain object-center"
@@ -34,8 +33,8 @@ export function Dashboard() {
             </div>
             <div className="relative bg-[#d8d3cb]">
               <Image
-                src={assetPath("/images/cover/portrait-reading.webp")}
-                alt="刘昌盛阅读中的职业形象照"
+                src={assetPath(profile.portraits.practice)}
+                alt={`${profile.name}阅读中的职业形象照`}
                 fill
                 sizes="(max-width: 768px) 55vw, 19vw"
                 className="object-cover object-center"
@@ -44,49 +43,45 @@ export function Dashboard() {
             </div>
           </div>
           <div className="shrink-0 bg-blue px-7 py-6">
-            <p className="text-3xl font-semibold">刘昌盛</p>
-            <p className="mt-2 text-xs tracking-[.16em]">AI PRODUCT EXPERIENCE DESIGNER</p>
+            <p className="text-3xl font-semibold">{profile.name}</p>
+            <p className="mt-2 text-xs uppercase tracking-[.16em]">{profile.headline}</p>
+            {profile.directions.length > 0 && <p className="mt-3 text-xs leading-6 text-paper/70">{profile.directions.join(" / ")}</p>}
           </div>
         </motion.div>
 
         <div className="panel md:col-span-8">
-          <p className="eyebrow">HELLO, I&apos;M LIU CHANGSHENG.</p>
-          <p className="mt-8 max-w-3xl text-xl leading-relaxed md:text-3xl">
-            广东工业大学工业设计工程专业硕士研究生，研究方向为人工智能与设计创新。
-          </p>
-          <p className="mt-6 max-w-3xl text-sm leading-7 text-paper/60">
-            我关注人工智能技术如何转化为真实、易用并具有情感价值的产品体验，并持续探索 AI Agent、数字人、计算机视觉、服务设计与品牌体验在真实场景中的应用。
-          </p>
+          <p className="eyebrow uppercase">HELLO, I&apos;M {profile.englishName || profile.name}.</p>
+          <p className="mt-8 max-w-3xl whitespace-pre-line text-xl leading-relaxed md:text-3xl">{profile.about.heading}</p>
+          {profile.about.introduction && <p className="mt-6 max-w-3xl whitespace-pre-line text-sm leading-7 text-paper/60">{profile.about.introduction}</p>}
+          {(profile.about.industries || profile.about.interests) && <dl className="mt-6 grid gap-3 border-t border-paper/10 pt-5 text-xs leading-6 text-paper/55">
+            {profile.about.industries && <div className="grid grid-cols-[64px_1fr] gap-3"><dt className="text-peach">专业方向</dt><dd>{profile.about.industries}</dd></div>}
+            {profile.about.interests && <div className="grid grid-cols-[64px_1fr] gap-3"><dt className="text-peach">兴趣爱好</dt><dd>{profile.about.interests}</dd></div>}
+          </dl>}
         </div>
 
-        <div className="panel md:col-span-4">
-          <p className="eyebrow">EDUCATION / 01</p>
-          <h3 className="mt-8 text-xl">广东工业大学</h3>
-          <p className="mt-2 text-sm text-paper/55">工业设计工程 硕士<br />2025.09—2028.06</p>
-        </div>
-        <div className="panel md:col-span-4">
-          <p className="eyebrow">EDUCATION / 02</p>
-          <h3 className="mt-8 text-xl">福州大学至诚学院</h3>
-          <p className="mt-2 text-sm text-paper/55">工业设计 本科｜专业排名前5%<br />2021.09—2025.06</p>
-        </div>
+        {profile.education.filter(item => !item.hidden).map((item, index) => <div key={item.id} className="panel md:col-span-4">
+          <p className="eyebrow">EDUCATION / {String(index + 1).padStart(2, "0")}</p>
+          <h3 className="mt-8 text-xl">{item.school}</h3>
+          <p className="mt-2 text-sm leading-6 text-paper/55">{item.degree}<br />{item.time}{item.detail && <><br />{item.detail}</>}</p>
+        </div>)}
 
-        <div className="grid grid-cols-3 gap-3 md:col-span-7">
-          {[["6+", "核心项目"], ["1", "国家级一等奖"], ["3+", "AI方向项目"]].map(([value, label]) => (
-            <div className="panel !p-5" key={label}>
-              <strong className="font-display text-4xl text-peach md:text-6xl">{value}</strong>
-              <p className="mt-5 text-[10px] tracking-[.16em] text-paper/50">{label}</p>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:col-span-8">
+          {profile.metrics.filter(item => !item.hidden).map((item) => (
+            <div className="panel !p-5" key={item.id}>
+              <strong className="font-display text-4xl text-peach md:text-5xl lg:text-6xl">{item.value}</strong>
+              <p className="mt-5 text-[10px] leading-5 tracking-[.12em] text-paper/50">{item.label}</p>
             </div>
           ))}
         </div>
-        <div className="panel md:col-span-5">
+        <div className="panel md:col-span-4">
           <p className="eyebrow">LANGUAGE</p>
-          <p className="mt-7 text-lg">CET-4 / CET-6</p>
-          <p className="mt-2 text-sm text-paper/50">CET-6 Speaking B+</p>
+          <p className="mt-7 text-lg">{profile.language.title}</p>
+          {profile.language.detail && <p className="mt-2 text-sm text-paper/50">{profile.language.detail}</p>}
         </div>
         <div className="panel md:col-span-12">
           <p className="eyebrow">SYSTEM TAGS</p>
           <div className="mt-6 flex flex-wrap gap-2">
-            {tags.map((tag) => (
+            {profile.tags.map((tag) => (
               <span key={tag} className="rounded-full border border-blue/40 bg-blue/10 px-4 py-2 text-xs text-blue transition hover:border-peach hover:text-peach">{tag}</span>
             ))}
           </div>

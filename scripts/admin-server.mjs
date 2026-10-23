@@ -1,13 +1,18 @@
 import { createServer } from "node:http";
-import { createReadStream, createWriteStream, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { closeSync, createReadStream, existsSync, mkdirSync, openSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { basename, extname, join, normalize, relative } from "node:path";
 import { spawn, spawnSync } from "node:child_process";
+import { randomUUID } from "node:crypto";
+import { readProfile, saveProfile } from "./profile-store.mjs";
+import { createPublisher } from "./publish-job.mjs";
 
 const root = process.cwd();
 const publicRoot = join(root, "public");
 const projectsFile = join(root, "data", "projects.json");
+const studiesFile = join(root, "data", "studies.json");
 const port = Number(process.env.ADMIN_PORT || 4188);
 const nodeExe = process.execPath;
+const publisher = createPublisher(root, nodeExe);
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -18,13 +23,15 @@ const mimeTypes = {
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
   ".webp": "image/webp",
+  ".avif": "image/avif",
+  ".gif": "image/gif",
   ".svg": "image/svg+xml",
   ".mp4": "video/mp4",
   ".pdf": "application/pdf",
 };
 
 function json(response, data, status = 200) {
-  response.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });
+  response.writeHead(status, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" });
   response.end(JSON.stringify(data, null, 2));
 }
 
@@ -68,15 +75,15 @@ function run(command, args, timeout = 120000) {
 }
 
 function startDetached(command, args, stdoutFile, stderrFile) {
-  const out = createWriteStream(join(root, stdoutFile), { flags: "a" });
-  const err = createWriteStream(join(root, stderrFile), { flags: "a" });
-  const child = spawn(command, args, {
-    cwd: root,
-    detached: true,
-    stdio: ["ignore", out, err],
-    windowsHide: true,
-  });
-  child.unref();
+  const out = openSync(join(root, stdoutFile), "a");
+  const err = openSync(join(root, stderrFile), "a");
+  try {
+    const child = spawn(command, args, {
+      cwd: root, detached: true, stdio: ["ignore", out, err], windowsHide: true,
+    });
+    child.on("error", (error) => writeFileSync(join(root, stderrFile), `${error.message}\n`, { flag: "a" }));
+    child.unref();
+  } finally { closeSync(out); closeSync(err); }
 }
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -100,19 +107,17 @@ function openUrl(url) {
   }).unref();
 }
 
-function openPortfolioServer() {
+async function openPortfolioServer() {
+  const existing = portfolioUrl();
+  if (/^http:\/\/127\.0\.0\.1:(417[3-9]|418[0-3])\//.test(existing)) {
+    try {
+      const response = await fetch(existing, { signal: AbortSignal.timeout(1500) });
+      if (response.ok) return;
+    } catch { /* A saved address may refer to a stopped preview. */ }
+  }
   const urlPath = join(root, "portfolio-local-url.txt");
   if (existsSync(urlPath)) rmSync(urlPath, { force: true });
-
-  const out = createWriteStream(join(root, "portfolio-local.log"), { flags: "a" });
-  const err = createWriteStream(join(root, "portfolio-local-error.log"), { flags: "a" });
-  const child = spawn(nodeExe, ["scripts/preview-static.mjs"], {
-    cwd: root,
-    detached: true,
-    stdio: ["ignore", out, err],
-    windowsHide: true,
-  });
-  child.unref();
+  startDetached(nodeExe, ["scripts/preview-static.mjs"], "portfolio-local.log", "portfolio-local-error.log");
 }
 
 function listAssets(folder = "") {
@@ -141,7 +146,13 @@ function portfolioUrl() {
 function gitStatus() {
   if (!existsSync(join(root, ".repo", "HEAD"))) return "Local git metadata was not found.";
   const result = run("git", ["--git-dir=.repo", "--work-tree=.", "status", "--short"], 10000);
-  return result.ok ? result.output || "Clean" : result.output || "Unable to read git status.";
+  if (!result.ok) return result.output || "暂时无法读取本地保存状态。";
+  const counts = run("git", ["--git-dir=.repo", "--work-tree=.", "rev-list", "--left-right", "--count", "HEAD...origin/main"], 10000);
+  const [ahead, behind] = counts.ok ? counts.output.split(/\s+/).map(Number) : [null, null];
+  const saved = result.output ? `有尚未保存到提交的修改：\n${result.output}` : "本地内容已保存。";
+  if (ahead > 0) return `${saved}\n还有 ${ahead} 次提交未确认上传到 GitHub。${behind > 0 ? `线上另有 ${behind} 次修改需要同步。` : ""}`;
+  if (behind > 0) return `${saved}\nGitHub 有 ${behind} 次修改尚未同步到本地。`;
+  return `${saved}\n与最近核对的 GitHub 提交一致；网站是否更新请看下方发布状态。`;
 }
 
 function readProjects() {
@@ -152,6 +163,15 @@ function readProjects() {
 function writeProjects(projects) {
   mkdirSync(join(root, "data"), { recursive: true });
   writeFileSync(projectsFile, JSON.stringify(projects, null, 2), "utf8");
+}
+
+function readStudies() {
+  return existsSync(studiesFile) ? JSON.parse(readFileSync(studiesFile, "utf8")) : [];
+}
+
+function writeStudies(items) {
+  mkdirSync(join(root, "data"), { recursive: true });
+  writeFileSync(studiesFile, `${JSON.stringify(items, null, 2)}\n`, "utf8");
 }
 
 function normalizeList(value) {
@@ -217,6 +237,12 @@ const server = createServer(async (request, response) => {
       return;
     }
 
+    if (request.method === "GET" && url.pathname === "/profile-editor.js") {
+      response.writeHead(200, { "Content-Type": "text/javascript; charset=utf-8", "Cache-Control": "no-store" });
+      response.end(readFileSync(join(root, "scripts/profile-editor.js"), "utf8"));
+      return;
+    }
+
     if (
       request.method === "GET" &&
       (url.pathname.startsWith("/images/") || url.pathname.startsWith("/media/") || url.pathname.startsWith("/docs/"))
@@ -234,7 +260,13 @@ const server = createServer(async (request, response) => {
         portfolioUrl: portfolioUrl(),
         gitStatus: gitStatus(),
         lastLog: existsSync(lastLogPath) ? readFileSync(lastLogPath, "utf8").slice(-5000) : "",
+        publish: publisher.snapshot(),
       });
+      return;
+    }
+
+    if (request.method === "GET" && url.pathname === "/api/publish-status") {
+      json(response, publisher.snapshot());
       return;
     }
 
@@ -243,14 +275,45 @@ const server = createServer(async (request, response) => {
       return;
     }
 
+    if (request.method === "GET" && url.pathname === "/api/profile") {
+      json(response, { profile: readProfile(root) });
+      return;
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/profile") {
+      const body = JSON.parse((await readBody(request)).toString("utf8") || "{}");
+      try { json(response, { profile: saveProfile(root, body.profile) }); }
+      catch (error) { json(response, { error: error.message }, 400); }
+      return;
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/profile-upload") {
+      const target = url.searchParams.get("target");
+      if (!["resume", "formal", "practice"].includes(target)) return json(response, { error: "请选择要替换的照片或简历。" }, 400);
+      const fileName = decodeURIComponent(request.headers["x-file-name"] || "");
+      const extension = extname(fileName).toLowerCase();
+      const allowed = target === "resume" ? [".pdf"] : [".png", ".jpg", ".jpeg", ".webp", ".avif"];
+      if (!allowed.includes(extension)) return json(response, { error: target === "resume" ? "请选择 PDF 简历。" : "请选择 PNG、JPG、WebP 或 AVIF 照片。" }, 400);
+      if (Number(request.headers["content-length"] || 0) > 25 * 1024 * 1024) return json(response, { error: "文件请控制在 25 MB 以内。" }, 413);
+      const buffer = await readBody(request);
+      if (!buffer.length || buffer.length > 25 * 1024 * 1024) return json(response, { error: "文件为空或超过 25 MB。" }, 400);
+      if (target === "resume" && buffer.subarray(0, 5).toString() !== "%PDF-") return json(response, { error: "文件内容不是有效的 PDF。" }, 400);
+      const folder = target === "resume" ? "docs" : "images/cover";
+      const publicPath = `/${folder}/${target}-${randomUUID().slice(0, 8)}${extension}`;
+      mkdirSync(safePublicPath(folder), { recursive: true });
+      writeFileSync(safePublicPath(publicPath), buffer);
+      const profile = saveProfile(root, target === "resume" ? { resume: { src: publicPath } } : { portraits: { [target]: publicPath } });
+      json(response, { profile });
+      return;
+    }
+
     if (request.method === "POST" && url.pathname === "/api/project") {
       const body = JSON.parse((await readBody(request)).toString("utf8") || "{}");
-      const incoming = normalizeProject(body.project || {});
-      if (!incoming.slug) return json(response, { error: "项目 slug 不能为空。" }, 400);
-
       const projects = readProjects();
-      const index = projects.findIndex((project) => project.slug === incoming.slug);
+      const index = projects.findIndex((project) => project.slug === body.project?.slug);
       if (index < 0) return json(response, { error: "没有找到这个项目。" }, 404);
+      const incoming = normalizeProject({ ...projects[index], ...body.project });
+      if (!incoming.title.trim()) return json(response, { error: "请填写项目名称。" }, 400);
 
       projects[index] = incoming;
       writeProjects(projects);
@@ -260,7 +323,7 @@ const server = createServer(async (request, response) => {
 
     if (request.method === "POST" && url.pathname === "/api/project/new") {
       const body = JSON.parse((await readBody(request)).toString("utf8") || "{}");
-      const slug = String(body.slug || "")
+      const slug = String(body.slug || `project-${randomUUID().slice(0, 8)}`)
         .trim()
         .toLowerCase()
         .replace(/[^a-z0-9-]/g, "-")
@@ -278,7 +341,7 @@ const server = createServer(async (request, response) => {
         index: String(projects.length + 1).padStart(2, "0"),
         title: body.title || "新项目",
         english: body.english || "",
-        summary: "一句话说明这个项目。",
+        summary: "",
         role: "",
         time: "",
         tags: [],
@@ -320,15 +383,22 @@ const server = createServer(async (request, response) => {
     if (request.method === "POST" && url.pathname === "/api/project-upload") {
       const slug = String(url.searchParams.get("slug") || "");
       const target = String(url.searchParams.get("target") || "gallery");
+      if (Number(request.headers["content-length"] || 0) > 95 * 1024 * 1024) {
+        return json(response, {error:"文件过大，GitHub 无法发布。请先将视频或 PDF 压缩到 95 MiB 以下再上传。原文件可以保留在本机。"}, 413);
+      }
       const projects = readProjects();
       const project = projects.find((item) => item.slug === slug);
       if (!project) return json(response, { error: "没有找到这个项目。" }, 404);
+      const galleryIndex = url.searchParams.has("index") ? Number(url.searchParams.get("index")) : null;
+      if (galleryIndex !== null && (target !== "gallery" || !Number.isInteger(galleryIndex) || !project.gallery?.[galleryIndex])) {
+        return json(response, { error: "没有找到要替换的展示图。" }, 400);
+      }
 
       const folder = publicFolderForUpload(slug, target);
       const targetFolder = safePublicPath(folder);
       mkdirSync(targetFolder, { recursive: true });
       const originalName = decodeURIComponent(request.headers["x-file-name"] || "asset.bin");
-      const fileName = slugifyFileName(originalName);
+      const fileName = `${randomUUID().slice(0, 8)}-${slugifyFileName(originalName)}`;
       const targetPath = join(targetFolder, fileName);
       writeFileSync(targetPath, await readBody(request));
       const publicPath = `/${relative(publicRoot, targetPath).replace(/\\/g, "/")}`;
@@ -337,7 +407,13 @@ const server = createServer(async (request, response) => {
         project.cover = publicPath;
       } else if (target === "gallery") {
         project.gallery = Array.isArray(project.gallery) ? project.gallery : [];
-        project.gallery.push({ src: publicPath, title: "", description: "", format: "landscape" });
+        if (galleryIndex !== null) {
+          const previous = project.gallery[galleryIndex];
+          project.gallery[galleryIndex] = { ...(typeof previous === "string" ? {} : previous), src: publicPath };
+        } else {
+          const format = ["portrait", "square", "landscape"].includes(url.searchParams.get("format")) ? url.searchParams.get("format") : "landscape";
+          project.gallery.push({ src: publicPath, title: "", description: "", format });
+        }
       } else if (target === "video") {
         project.videos = Array.isArray(project.videos) ? project.videos : [];
         project.videos.push({ src: publicPath, title: "项目视频", description: "" });
@@ -347,6 +423,57 @@ const server = createServer(async (request, response) => {
 
       writeProjects(projects);
       json(response, { path: publicPath, project, projects });
+      return;
+    }
+
+    if (request.method === "GET" && url.pathname === "/api/studies") {
+      json(response, { items: readStudies() });
+      return;
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/studies") {
+      const body = JSON.parse((await readBody(request)).toString("utf8") || "{}");
+      if (!Array.isArray(body.items)) return json(response, { error: "作品列表格式不正确。" }, 400);
+      const previous = readStudies();
+      // Only edit known entries. Uploads create their own paths and identifiers.
+      if (body.items.length !== previous.length || new Set(body.items.map((item) => item.id)).size !== previous.length) {
+        return json(response, { error: "作品列表已更新，请刷新后重试。" }, 409);
+      }
+      const items = body.items.map((item) => {
+        const stored = previous.find((entry) => entry.id === item.id);
+        if (!stored) throw new Error("没有找到这张作品，请刷新后重试。");
+        return { ...stored, title: String(item.title || "未命名作品").trim(), category: String(item.category || "日常练习").trim(), hidden: Boolean(item.hidden) };
+      });
+      writeStudies(items);
+      json(response, { items });
+      return;
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/study-upload") {
+      const items = readStudies();
+      const id = url.searchParams.get("id");
+      const item = id ? items.find((entry) => entry.id === id) : null;
+      if (id && !item) return json(response, { error: "没有找到这张作品。" }, 404);
+      const originalName = decodeURIComponent(request.headers["x-file-name"] || "image.png");
+      if (![".png", ".jpg", ".jpeg", ".webp", ".avif", ".gif"].includes(extname(originalName).toLowerCase())) {
+        return json(response, { error: "请选择 PNG、JPG、WebP、AVIF 或 GIF 图片。" }, 400);
+      }
+      if (Number(request.headers["content-length"] || 0) > 25 * 1024 * 1024) return json(response, { error: "单张图片请控制在 25 MB 以内。" }, 413);
+      const buffer = await readBody(request);
+      if (!buffer.length || buffer.length > 25 * 1024 * 1024) return json(response, { error: "图片为空或超过 25 MB。" }, 400);
+      const folder = safePublicPath("images/studies");
+      mkdirSync(folder, { recursive: true });
+      const fileName = `${randomUUID().slice(0, 8)}-${slugifyFileName(originalName)}`;
+      writeFileSync(join(folder, fileName), buffer);
+      const src = `/images/studies/${fileName}`;
+      if (item) {
+        item.src = src;
+        item.thumbnail = src;
+      } else {
+        items.push({ id: randomUUID(), title: basename(originalName, extname(originalName)), category: "日常练习", src, thumbnail: src, hidden: false });
+      }
+      writeStudies(items);
+      json(response, { items });
       return;
     }
 
@@ -372,8 +499,14 @@ const server = createServer(async (request, response) => {
       const action = body.action;
       let result = { ok: true, output: "" };
 
+      if (action === "publish") {
+        json(response, {ok:true, publish:publisher.start()}, 202);
+        return;
+      }
+      if (action === "build" && publisher.snapshot().running) return json(response, {error:"正在发布，请等待本次完成后再重新生成。"}, 409);
+
       if (action === "preview") {
-        openPortfolioServer();
+        await openPortfolioServer();
         const portfolio = await waitForPortfolioUrl();
         if (!portfolio) {
           result = { ok: false, output: "作品集本地服务器没有启动成功，请查看 portfolio-local-error.log。" };
@@ -385,8 +518,6 @@ const server = createServer(async (request, response) => {
         result = run("powershell", ["-NoProfile", "-Command", "$connections = Get-NetTCPConnection -LocalPort (4173..4183) -State Listen -ErrorAction SilentlyContinue; if ($connections) { $connections | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }; 'Portfolio server stopped.' } else { 'Portfolio server is not running.' }; if (Test-Path 'portfolio-local-url.txt') { Remove-Item 'portfolio-local-url.txt' -Force }"], 20000);
       } else if (action === "build") {
         result = run(nodeExe, ["node_modules/next/dist/bin/next", "build"], 180000);
-      } else if (action === "publish") {
-        result = run(nodeExe, ["scripts/publish-github.mjs"], 180000);
       } else if (action === "open-admin") {
         openUrl(`http://127.0.0.1:${port}/`);
         result.output = "后台已重新打开。";

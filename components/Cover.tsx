@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { assetPath } from "@/lib/assets";
+import { profile } from "@/lib/profile";
 import Image from "next/image";
 import { useRef, useState } from "react";
 
@@ -74,9 +75,7 @@ export function Cover() {
       <div className="absolute inset-x-5 top-24 flex items-start justify-between text-peach md:inset-x-12">
         <p className="font-display text-5xl tracking-[-.07em] md:text-8xl">2026</p>
         <p className="max-w-sm text-right text-xs leading-6 tracking-[.12em] md:text-base">
-          AI产品体验设计
-          <br />
-          交互设计｜智能产品设计
+          {profile.directions.join(" / ")}
         </p>
       </div>
 
@@ -111,8 +110,8 @@ export function Cover() {
 
       <div className="absolute inset-x-5 bottom-7 flex items-end justify-between text-peach md:inset-x-12">
         <div>
-          <p className="text-2xl font-semibold md:text-4xl">刘昌盛</p>
-          <p className="mt-2 text-[10px] tracking-[.18em] opacity-80">AI PRODUCT EXPERIENCE DESIGNER</p>
+          <p className="text-2xl font-semibold md:text-4xl">{profile.name}</p>
+          <p className="mt-2 text-[10px] uppercase tracking-[.18em] opacity-80">{profile.headline}</p>
         </div>
         <a href="#about" className="animate-pulse text-xs tracking-[.2em]">
           SCROLL TO EXPLORE ↓

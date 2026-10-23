@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 const items = [
   ["ABOUT", "#about"],
   ["WORK", "#work"],
+  ["VISUAL NOTES", "#visual-notes"],
   ["SKILLS", "#skills"],
   ["CONTACT", "#contact"],
 ];
@@ -26,7 +27,7 @@ export function Nav({ project = false }: { project?: boolean }) {
         {open ? "CLOSE" : "MENU"}
       </button>
       <nav className={`${open ? "flex" : "hidden"} absolute inset-x-4 top-16 flex-col gap-5 rounded-2xl bg-black/90 p-6 text-xs tracking-[.2em] text-white backdrop-blur-xl md:static md:flex md:flex-row md:bg-transparent md:p-0`}>
-        {project ? <Link href="/">INDEX</Link> : items.map(([label, href]) => <a key={label} href={href}>{label}</a>)}
+        {project ? <Link href="/">INDEX</Link> : items.map(([label, href]) => <a key={label} href={href} onClick={() => setOpen(false)}>{label}</a>)}
       </nav>
     </header>
   );

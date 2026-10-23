@@ -40,9 +40,9 @@ export function ProjectArchive() {
             <div className="absolute inset-0 flex flex-col justify-between p-7 md:p-12">
               <div className="flex items-start justify-between"><span className="font-display text-7xl text-paper/15 md:text-9xl">{project.index}</span><span className="text-xs tracking-[.18em] text-peach">{project.time}</span></div>
               <div className="max-w-3xl">
-                <p className="text-xs tracking-[.18em] text-peach">{project.english}</p>
                 <h3 className="mt-3 text-3xl font-semibold md:text-6xl">{project.title}</h3>
-                <p className="mt-4 max-w-xl text-sm leading-7 text-paper/65">{project.summary}</p>
+                {project.role && <p className="mt-4 line-clamp-2 text-xs leading-6 text-peach">{project.role}</p>}
+                <p className="mt-3 line-clamp-2 max-w-xl text-sm leading-7 text-paper/65">{project.summary || project.overview}</p>
                 <div className="mt-6 flex flex-wrap gap-2">{project.tags.map((tag) => <span key={tag} className="rounded-full border border-paper/20 px-3 py-1 text-[10px] tracking-wider">{tag}</span>)}</div>
                 <Link href={`/projects/${project.slug}/`} className="mt-8 inline-flex items-center gap-4 rounded-full bg-peach px-6 py-3 text-xs font-bold tracking-[.16em] text-ink transition hover:shadow-[0_0_30px_rgba(255,184,148,.45)]">VIEW CASE <span>↗</span></Link>
               </div>

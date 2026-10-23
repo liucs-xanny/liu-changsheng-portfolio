@@ -42,42 +42,31 @@ function LechangMap({ project }: { project: Project }) {
 export function ProjectCase({ project, next }: { project: Project; next: Project }) {
   return (
     <main className="bg-ink text-paper">
-      <section className="relative min-h-screen overflow-hidden">
-        <Image src={assetPath(project.cover)} alt={project.title} fill priority className={`object-cover opacity-45 ${project.slug === "medical-robot" ? "object-top" : ""}`} />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/25 to-black/30" />
-        <div className="relative flex min-h-screen flex-col justify-end px-5 pb-14 pt-32 md:px-10 lg:px-16">
-          <div className="mb-10 flex justify-between border-b border-paper/20 pb-5 text-xs tracking-[.16em] text-peach"><span>{project.index} / CASE STUDY</span><span>{project.time}</span></div>
-          <p className="text-xs tracking-[.18em] text-peach">{project.english}</p>
-          <h1 className="mt-4 max-w-6xl text-5xl font-semibold leading-tight md:text-8xl">{project.title}</h1>
-          <p className="mt-7 max-w-3xl text-lg text-paper/65 md:text-2xl">{project.summary}</p>
-          <div className="mt-10 flex flex-wrap gap-2">{project.tags.map((tag) => <span key={tag} className="rounded-full border border-paper/25 px-4 py-2 text-xs">{tag}</span>)}</div>
+      <section className="px-5 pb-12 pt-32 md:px-10 md:pt-40 lg:px-16">
+        <div className="mb-8 flex items-center justify-between border-b border-paper/15 pb-5">
+          <p className="eyebrow">{project.index} / SELECTED PROJECT</p>
+          <a href="#project-materials" className="text-xs text-paper/55 transition hover:text-peach">直接看作品 ↓</a>
+        </div>
+        <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:items-start lg:gap-16">
+          <div>
+            <h1 className="max-w-4xl text-4xl font-semibold leading-tight tracking-[-.04em] md:text-6xl xl:text-7xl">{project.title}</h1>
+            <dl className="mt-8 grid gap-5 border-y border-paper/15 py-6 sm:grid-cols-[.65fr_1fr]">
+              <div><dt className="text-xs text-paper/40">起止时间</dt><dd className="mt-2 text-sm text-paper/85">{project.time || "—"}</dd></div>
+              <div><dt className="text-xs text-paper/40">担任职位 / 负责内容</dt><dd className="mt-2 text-sm leading-6 text-peach">{project.role || "—"}</dd></div>
+            </dl>
+            <div className="mt-6 flex flex-wrap gap-2">{project.tags.map((tag) => <span key={tag} className="rounded-full border border-paper/20 px-3 py-1.5 text-[11px] text-paper/65">{tag}</span>)}</div>
+            {(project.overview || project.summary) && <div className="mt-8"><h2 className="text-xs tracking-wider text-paper/40">项目介绍</h2><p className="mt-3 max-w-2xl whitespace-pre-line text-base leading-8 text-paper/80">{project.overview || project.summary}</p></div>}
+          </div>
+          {project.cover && <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-paper/10 bg-white/[.035]"><Image src={assetPath(project.cover)} alt={`${project.title} 封面`} fill priority sizes="(max-width: 1024px) 100vw, 45vw" className="object-contain p-3" /></div>}
         </div>
       </section>
-      <section className="px-5 py-24 md:px-10 lg:px-16">
-        <div className="grid gap-12 border-b border-paper/15 pb-20 md:grid-cols-[.45fr_1fr]"><p className="eyebrow">01 / OVERVIEW</p><div><p className="text-2xl leading-relaxed md:text-5xl">{project.overview}</p><p className="mt-8 text-sm text-paper/50">{project.role}</p></div></div>
-        <CaseSection number="02" title="PROBLEM"><p className="case-lead">{project.problem}</p></CaseSection>
-        <CaseSection number="03" title="MY ROLE"><p className="case-lead">{project.role}</p></CaseSection>
-        <CaseSection number="04" title="RESEARCH"><List items={project.research} /></CaseSection>
-        <CaseSection number="05" title="STRATEGY"><List items={project.strategy} /></CaseSection>
-        <CaseSection number="06" title="WORKFLOW"><div className="grid gap-3 md:grid-cols-3">{project.workflow.map((item, index) => <div key={item} className="panel"><span className="text-xs text-peach">0{index + 1}</span><p className="mt-10 text-xl">{item}</p></div>)}</div></CaseSection>
-        <CaseSection number="07" title="DESIGN OUTPUT">
-          {project.slug === "nuclear-ai" && <div className="mb-12"><NuclearCompare project={project} /></div>}
-          {project.slug === "lechang" && <div className="mb-12"><LechangMap project={project} /></div>}
-          <MediaGallery project={project} />
-          <div className="mt-8 grid gap-3 md:grid-cols-3">{project.outputs.map((item) => <div key={item} className="rounded-2xl bg-blue/10 p-6 text-sm leading-7 text-paper/70">{item}</div>)}</div>
-        </CaseSection>
-        <CaseSection number="08" title="RESULT"><p className="case-lead text-peach">{project.result}</p></CaseSection>
-        <CaseSection number="09" title="REFLECTION"><p className="case-lead">{project.reflection}</p></CaseSection>
+      <section id="project-materials" className="scroll-mt-24 px-5 pb-20 md:px-10 lg:px-16">
+        <div className="mb-8 flex items-end justify-between border-t border-paper/15 pt-8"><h2 className="text-2xl md:text-4xl">项目作品</h2><p className="text-xs text-paper/40">图片可点击放大、旋转</p></div>
+        <MediaGallery project={project} />
+        {project.slug === "nuclear-ai" && project.gallery.length >= 3 && <details className="mt-10 rounded-2xl border border-paper/15 p-5 md:p-8"><summary className="cursor-pointer text-sm text-peach">交互演示 · 识别前后对比</summary><div className="mt-6 max-w-4xl"><NuclearCompare project={project} /></div></details>}
+        {project.slug === "lechang" && <details className="mt-10 rounded-2xl border border-paper/15 p-5 md:p-8"><summary className="cursor-pointer text-sm text-peach">探索乐昌 · 品牌灵感地图</summary><div className="mt-6"><LechangMap project={project} /></div></details>}
       </section>
-      <Link href={`/projects/${next.slug}/`} className="group block bg-blue px-5 py-24 md:px-10 lg:px-16"><p className="text-xs tracking-[.2em] text-paper/50">NEXT CASE / {next.index}</p><div className="mt-8 flex items-end justify-between"><h2 className="max-w-5xl text-5xl font-semibold transition group-hover:translate-x-4 md:text-8xl">{next.title}</h2><span className="text-5xl">↗</span></div></Link>
+      <Link href={`/projects/${next.slug}/`} className="group block bg-blue px-5 py-16 md:px-10 lg:px-16"><p className="text-xs tracking-[.2em] text-paper/50">NEXT PROJECT / {next.index}</p><div className="mt-6 flex items-end justify-between gap-5"><h2 className="max-w-5xl text-3xl font-semibold transition group-hover:translate-x-2 md:text-6xl">{next.title}</h2><span className="text-4xl">↗</span></div></Link>
     </main>
   );
-}
-
-function CaseSection({ number, title, children }: { number: string; title: string; children: React.ReactNode }) {
-  return <section className="grid gap-8 border-b border-paper/15 py-20 md:grid-cols-[.25fr_1fr]"><div><p className="eyebrow">{number} / {title}</p></div><div>{children}</div></section>;
-}
-
-function List({ items }: { items: string[] }) {
-  return <div>{items.map((item, index) => <div key={item} className="grid grid-cols-[40px_1fr] border-t border-paper/15 py-6"><span className="text-xs text-peach">0{index + 1}</span><p className="text-lg leading-relaxed text-paper/75">{item}</p></div>)}</div>;
 }

@@ -2,9 +2,12 @@
 node_modules/
 .next/
 out/
+output/previews/
 tmp/
 .video-tools/
+local-media-originals/
 .pnpm-store/
+*.tsbuildinfo
 
 # Local Codex and editor data
 .agents/
@@ -14,6 +17,7 @@ tmp/
 # Local preview files
 portfolio-local*
 portfolio-admin*
+portfolio-publish*
 *.cmd
 scripts/start-portfolio.vbs
 
@@ -26,6 +30,7 @@ scripts/start-portfolio.vbs
 医疗手术机器人/
 智清镜品牌价目册+包装设计/
 yolo识别项目截图展示/
+一些普通的杂碎小作品的图片/
 
 # Original documents and source media
 *.psd

@@ -25,6 +25,17 @@ a, button { -webkit-tap-highlight-color: transparent; }
   .viewer-control { @apply rounded-full border border-paper/20 bg-black/60 px-3 py-2 text-[10px] tracking-wider text-paper transition hover:border-peach hover:text-peach md:px-4; }
 }
 
+.visual-notes { background: radial-gradient(ellipse at 50% 45%, rgba(53,111,232,.11), transparent 65%), #11100e; }
+.study-stage { position: relative; height: clamp(290px, 43vw, 610px); touch-action: pan-y; }
+.study-slide { position: absolute; top: 0; bottom: 20px; left: 50%; width: 68%; overflow: hidden; border: 1px solid rgba(244,232,220,.16); border-radius: 20px; background: #1c1b19; box-shadow: 0 24px 70px rgba(0,0,0,.35); cursor: zoom-in; }
+.study-control { display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid rgba(244,232,220,.2); border-radius: 999px; font-size: 20px; transition: border-color .2s, color .2s; }
+.study-control:hover { border-color: var(--peach); color: var(--peach); }
+.study-strip { scrollbar-width: thin; scrollbar-color: rgba(244,232,220,.18) transparent; }
+.study-viewer { position: fixed; inset: 0; margin: auto; padding: 0; width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; border: none; color: var(--paper); background: rgba(13,12,11,.98); }
+.study-viewer::backdrop { background: #080807; }
+.study-viewer-canvas { height: calc(100dvh - 170px); overflow: auto; display: grid; align-items: center; padding: 12px 0; }
+@media (max-width: 767px) { .study-slide { width: 86%; border-radius: 14px; } .study-stage { height: clamp(290px, 65vw, 430px); } .study-viewer-canvas { height: calc(100dvh - 210px); } }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }

@@ -1,0 +1,187 @@
+{
+  "name": "刘昌盛",
+  "englishName": "Liu Changsheng",
+  "headline": "AI Product Designer",
+  "location": "广州",
+  "phone": "18900691231",
+  "email": "858572182@qq.com",
+  "directions": [
+    "AI产品",
+    "交互设计",
+    "体验设计",
+    "产品经理"
+  ],
+  "portraits": {
+    "formal": "/images/cover/formal-79458541.png",
+    "practice": "/images/cover/portrait-reading.webp"
+  },
+  "about": {
+    "heading": "广东工业大学工业设计工程硕士研究生，研究方向为人工智能与设计创新。",
+    "introduction": "具备系统思维与多元设计技能，能够跨越产品、交互、服务与视觉设计，协同推进从需求分析、产品规划到原型与落地的完整过程。善于合作，可牵头推进项目，注重跨领域整合与创新。",
+    "industries": "产品 / 交互 / 服务 / 体验设计 / 数字广告 / 企业策划",
+    "interests": "水墨画、保龄球、二次元动漫与游戏"
+  },
+  "education": [
+    {
+      "id": "gdut",
+      "school": "广东工业大学",
+      "degree": "工业设计工程 硕士",
+      "time": "预计2028年毕业",
+      "detail": "人工智能与设计创新",
+      "hidden": false
+    },
+    {
+      "id": "fzu",
+      "school": "福州大学至诚学院",
+      "degree": "工业设计 本科",
+      "time": "2021.09—2025.06",
+      "detail": "专业排名前5%",
+      "hidden": false
+    }
+  ],
+  "language": {
+    "title": "CET-4 / CET-6",
+    "detail": ""
+  },
+  "metrics": [
+    {
+      "id": "research-count",
+      "value": "4+",
+      "label": "软著 & 专利",
+      "hidden": false
+    },
+    {
+      "id": "national-award",
+      "value": "1",
+      "label": "国家级一等奖",
+      "hidden": false
+    },
+    {
+      "id": "ai-projects",
+      "value": "5+",
+      "label": "AI项目",
+      "hidden": false
+    },
+    {
+      "id": "ssci-paper",
+      "value": "1",
+      "label": "SSCI论文",
+      "hidden": false
+    }
+  ],
+  "tags": [
+    "AI辅助编程",
+    "Agent工作流",
+    "AIGC",
+    "交互原型",
+    "快速迭代",
+    "产品规划",
+    "UX Research",
+    "Service Design",
+    "Figma",
+    "Rhino / Creo",
+    "Blender"
+  ],
+  "experiences": [
+    {
+      "id": "china-creative",
+      "type": "award",
+      "time": "2026",
+      "title": "全国总决赛一等奖",
+      "detail": "中国好创意暨全国数字艺术设计大赛 · 数字人赛道",
+      "hidden": false
+    },
+    {
+      "id": "internet-plus",
+      "type": "award",
+      "time": "",
+      "title": "省赛银奖",
+      "detail": "互联网+大学生创新创业大赛",
+      "hidden": false
+    },
+    {
+      "id": "scholarships",
+      "type": "award",
+      "time": "在校期间",
+      "title": "多次获得奖学金",
+      "detail": "本科校级一等奖学金、二等奖学金；研究生一等奖学金。",
+      "hidden": false
+    },
+    {
+      "id": "ncda",
+      "type": "award",
+      "time": "",
+      "title": "省赛二等奖",
+      "detail": "NCDA未来设计师 · 乡村设计、UI设计",
+      "hidden": false
+    },
+    {
+      "id": "rebuild-z",
+      "type": "award",
+      "time": "2026",
+      "title": "全场三等奖 / 最佳视觉表达奖",
+      "detail": "Rebuild-Z 2026具身智能黑客松 · Hammy 双栖桌面AI宠物",
+      "hidden": false
+    },
+    {
+      "id": "virtual-human-paper",
+      "type": "research",
+      "time": "",
+      "title": "AI虚拟人交互与用户行为研究",
+      "detail": "SSCI Q1论文 · Frontiers in Psychology",
+      "hidden": false
+    },
+    {
+      "id": "yueban-copyright",
+      "type": "research",
+      "time": "",
+      "title": "悦伴APP计算机软件著作权",
+      "detail": "已获得软件著作权。",
+      "hidden": false
+    },
+    {
+      "id": "yolo-copyright",
+      "type": "research",
+      "time": "审核中",
+      "title": "YOLO菌落识别Web系统",
+      "detail": "软件著作权已提交审核。",
+      "hidden": false
+    },
+    {
+      "id": "nuclear-patent",
+      "type": "research",
+      "time": "筹备中",
+      "title": "核电站金属构件损伤AI识别方法",
+      "detail": "拟申请发明专利。",
+      "hidden": false
+    },
+    {
+      "id": "student-publicity",
+      "type": "campus",
+      "time": "2021.09—2023.12",
+      "title": "传媒与设计系学生会宣传部负责人",
+      "detail": "统筹校园活动宣传与视觉设计，产出30余张海报及赛事物料，组织设计技能培训。",
+      "hidden": false
+    },
+    {
+      "id": "student-events",
+      "type": "campus",
+      "time": "2021.09—2023.06",
+      "title": "院三创中心赛事服务部首任副部长",
+      "detail": "参与“互联网+”大赛落地执行，统筹场地、设备及宣传物料，独立完成部门视觉设计。",
+      "hidden": false
+    },
+    {
+      "id": "graduate-publicity",
+      "type": "campus",
+      "time": "2024.09—2025.09",
+      "title": "学院研究生会宣传部干事",
+      "detail": "负责公众号内容运营、活动海报视觉设计，统筹推文排版与宣传物料输出，保障学院宣传工作落地。",
+      "hidden": false
+    }
+  ],
+  "resume": {
+    "src": "/docs/resume-current.pdf",
+    "label": "下载最新简历"
+  }
+}

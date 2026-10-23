@@ -22,7 +22,7 @@ export function SkillsMap() {
   const related = projects.filter((project) => skills[active][1].includes(project.slug as never));
   return (
     <section id="skills" className="relative z-10 min-h-screen overflow-hidden bg-blue px-5 py-28 text-paper md:px-10 lg:px-16">
-      <div className="mb-16"><p className="text-xs tracking-[.22em] text-paper/55">04 / SKILLS MAP</p><h2 className="section-title mt-5">DESIGN × AI<br />× PRODUCT</h2></div>
+      <div className="mb-16"><p className="text-xs tracking-[.22em] text-paper/55">05 / SKILLS MAP</p><h2 className="section-title mt-5">DESIGN × AI<br />× PRODUCT</h2></div>
       <div className="grid gap-12 lg:grid-cols-[1.4fr_.6fr]">
         <div className="relative grid min-h-[520px] place-items-center rounded-[2rem] border border-paper/20 bg-ink/10 p-8">
           <div className="absolute h-56 w-56 rounded-full border border-paper/20" />

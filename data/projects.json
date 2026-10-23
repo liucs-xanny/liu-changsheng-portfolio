@@ -203,6 +203,330 @@
   },
   {
     "hidden": false,
+    "slug": "project-9e3827ff",
+    "index": "09",
+    "title": "Hammy 双栖桌面AI宠物",
+    "english": "",
+    "summary": "围绕AI Agent与具身智能趋势，设计桌面情绪陪伴型AI硬件产品。负责产品定义、外观与结构设计，获全场三等奖／最佳视觉表达奖。",
+    "role": "项目负责人",
+    "time": "2026.08—2026.09",
+    "tags": [
+      "AI Agent",
+      "UX Research",
+      "UI Design",
+      "Knowledge Base",
+      "硬件设计",
+      "产品设计",
+      "结构设计"
+    ],
+    "cover": "/images/projects/project-9e3827ff/selected/f8eca687-1.jpg",
+    "accent": "#356FE8",
+    "overview": "围绕AI Agent与具身智能趋势，设计桌面情绪陪伴型AI硬件产品。负责产品定义、外观与结构设计，获全场三等奖／最佳视觉表达奖。",
+    "problem": "",
+    "research": [],
+    "strategy": [],
+    "workflow": [],
+    "outputs": [],
+    "result": "",
+    "reflection": "",
+    "gallery": [
+      {
+        "src": "/images/projects/project-9e3827ff/selected/0549cffd-8.jpg",
+        "title": "",
+        "description": "",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/project-9e3827ff/selected/2a6c7d8b-9.jpg",
+        "title": "",
+        "description": "",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/project-9e3827ff/selected/bf94679f-9.jpg",
+        "title": "",
+        "description": "",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/project-9e3827ff/selected/9aedd7e7-10.jpg",
+        "title": "",
+        "description": "",
+        "format": "landscape"
+      }
+    ],
+    "videos": []
+  },
+  {
+    "hidden": false,
+    "slug": "yueban",
+    "index": "05",
+    "title": "孕悦伴（服务系统设计）",
+    "english": "Yueban",
+    "summary": "本项目「孕悦陪伴」与卓月月子中心合作，依托时光胶囊、时光磁记板、伴悦云朵灯三大实体触点联动专属 APP，打破传统月子服务仅局限产后短期陪护的局限，搭建覆盖孕、产、育、子女成长全周期",
+    "role": "项目副组长｜服务研究、产品设计与UI设计",
+    "time": "2025.09—2025.12",
+    "tags": [
+      "Service Design",
+      "AI Companion",
+      "Smart Hardware",
+      "UI"
+    ],
+    "cover": "/images/projects/yueban/cover.webp",
+    "accent": "#FFB894",
+    "overview": "本项目「孕悦陪伴」与卓月月子中心合作，依托时光胶囊、时光磁记板、伴悦云朵灯三大实体触点联动专属 APP，打破传统月子服务仅局限产后短期陪护的局限，搭建覆盖孕、产、育、子女成长全周期的数字化陪伴体系，以数据化情感记录实现跨代温情传承，重构月子中心与家庭长期情感联结，将月子机构从阶段性护理服务商升级为陪伴家庭成长的终身情感与健康伙伴。",
+    "problem": "产后情绪波动、身份转变、家庭参与不足与成长记忆流失，无法由短期护理单独解决。",
+    "research": [
+      "梳理孕期、入住、护理与离院后的全周期旅程\n绘制利益相关者地图与服务蓝图\n分析用户、家属、护理人员和运营人员的协作关系"
+    ],
+    "strategy": [
+      "让母婴服务从短期护理转向长期陪伴\n以AI情绪陪伴和语音记录降低表达压力\n用家庭共创增强连接和成长记忆"
+    ],
+    "workflow": [
+      "辅助胎教→临床入住建档→磁吸板记录细节→胶囊促进家庭互动→离院交接→为宝宝每个成长节点设计成长档案"
+    ],
+    "outputs": [
+      "悦伴APP+伴悦云灯智能硬件+时光胶囊+时光磁吸板"
+    ],
+    "result": "项目成果“悦伴APP”已获得计算机软件著作权。",
+    "reflection": "情感型AI必须与真实服务人员、家庭关系和线下触点共同工作。",
+    "gallery": [
+      {
+        "src": "/images/projects/yueban/selected/service-framework.webp",
+        "title": "服务设计思维框架",
+        "description": "本服务设计项目以斯坦福设计思维共情 - 定义 - 构思 - 原型 - 测试五阶流程为基底，融合多元调研、分析、创意与迭代验证科学方法，构建出一套完整闭环的多维服务设计方法论。",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/yueban/selected/user-journey.webp",
+        "title": "用户旅程图",
+        "description": "梳理用户阶段、触点、情绪与我们设计产品的使用节点/周期。",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/yueban/selected/ecosystem-map.png",
+        "title": "生态系统图",
+        "description": "",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/yueban/selected/final-service-design-solution.png",
+        "title": "服务设计方案",
+        "description": "",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/yueban/selected/7caf4dcb-23.png",
+        "title": "",
+        "description": "",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/yueban/selected/9c35ae77-22.png",
+        "title": "",
+        "description": "",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/yueban/selected/2774e191-21.png",
+        "title": "",
+        "description": "",
+        "format": "landscape"
+      }
+    ],
+    "videos": [
+      {
+        "src": "/media/yueban-flow.mp4",
+        "title": "用MC游戏模拟还原服务流程",
+        "description": "展示数字平台、智能硬件与线下护理触点之间的协作方式。"
+      }
+    ],
+    "video": "/media/yueban-flow.mp4",
+    "document": {
+      "src": "/docs/projects/79ff1536-asset-20261023105237.pdf",
+      "label": "查看完整项目 PDF"
+    }
+  },
+  {
+    "hidden": false,
+    "slug": "project-340e2861",
+    "index": "10",
+    "title": "GlySnap（糖尿病饮食智能管理 APP）",
+    "english": "",
+    "summary": "GlySnap 是一款面向糖尿病患者的 AI 饮食与血糖管理 APP 概念产品，以计算机视觉和 AI 技术为基础，探索通过拍照识别食物、分析升糖指数（GI）、预测餐后血糖变化，帮助",
+    "role": "小组组长",
+    "time": "2025.10—2025.11",
+    "tags": [
+      "AI Agent",
+      "UX Research",
+      "UI Design",
+      "Knowledge Base"
+    ],
+    "cover": "/images/projects/project-340e2861/selected/97eaea76-0.png",
+    "accent": "#356FE8",
+    "overview": "GlySnap 是一款面向糖尿病患者的 AI 饮食与血糖管理 APP 概念产品，以计算机视觉和 AI 技术为基础，探索通过拍照识别食物、分析升糖指数（GI）、预测餐后血糖变化，帮助用户实现更便捷的饮食与健康管理。\n\n作为项目组长，负责整体项目统筹、AI 技术方案调研与 APP UI/UX 原型设计。围绕糖尿病患者的饮食管理痛点，开展行业与竞品分析、用户旅程梳理、产品定位及功能规划，设计智能拍照识别、血糖数据看板、饮食复盘、AI 健康指导等功能模块，并结合 Coze 平台探索 AI 工作流的技术实现路径。同步参与商业模式设计与项目成果汇报，形成从需求洞察、产品策划到交互原型及商业可行性分析的完整方案。",
+    "problem": "",
+    "research": [],
+    "strategy": [],
+    "workflow": [],
+    "outputs": [],
+    "result": "",
+    "reflection": "",
+    "gallery": [
+      {
+        "src": "/images/projects/project-340e2861/selected/2ba5f378-6-.png",
+        "title": "",
+        "description": "",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/project-340e2861/selected/9a1370a1-8app.png",
+        "title": "",
+        "description": "",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/project-340e2861/selected/a278631d-10app.png",
+        "title": "",
+        "description": "",
+        "format": "landscape"
+      }
+    ],
+    "videos": [],
+    "document": {
+      "src": "/docs/projects/84b50418-bp-deepsick.pdf",
+      "label": "查看完整项目 PDF"
+    }
+  },
+  {
+    "hidden": false,
+    "slug": "project-b96b10a5",
+    "index": "08",
+    "title": "潮阳抽纱非遗文化宣传AI短片",
+    "english": "",
+    "summary": "广东省百千万工程项目。构建“非遗工艺×AI短片”数字叙事体系，完成5分钟AI叙事短片视觉开发。承担IP角色、潮汕建筑资产、抽纱服饰纹理、视频剧情及关键帧设计工作。",
+    "role": "AIGC视觉设计负责人",
+    "time": "2026.07-09",
+    "tags": [
+      "IP Design",
+      "AIGC",
+      "Rural Culture",
+      "剪辑",
+      "AI视频"
+    ],
+    "cover": "/images/projects/project-b96b10a5/selected/f6559da2-asset-20261023094123.png",
+    "accent": "#356FE8",
+    "overview": "广东省百千万工程项目。构建“非遗工艺×AI短片”数字叙事体系，完成5分钟AI叙事短片视觉开发。承担IP角色、潮汕建筑资产、抽纱服饰纹理、视频剧情及关键帧设计工作。",
+    "problem": "",
+    "research": [],
+    "strategy": [],
+    "workflow": [],
+    "outputs": [],
+    "result": "",
+    "reflection": "",
+    "gallery": [
+      {
+        "src": "/images/projects/project-b96b10a5/selected/070e8443-01.png",
+        "title": "",
+        "description": "",
+        "format": "portrait"
+      },
+      {
+        "src": "/images/projects/project-b96b10a5/selected/f52bdd4e-02.png",
+        "title": "",
+        "description": "",
+        "format": "portrait"
+      },
+      {
+        "src": "/images/projects/project-b96b10a5/selected/a8762f34-03.png",
+        "title": "",
+        "description": "",
+        "format": "portrait"
+      },
+      {
+        "src": "/images/projects/project-b96b10a5/selected/580a2d3b-04.png",
+        "title": "",
+        "description": "",
+        "format": "portrait"
+      },
+      {
+        "src": "/images/projects/project-b96b10a5/selected/b573cfcd-05-.png",
+        "title": "",
+        "description": "",
+        "format": "portrait"
+      }
+    ],
+    "videos": [
+      {
+        "src": "/media/chaoyang-ai-film-web.mp4",
+        "title": "项目视频",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "hidden": false,
+    "slug": "medical-robot",
+    "index": "06",
+    "title": "医疗机器人外观与UI设计",
+    "english": "Medical Robot & UI",
+    "summary": "泌尿及插气管手术机器人外观与交互设计",
+    "role": "个人接单项目｜工业设计与交互设计",
+    "time": "2023.12—2024.05",
+    "tags": [
+      "Medical Robot",
+      "Industrial Design",
+      "UI",
+      "Rhino / Creo"
+    ],
+    "cover": "/images/projects/medical/intubation-scene.webp",
+    "accent": "#D8E4FF",
+    "overview": "为福建省立医院相关医疗机器人项目提供泌尿与插气管机器人两套外观及操作端UI方案。",
+    "problem": "需要在医疗设备内部结构、操作流程、人体工程学和专业视觉之间建立统一方案。",
+    "research": [
+      "理解设备功能、内部结构和操作区域\\n协调显示模块、结构件与整体比例\\n分析手术室使用环境中的信息层级"
+    ],
+    "strategy": [
+      "以干净、稳定、可信赖为形态语言\\n让外观、操作端UI与场景展示保持一致\\n在结构约束内优化关键操作区域"
+    ],
+    "workflow": [
+      "需求与结构理解\\nRhino形态建模\\nCreo结构配合\\nKeyShot材质与场景\\n操作端UI\\n方案整合"
+    ],
+    "outputs": [
+      "两套医疗机器人外观\\n手术室应用场景渲染\\n设备状态、功能入口与警示信息界面"
+    ],
+    "result": "设计成果进入福建省立医院相关医疗机器人项目方案。",
+    "reflection": "工业设计与UI不是两个交付物，而是同一个操作体验在物理与数字界面的连续表达。",
+    "gallery": [
+      {
+        "src": "/images/projects/medical/intubation-scene.webp",
+        "title": "",
+        "description": "",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/medical/urology-scene.webp",
+        "title": "",
+        "description": "",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/medical/urology-scene-2.webp",
+        "title": "",
+        "description": "",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/medical/ui.webp",
+        "title": "",
+        "description": "",
+        "format": "landscape"
+      }
+    ],
+    "videos": []
+  },
+  {
+    "hidden": false,
     "slug": "lechang",
     "index": "04",
     "title": "乐后昌城",
@@ -318,139 +642,6 @@
       "src": "/docs/projects/lechang.pdf",
       "label": "查看 53 页完整项目汇报"
     }
-  },
-  {
-    "hidden": false,
-    "slug": "yueban",
-    "index": "05",
-    "title": "悦伴",
-    "english": "Yueban",
-    "summary": "AI赋能的母婴全周期服务设计",
-    "role": "项目副组长｜服务研究、产品设计与UI设计",
-    "time": "2025.09—2025.12",
-    "tags": [
-      "Service Design",
-      "AI Companion",
-      "Smart Hardware",
-      "UI"
-    ],
-    "cover": "/images/projects/yueban/cover.webp",
-    "accent": "#FFB894",
-    "overview": "本项目「孕悦陪伴」与卓月月子中心合作，依托时光胶囊、时光磁记板、伴悦云朵灯三大实体触点联动专属 APP，打破传统月子服务仅局限产后短期陪护的局限，搭建覆盖孕、产、育、子女成长全周期的数字化陪伴体系，以数据化情感记录实现跨代温情传承，重构月子中心与家庭长期情感联结，将月子机构从阶段性护理服务商升级为陪伴家庭成长的终身情感与健康伙伴。",
-    "problem": "产后情绪波动、身份转变、家庭参与不足与成长记忆流失，无法由短期护理单独解决。",
-    "research": [
-      "梳理孕期、入住、护理与离院后的全周期旅程\n绘制利益相关者地图与服务蓝图\n分析用户、家属、护理人员和运营人员的协作关系"
-    ],
-    "strategy": [
-      "让母婴服务从短期护理转向长期陪伴\n以AI情绪陪伴和语音记录降低表达压力\n用家庭共创增强连接和成长记忆"
-    ],
-    "workflow": [
-      "辅助胎教→临床入住建档→磁吸板记录细节→胶囊促进家庭互动→离院交接→为宝宝每个成长节点设计成长档案"
-    ],
-    "outputs": [
-      "悦伴APP+伴悦云灯智能硬件+时光胶囊+时光磁吸板"
-    ],
-    "result": "项目成果“悦伴APP”已获得计算机软件著作权。",
-    "reflection": "情感型AI必须与真实服务人员、家庭关系和线下触点共同工作。",
-    "gallery": [
-      {
-        "src": "/images/projects/yueban/selected/service-framework.webp",
-        "title": "服务设计思维框架",
-        "description": "本服务设计项目以斯坦福设计思维共情 - 定义 - 构思 - 原型 - 测试五阶流程为基底，融合多元调研、分析、创意与迭代验证科学方法，构建出一套完整闭环的多维服务设计方法论。",
-        "format": "landscape"
-      },
-      {
-        "src": "/images/projects/yueban/selected/user-journey.webp",
-        "title": "用户旅程图",
-        "description": "梳理用户阶段、触点、情绪与我们设计产品的使用节点/周期。",
-        "format": "landscape"
-      },
-      {
-        "src": "/images/projects/yueban/selected/ecosystem-map.png",
-        "title": "生态系统图",
-        "description": "",
-        "format": "landscape"
-      },
-      {
-        "src": "/images/projects/yueban/selected/final-service-design-solution.png",
-        "title": "服务设计方案",
-        "description": "",
-        "format": "landscape"
-      }
-    ],
-    "videos": [
-      {
-        "src": "/media/yueban-flow.mp4",
-        "title": "用MC游戏模拟还原服务流程",
-        "description": "展示数字平台、智能硬件与线下护理触点之间的协作方式。"
-      }
-    ],
-    "video": "/media/yueban-flow.mp4",
-    "document": {
-      "src": "/docs/projects/yueban.pdf",
-      "label": "查看服务设计汇报 PDF"
-    }
-  },
-  {
-    "hidden": false,
-    "slug": "medical-robot",
-    "index": "06",
-    "title": "医疗机器人外观与UI设计",
-    "english": "Medical Robot & UI",
-    "summary": "泌尿及插气管手术机器人外观与交互设计",
-    "role": "个人接单项目｜工业设计与交互设计",
-    "time": "2023.12—2024.05",
-    "tags": [
-      "Medical Robot",
-      "Industrial Design",
-      "UI",
-      "Rhino / Creo"
-    ],
-    "cover": "/images/projects/medical/intubation-scene.webp",
-    "accent": "#D8E4FF",
-    "overview": "为福建省立医院相关医疗机器人项目提供泌尿与插气管机器人两套外观及操作端UI方案。",
-    "problem": "需要在医疗设备内部结构、操作流程、人体工程学和专业视觉之间建立统一方案。",
-    "research": [
-      "理解设备功能、内部结构和操作区域\\n协调显示模块、结构件与整体比例\\n分析手术室使用环境中的信息层级"
-    ],
-    "strategy": [
-      "以干净、稳定、可信赖为形态语言\\n让外观、操作端UI与场景展示保持一致\\n在结构约束内优化关键操作区域"
-    ],
-    "workflow": [
-      "需求与结构理解\\nRhino形态建模\\nCreo结构配合\\nKeyShot材质与场景\\n操作端UI\\n方案整合"
-    ],
-    "outputs": [
-      "两套医疗机器人外观\\n手术室应用场景渲染\\n设备状态、功能入口与警示信息界面"
-    ],
-    "result": "设计成果进入福建省立医院相关医疗机器人项目方案。",
-    "reflection": "工业设计与UI不是两个交付物，而是同一个操作体验在物理与数字界面的连续表达。",
-    "gallery": [
-      {
-        "src": "/images/projects/medical/intubation-scene.webp",
-        "title": "",
-        "description": "",
-        "format": "landscape"
-      },
-      {
-        "src": "/images/projects/medical/urology-scene.webp",
-        "title": "",
-        "description": "",
-        "format": "landscape"
-      },
-      {
-        "src": "/images/projects/medical/urology-scene-2.webp",
-        "title": "",
-        "description": "",
-        "format": "landscape"
-      },
-      {
-        "src": "/images/projects/medical/ui.webp",
-        "title": "",
-        "description": "",
-        "format": "landscape"
-      }
-    ],
-    "videos": []
   },
   {
     "hidden": false,

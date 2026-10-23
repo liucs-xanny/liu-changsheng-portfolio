@@ -4,7 +4,8 @@ import { ExperienceContact } from "@/components/ExperienceContact";
 import { Nav } from "@/components/Nav";
 import { ProjectArchive } from "@/components/ProjectArchive";
 import { SkillsMap } from "@/components/SkillsMap";
+import { VisualStudies } from "@/components/VisualStudies";
 
 export default function Home() {
-  return <main><Nav /><Cover /><Dashboard /><ProjectArchive /><SkillsMap /><ExperienceContact /></main>;
+  return <main><Nav /><Cover /><Dashboard /><ProjectArchive /><VisualStudies /><SkillsMap /><ExperienceContact /></main>;
 }

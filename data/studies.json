@@ -1,0 +1,186 @@
+[
+  {
+    "id": "automotive",
+    "title": "汽车建模与渲染",
+    "category": "产品渲染",
+    "src": "/images/studies/automotive.webp",
+    "thumbnail": "/images/studies/automotive-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "toy-airplane",
+    "title": "儿童玩具飞机",
+    "category": "产品渲染",
+    "src": "/images/studies/toy-airplane.webp",
+    "thumbnail": "/images/studies/toy-airplane-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "watch",
+    "title": "电子手表",
+    "category": "产品渲染",
+    "src": "/images/studies/watch.webp",
+    "thumbnail": "/images/studies/watch-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "phone",
+    "title": "手机产品渲染",
+    "category": "产品渲染",
+    "src": "/images/studies/phone.webp",
+    "thumbnail": "/images/studies/phone-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "shoe-dial",
+    "title": "鞋子纽扣",
+    "category": "产品渲染",
+    "src": "/images/studies/shoe-dial.webp",
+    "thumbnail": "/images/studies/shoe-dial-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "headphones",
+    "title": "机车耳机",
+    "category": "产品渲染",
+    "src": "/images/studies/headphones.webp",
+    "thumbnail": "/images/studies/headphones-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "smart-plate",
+    "title": "智能餐盘 · 毕业设计",
+    "category": "产品渲染",
+    "src": "/images/studies/smart-plate.webp",
+    "thumbnail": "/images/studies/smart-plate-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "smart-plate-detail",
+    "title": "智能餐盘 · 设计细节",
+    "category": "产品渲染",
+    "src": "/images/studies/smart-plate-detail.webp",
+    "thumbnail": "/images/studies/smart-plate-detail-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "26e81451-7086-4303-9878-a8b451ccb89a",
+    "title": "智能餐盘·甲亢饮食记录app",
+    "category": "UI设计",
+    "src": "/images/studies/9dd226c1-app.png",
+    "thumbnail": "/images/studies/9dd226c1-app.png",
+    "hidden": false
+  },
+  {
+    "id": "toon-render",
+    "title": "Blender 三渲二",
+    "category": "空间探索",
+    "src": "/images/studies/toon-render.webp",
+    "thumbnail": "/images/studies/toon-render-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "aroma-packaging",
+    "title": "香薰印泥包装",
+    "category": "视觉设计",
+    "src": "/images/studies/aroma-packaging.webp",
+    "thumbnail": "/images/studies/aroma-packaging-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "blender-scene",
+    "title": "Blender 场景建模",
+    "category": "空间探索",
+    "src": "/images/studies/blender-scene.webp",
+    "thumbnail": "/images/studies/blender-scene-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "awareness-poster",
+    "title": "艾滋病公益海报",
+    "category": "视觉设计",
+    "src": "/images/studies/awareness-poster.webp",
+    "thumbnail": "/images/studies/awareness-poster-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "rabbit-year",
+    "title": "兔年海报",
+    "category": "视觉设计",
+    "src": "/images/studies/rabbit-year.webp",
+    "thumbnail": "/images/studies/rabbit-year-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "teachers-day",
+    "title": "教师节海报",
+    "category": "视觉设计",
+    "src": "/images/studies/teachers-day.webp",
+    "thumbnail": "/images/studies/teachers-day-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "december-poster",
+    "title": "一二·九主题海报",
+    "category": "视觉设计",
+    "src": "/images/studies/december-poster.webp",
+    "thumbnail": "/images/studies/december-poster-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "competition-poster",
+    "title": "赛事宣传海报",
+    "category": "视觉设计",
+    "src": "/images/studies/competition-poster.webp",
+    "thumbnail": "/images/studies/competition-poster-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "community-events",
+    "title": "党建活动栏目",
+    "category": "视觉设计",
+    "src": "/images/studies/community-events.webp",
+    "thumbnail": "/images/studies/community-events-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "events-column",
+    "title": "活动专栏",
+    "category": "视觉设计",
+    "src": "/images/studies/events-column.webp",
+    "thumbnail": "/images/studies/events-column-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "rights-column",
+    "title": "权益专栏",
+    "category": "视觉设计",
+    "src": "/images/studies/rights-column.webp",
+    "thumbnail": "/images/studies/rights-column-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "design-news",
+    "title": "设计资讯",
+    "category": "视觉设计",
+    "src": "/images/studies/design-news.webp",
+    "thumbnail": "/images/studies/design-news-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "recruitment",
+    "title": "招聘信息栏目",
+    "category": "视觉设计",
+    "src": "/images/studies/recruitment.webp",
+    "thumbnail": "/images/studies/recruitment-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "announcements",
+    "title": "重要通知栏目",
+    "category": "视觉设计",
+    "src": "/images/studies/announcements.webp",
+    "thumbnail": "/images/studies/announcements-preview.webp",
+    "hidden": false
+  }
+]
