@@ -5,7 +5,7 @@
     "index": "01",
     "title": "原点向导·智绘美家",
     "english": "Origin Guide · Smart Home",
-    "summary": "原点新城专属数字人系统",
+    "summary": "为原点新城设计的专属数字人“原元儿”，三套着装设计+livetalking驱动，贯穿智能服务入口，连接文化传播、家居选品与赛事活动。",
     "role": "项目组长｜数字人设计、交互体验与技术整合",
     "time": "2026.04—2026.05",
     "tags": [
@@ -13,6 +13,9 @@
       "RAG",
       "LiveTalking",
       "AI Service"
+    ],
+    "categories": [
+      "AI产品"
     ],
     "cover": "/images/projects/yuandian/selected/01.png",
     "accent": "#356FE8",
@@ -78,11 +81,149 @@
   },
   {
     "hidden": false,
+    "slug": "project-db0c748c",
+    "index": "11",
+    "title": "自我闭环 —— 纵腾集团企业文化AIGC创意影像项目",
+    "english": "",
+    "summary": "独立负责《自我闭环》单支视频的 AIGC 全流程创作，并把打法沉淀为团队可复用的 SOP：将生产拆成九步 —— 分镜提示词生成、风格与比例定调、人物三视图与场景资产、九宫格分镜出图",
+    "role": "AIGC视频创作",
+    "time": "2026.10",
+    "tags": [
+      "AIGC"
+    ],
+    "categories": [
+      "AIGC影视"
+    ],
+    "cover": "/images/projects/project-db0c748c/selected/58eae706-a89d8633-3318-45ea-a7ef-bb464e8771a3.png",
+    "accent": "#356FE8",
+    "overview": "独立负责《自我闭环》单支视频的 AIGC 全流程创作，并把打法沉淀为团队可复用的 SOP：将生产拆成九步 —— 分镜提示词生成、风格与比例定调、人物三视图与场景资产、九宫格分镜出图、画面 BUG 修补、图生视频、配音配乐、剪辑合成、导出归档，每步固定工具、输入输出与提示词模板。独立完成剧本转分镜、角色一致性控制、多平台抽卡与修补、MiniMax 配音与 Suno 配乐、剪映节奏剪辑与 “藏拙” 处理。该 SOP 后被团队沿用于其余 11 支系列视频，单支成片周期压缩至约两周。",
+    "problem": "",
+    "research": [],
+    "strategy": [],
+    "workflow": [],
+    "outputs": [],
+    "result": "",
+    "reflection": "",
+    "gallery": [],
+    "videos": [
+      {
+        "src": "/media/485b4d91-1112.mp4",
+        "title": "项目视频",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "hidden": false,
+    "slug": "project-24db0e3f",
+    "index": "12",
+    "title": "用数据说话 —— 纵腾集团企业文化 AIGC 创意影像项目",
+    "english": "",
+    "summary": "负责纵腾集团企业文化系列片《用数据说话》的 AIGC 视频创作，同时输出一套标准化生产 SOP（分镜 — 资产 — 生成 — 修补 — 声音 — 剪辑 — 归档九步，含固定提示词模",
+    "role": "AIGC视频创作",
+    "time": "2026.11",
+    "tags": [
+      "AIGC"
+    ],
+    "categories": [
+      "AIGC影视"
+    ],
+    "cover": "/images/projects/project-24db0e3f/selected/5d7cc8ec-06149256-6f5c-4fcd-abce-86ef0b8fbf9a.png",
+    "accent": "#356FE8",
+    "overview": "负责纵腾集团企业文化系列片《用数据说话》的 AIGC 视频创作，同时输出一套标准化生产 SOP（分镜 — 资产 — 生成 — 修补 — 声音 — 剪辑 — 归档九步，含固定提示词模板与工具链）。独立完成从剧本到成片的全部环节，解决 AI 生成的角色不一致、画面 BUG、口型对不上等问题，成片用于集团价值观宣发，并作为团队的流程样板推广到其余 11 支视频。",
+    "problem": "",
+    "research": [],
+    "strategy": [],
+    "workflow": [],
+    "outputs": [],
+    "result": "",
+    "reflection": "",
+    "gallery": [],
+    "videos": [
+      {
+        "src": "/media/c5a46261-aigc-.mp4",
+        "title": "项目视频",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "hidden": false,
+    "slug": "project-b96b10a5",
+    "index": "08",
+    "title": "潮阳抽纱非遗文化宣传AI短片",
+    "english": "",
+    "summary": "广东省百千万工程项目。构建“非遗工艺×AI短片”数字叙事体系，完成5分钟AI叙事短片视觉开发。承担IP角色、潮汕建筑资产、抽纱服饰纹理、视频剧情及关键帧设计工作。",
+    "role": "AIGC视觉设计负责人",
+    "time": "2026.07-09",
+    "tags": [
+      "IP Design",
+      "AIGC",
+      "Rural Culture",
+      "剪辑",
+      "AI视频"
+    ],
+    "categories": [
+      "AIGC影视",
+      "视觉设计"
+    ],
+    "cover": "/images/projects/project-b96b10a5/selected/f6559da2-asset-20261023094123.png",
+    "accent": "#356FE8",
+    "overview": "广东省百千万工程项目。构建“非遗工艺×AI短片”数字叙事体系，完成5分钟AI叙事短片视觉开发。承担IP角色、潮汕建筑资产、抽纱服饰纹理、视频剧情及关键帧设计工作。",
+    "problem": "",
+    "research": [],
+    "strategy": [],
+    "workflow": [],
+    "outputs": [],
+    "result": "",
+    "reflection": "",
+    "gallery": [
+      {
+        "src": "/images/projects/project-b96b10a5/selected/070e8443-01.png",
+        "title": "",
+        "description": "",
+        "format": "portrait"
+      },
+      {
+        "src": "/images/projects/project-b96b10a5/selected/f52bdd4e-02.png",
+        "title": "",
+        "description": "",
+        "format": "portrait"
+      },
+      {
+        "src": "/images/projects/project-b96b10a5/selected/a8762f34-03.png",
+        "title": "",
+        "description": "",
+        "format": "portrait"
+      },
+      {
+        "src": "/images/projects/project-b96b10a5/selected/580a2d3b-04.png",
+        "title": "",
+        "description": "",
+        "format": "portrait"
+      },
+      {
+        "src": "/images/projects/project-b96b10a5/selected/b573cfcd-05-.png",
+        "title": "",
+        "description": "",
+        "format": "portrait"
+      }
+    ],
+    "videos": [
+      {
+        "src": "/media/3c639264-50m.mp4",
+        "title": "项目视频",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "hidden": false,
     "slug": "shanyin",
     "index": "02",
     "title": "山音接力·候鸟DaDa",
     "english": "Mountain Echo Relay",
-    "summary": "面向乡村支教流动场景的智能Agent交接系统",
+    "summary": "本作品是面向乡村支教人群的 AI 服务系统 。乡村支教老师流动性强，更替时教学经验、学生情况很难完整交接，乡土课堂记忆也容易流失，本设计以此为核心痛点展开创作。 产品内置 AI 智",
     "role": "项目组长｜用户研究、产品策略与交互设计",
     "time": "2026.03—2026.05",
     "tags": [
@@ -91,6 +232,10 @@
       "Service Design",
       "Knowledge Base",
       "Coze"
+    ],
+    "categories": [
+      "AI产品",
+      "视觉设计"
     ],
     "cover": "/images/projects/shanyin/selected/36-8.png",
     "accent": "#FFB894",
@@ -166,7 +311,7 @@
     "index": "03",
     "title": "核电站金属构件损伤AI识别系统",
     "english": "Nuclear Component AI Inspection",
-    "summary": "工业缺陷仿真数据与YOLO识别工作流",
+    "summary": "开发了一套从三维仿真到自动标注的全流程工具链。通过Blender与ZBrush搭建管板模型及缺陷雕刻流程，实现批量多模态渲染；设计AO差分与几何连续性恢复算法，重点攻克密集管孔遮挡",
     "role": "项目组长｜仿真数据生成、工作流设计与模型训练协作",
     "time": "2026.02—2026.06",
     "tags": [
@@ -174,6 +319,9 @@
       "Blender",
       "Python",
       "Synthetic Data"
+    ],
+    "categories": [
+      "AI产品"
     ],
     "cover": "/images/projects/nuclear/result.webp",
     "accent": "#77A1FF",
@@ -218,6 +366,10 @@
       "硬件设计",
       "产品设计",
       "结构设计"
+    ],
+    "categories": [
+      "AI产品",
+      "产品设计"
     ],
     "cover": "/images/projects/project-9e3827ff/selected/f8eca687-1.jpg",
     "accent": "#356FE8",
@@ -271,6 +423,11 @@
       "AI Companion",
       "Smart Hardware",
       "UI"
+    ],
+    "categories": [
+      "AI产品",
+      "视觉设计",
+      "产品设计"
     ],
     "cover": "/images/projects/yueban/cover.webp",
     "accent": "#FFB894",
@@ -362,6 +519,10 @@
       "UI Design",
       "Knowledge Base"
     ],
+    "categories": [
+      "AI产品",
+      "视觉设计"
+    ],
     "cover": "/images/projects/project-340e2861/selected/97eaea76-0.png",
     "accent": "#356FE8",
     "overview": "GlySnap 是一款面向糖尿病患者的 AI 饮食与血糖管理 APP 概念产品，以计算机视觉和 AI 技术为基础，探索通过拍照识别食物、分析升糖指数（GI）、预测餐后血糖变化，帮助用户实现更便捷的饮食与健康管理。\n\n作为项目组长，负责整体项目统筹、AI 技术方案调研与 APP UI/UX 原型设计。围绕糖尿病患者的饮食管理痛点，开展行业与竞品分析、用户旅程梳理、产品定位及功能规划，设计智能拍照识别、血糖数据看板、饮食复盘、AI 健康指导等功能模块，并结合 Coze 平台探索 AI 工作流的技术实现路径。同步参与商业模式设计与项目成果汇报，形成从需求洞察、产品策划到交互原型及商业可行性分析的完整方案。",
@@ -400,77 +561,11 @@
   },
   {
     "hidden": false,
-    "slug": "project-b96b10a5",
-    "index": "08",
-    "title": "潮阳抽纱非遗文化宣传AI短片",
-    "english": "",
-    "summary": "广东省百千万工程项目。构建“非遗工艺×AI短片”数字叙事体系，完成5分钟AI叙事短片视觉开发。承担IP角色、潮汕建筑资产、抽纱服饰纹理、视频剧情及关键帧设计工作。",
-    "role": "AIGC视觉设计负责人",
-    "time": "2026.07-09",
-    "tags": [
-      "IP Design",
-      "AIGC",
-      "Rural Culture",
-      "剪辑",
-      "AI视频"
-    ],
-    "cover": "/images/projects/project-b96b10a5/selected/f6559da2-asset-20261023094123.png",
-    "accent": "#356FE8",
-    "overview": "广东省百千万工程项目。构建“非遗工艺×AI短片”数字叙事体系，完成5分钟AI叙事短片视觉开发。承担IP角色、潮汕建筑资产、抽纱服饰纹理、视频剧情及关键帧设计工作。",
-    "problem": "",
-    "research": [],
-    "strategy": [],
-    "workflow": [],
-    "outputs": [],
-    "result": "",
-    "reflection": "",
-    "gallery": [
-      {
-        "src": "/images/projects/project-b96b10a5/selected/070e8443-01.png",
-        "title": "",
-        "description": "",
-        "format": "portrait"
-      },
-      {
-        "src": "/images/projects/project-b96b10a5/selected/f52bdd4e-02.png",
-        "title": "",
-        "description": "",
-        "format": "portrait"
-      },
-      {
-        "src": "/images/projects/project-b96b10a5/selected/a8762f34-03.png",
-        "title": "",
-        "description": "",
-        "format": "portrait"
-      },
-      {
-        "src": "/images/projects/project-b96b10a5/selected/580a2d3b-04.png",
-        "title": "",
-        "description": "",
-        "format": "portrait"
-      },
-      {
-        "src": "/images/projects/project-b96b10a5/selected/b573cfcd-05-.png",
-        "title": "",
-        "description": "",
-        "format": "portrait"
-      }
-    ],
-    "videos": [
-      {
-        "src": "/media/chaoyang-ai-film-web.mp4",
-        "title": "项目视频",
-        "description": ""
-      }
-    ]
-  },
-  {
-    "hidden": false,
     "slug": "medical-robot",
     "index": "06",
     "title": "医疗机器人外观与UI设计",
     "english": "Medical Robot & UI",
-    "summary": "泌尿及插气管手术机器人外观与交互设计",
+    "summary": "为福建省立医院相关医疗机器人项目提供泌尿与插气管机器人两套外观及操作端UI方案。",
     "role": "个人接单项目｜工业设计与交互设计",
     "time": "2023.12—2024.05",
     "tags": [
@@ -478,6 +573,9 @@
       "Industrial Design",
       "UI",
       "Rhino / Creo"
+    ],
+    "categories": [
+      "产品设计"
     ],
     "cover": "/images/projects/medical/intubation-scene.webp",
     "accent": "#D8E4FF",
@@ -529,9 +627,9 @@
     "hidden": false,
     "slug": "lechang",
     "index": "04",
-    "title": "乐后昌城",
+    "title": "乐后昌城---广东广播电视台珠江频道实习项目",
     "english": "Lehou Changcheng",
-    "summary": "韶关乐昌农文旅品牌与体验设计（包含AI音乐+AI视频）",
+    "summary": "本设计以广东省韶关乐昌市为研究对象，针对当地文旅资源丰富但品牌认知分散、产品同质化严重、传播方式单一等问题，提出“从过境地到目的地”的农文旅品牌重塑策略。 项目以乐昌特色资源“黄金",
     "role": "项目组长｜区域品牌策略、IP设计与AIGC内容创作",
     "time": "2026.02—2026.05",
     "tags": [
@@ -539,6 +637,10 @@
       "IP Design",
       "AIGC",
       "Rural Culture"
+    ],
+    "categories": [
+      "AIGC影视",
+      "视觉设计"
     ],
     "cover": "/images/projects/lechang/selected/cover.png",
     "accent": "#FFB894",
@@ -649,7 +751,7 @@
     "index": "07",
     "title": "智清镜品牌视觉设计",
     "english": "Zhijing Optical Brand Design",
-    "summary": "眼镜品牌全案、价目册与包装设计",
+    "summary": "从品牌定位出发，建立眼镜品牌的Logo、包装、价目册与终端宣传视觉系统。",
     "role": "个人接单项目｜品牌策略、视觉系统与AIGC视觉设计",
     "time": "2023.07—2024.05",
     "tags": [
@@ -657,6 +759,9 @@
       "Visual Identity",
       "Packaging",
       "AIGC"
+    ],
+    "categories": [
+      "视觉设计"
     ],
     "cover": "/images/projects/zhijing/manual-1.webp",
     "accent": "#FFB894",
@@ -691,5 +796,44 @@
       "src": "/docs/projects/zeeqin-brand-price-catalog-design.pdf",
       "label": "查看完整项目 PDF"
     }
+  },
+  {
+    "hidden": false,
+    "slug": "project-b21cb85f",
+    "index": "13",
+    "title": "海龟救援钳产品设计",
+    "english": "",
+    "summary": "聚焦海洋塑料污染造成的海龟缠绕、割伤救助场景，面向水下救援人员，将探灯、取物钳、剪切功能集成一体。完成需求调研、方案推演、结构与造型设计，优化水下操作手感，打造轻量化、便于潜水员单",
+    "role": "组长（产品渲染与ui设计）",
+    "time": "2025.10",
+    "tags": [],
+    "categories": [
+      "产品设计"
+    ],
+    "cover": "/images/projects/project-b21cb85f/selected/2772363b-10.png",
+    "accent": "#356FE8",
+    "overview": "聚焦海洋塑料污染造成的海龟缠绕、割伤救助场景，面向水下救援人员，将探灯、取物钳、剪切功能集成一体。完成需求调研、方案推演、结构与造型设计，优化水下操作手感，打造轻量化、便于潜水员单手操作的野生动物救援工具。",
+    "problem": "",
+    "research": [],
+    "strategy": [],
+    "workflow": [],
+    "outputs": [],
+    "result": "",
+    "reflection": "",
+    "gallery": [
+      {
+        "src": "/images/projects/project-b21cb85f/selected/05e469a6-ui.png",
+        "title": "",
+        "description": "",
+        "format": "square"
+      }
+    ],
+    "videos": [
+      {
+        "src": "/media/a646486e-asset-20261112213635.mp4",
+        "title": "项目视频",
+        "description": ""
+      }
+    ]
   }
 ]

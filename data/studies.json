@@ -64,6 +64,46 @@
     "hidden": false
   },
   {
+    "id": "toon-render",
+    "title": "Blender 三渲二",
+    "category": "空间探索",
+    "src": "/images/studies/toon-render.webp",
+    "thumbnail": "/images/studies/toon-render-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "4710e310-ce0e-4172-8fdb-2c8415b34fe8",
+    "title": "ui界面",
+    "category": "UI设计",
+    "src": "/images/studies/df5bac51-ui.png",
+    "thumbnail": "/images/studies/df5bac51-ui.png",
+    "hidden": false
+  },
+  {
+    "id": "e2a56022-ddeb-47bb-9747-cfaa0d6da75d",
+    "title": "背部特写.12",
+    "category": "产品渲染",
+    "src": "/images/studies/c8ab1ad4-12.png",
+    "thumbnail": "/images/studies/c8ab1ad4-12.png",
+    "hidden": false
+  },
+  {
+    "id": "f2853dac-67f2-4498-b211-2c0e8c240c7b",
+    "title": "正侧视图.14",
+    "category": "产品渲染",
+    "src": "/images/studies/0087f12f-14.png",
+    "thumbnail": "/images/studies/0087f12f-14.png",
+    "hidden": false
+  },
+  {
+    "id": "0b30c757-c081-4981-bd53-f09b665af8a1",
+    "title": "纵腾集团ip设计与周边",
+    "category": "品牌周边设计",
+    "src": "/images/studies/c0fe7a76-ip.jpg",
+    "thumbnail": "/images/studies/c0fe7a76-ip.jpg",
+    "hidden": false
+  },
+  {
     "id": "26e81451-7086-4303-9878-a8b451ccb89a",
     "title": "智能餐盘·甲亢饮食记录app",
     "category": "UI设计",
@@ -72,11 +112,11 @@
     "hidden": false
   },
   {
-    "id": "toon-render",
-    "title": "Blender 三渲二",
-    "category": "空间探索",
-    "src": "/images/studies/toon-render.webp",
-    "thumbnail": "/images/studies/toon-render-preview.webp",
+    "id": "e8e41267-41c1-4808-b2a9-993001c61e1c",
+    "title": "12封面摄像机手机UI界面展示",
+    "category": "UI设计",
+    "src": "/images/studies/b23d2f3f-12ui.png",
+    "thumbnail": "/images/studies/b23d2f3f-12ui.png",
     "hidden": false
   },
   {
@@ -181,6 +221,22 @@
     "category": "视觉设计",
     "src": "/images/studies/announcements.webp",
     "thumbnail": "/images/studies/announcements-preview.webp",
+    "hidden": false
+  },
+  {
+    "id": "1b936089-abf0-49cc-b7ad-c8fc288e3b32",
+    "title": "GOFO充电宝设计",
+    "category": "品牌周边设计",
+    "src": "/images/studies/0962ecef-gofo.jpg",
+    "thumbnail": "/images/studies/0962ecef-gofo.jpg",
+    "hidden": false
+  },
+  {
+    "id": "7989c241-e519-40ca-9581-7c7a79a49cc3",
+    "title": "08产品出图＆细节展示",
+    "category": "产品渲染",
+    "src": "/images/studies/f76d7d46-08.png",
+    "thumbnail": "/images/studies/f76d7d46-08.png",
     "hidden": false
   }
 ]

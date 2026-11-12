@@ -21,6 +21,7 @@ export type Project = {
   role: string;
   time: string;
   tags: string[];
+  categories?: string[];
   cover: string;
   accent: string;
   overview: string;

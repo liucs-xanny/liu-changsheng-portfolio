@@ -28,6 +28,18 @@
     .project-btn { width:100%; text-align:left; display:block; border-radius:18px; margin-top:8px; padding:14px; background:#11100e; }
     .project-btn.active { border-color:var(--peach); background:rgba(255,184,148,.12); }
     .project-btn small { display:block; color:var(--muted); margin-top:4px; }
+    .project-row { position:relative; padding-left:34px; }
+    .sort-handle { cursor:grab; touch-action:none; user-select:none; border-radius:8px; padding:6px; font-size:19px; color:var(--muted); }
+    .project-row > .sort-handle { position:absolute; left:0; top:24px; }
+    .sort-handle:active { cursor:grabbing; }
+    .sort-handle:focus-visible { outline:2px solid var(--peach); }
+    .is-sorting { opacity:.4; }
+    .sort-target { outline:2px solid var(--peach); outline-offset:2px; }
+    .sort-ghost { position:fixed; z-index:9999; pointer-events:none; max-width:260px; border:1px solid var(--peach); background:#27201bef; color:var(--text); padding:12px 18px; border-radius:14px; box-shadow:0 10px 40px #0009; }
+    .sort-note { min-height:22px; color:var(--peach); font-size:12px; margin:10px 0; }
+    .category-choices { margin-top:16px; border:1px solid var(--line); border-radius:16px; padding:14px; }
+    .category-choices label { display:inline-flex; align-items:center; gap:8px; margin:8px 18px 4px 0; letter-spacing:0; font-size:14px; color:var(--text); }
+    .category-choices input { width:auto; accent-color:var(--peach); }
     .hidden-badge { color:var(--red); font-size:11px; margin-left:6px; }
     .grid { display:grid; grid-template-columns: repeat(12, 1fr); gap:12px; }
     .field { grid-column: span 6; }
@@ -98,7 +110,8 @@
           <button onclick="loadAll()">刷新</button>
           <button onclick="newProject()" class="primary">新建项目</button>
         </div>
-        <p class="hint">选一个项目，填写基本信息，再放上作品。图片、视频和 PDF 都在同一个项目内管理。</p>
+        <p class="hint">选一个项目直接编辑。按住 ⋮⋮ 拖到任意位置排序；也可聚焦手柄后用方向键移动。</p>
+        <p id="projectSortStatus" class="sort-note" role="status" aria-live="polite">排序后自动保存；文案修改仍需点「保存修改」。</p>
         <div id="projectList"></div>
       </aside>
 
@@ -109,8 +122,6 @@
             <p id="editorHint" class="hint">隐藏项目不会出现在公开作品集里，但资料会保留。</p>
           </div>
           <div class="toolbar">
-            <button onclick="moveProject('up')">上移</button>
-            <button onclick="moveProject('down')">下移</button>
             <button onclick="saveProject()" class="primary">保存修改</button>
           </div>
         </div>
@@ -130,6 +141,7 @@
         <span id="studiesCount" class="hint"></span>
       </div>
       <p class="hint">不需要填写项目介绍。上传后自动加入轮播；同名分类会自动归组。隐藏后仍保留在这里。</p>
+      <p id="studySortStatus" class="sort-note" role="status" aria-live="polite">按住卡片顶部 ⋮⋮ 拖拽排序，顺序自动保存；文字修改请点「保存修改」。</p>
       <div id="studiesList" class="study-admin-list"></div>
     </section>
     <section id="personalPanel" class="panel" hidden>
@@ -205,10 +217,13 @@
 
     function renderList() {
       $('projectList').innerHTML = projects.map((project) => `
+        <div class="project-row" data-sort-id="${project.slug}" data-sort-kind="projects">
+        <button class="sort-handle" type="button" aria-label="拖拽排序：${escapeHtml(project.title)}" aria-describedby="projectSortStatus">⋮⋮</button>
         <button class="project-btn ${project.slug === currentSlug ? 'active' : ''}" onclick="selectProject('${project.slug}')">
           ${escapeHtml(projectName(project))} ${project.hidden ? '<span class="hidden-badge">已隐藏</span>' : ''}
           <small>${escapeHtml(project.role || (project.tags || []).join(' / '))}</small>
         </button>
+        </div>
       `).join('');
     }
 
@@ -244,6 +259,7 @@
           <div class="field full">${field('role', '担任职位 / 你负责的内容', current.role)}</div>
           <div class="field full">${field('overview', '项目介绍', current.overview || current.summary, 'textarea')}<p class="hint">建议 80—200 字：做了什么、你负责什么、有什么成果。HR 能快速读懂即可。</p></div>
           <div class="field full">${field('tags', '标签（用中文或英文逗号分隔）', (current.tags || []).join(', '))}</div>
+          <div class="field full"><fieldset class="category-choices"><legend>首页筛选分类（可多选）</legend>${['AIGC影视','AI产品','视觉设计','产品设计'].map(name => `<label><input type="checkbox" name="project-category" value="${name}" ${(current.categories || []).includes(name) ? 'checked' : ''}>${name}</label>`).join('')}<p class="hint">跨领域项目可勾选多个；不勾选时按名称和标签自动归类。</p></fieldset></div>
           <div class="field full">
             <label><input id="hidden" type="checkbox" style="width:auto" ${current.hidden ? 'checked' : ''}/> 隐藏这个项目</label>
             <p class="hint">隐藏后不会在首页项目列表和详情路由出现，适合针对不同简历版本临时收起。</p>
@@ -252,7 +268,7 @@
 
         <hr style="border:0;border-top:1px solid var(--line);margin:22px 0" />
         <h3>封面图</h3>
-        <p class="hint">封面图会用于首页项目抽屉和项目详情顶部。</p>
+        <p class="hint">封面图会用于首页项目墙和项目详情顶部。</p>
         <div class="media-card" style="max-width:420px;margin-top:10px">
           ${current.cover ? `<img src="${current.cover}" alt="">` : '<div class="empty">暂无封面</div>'}
           <small>${current.cover ? '当前项目封面' : '未设置'}</small>
@@ -372,6 +388,7 @@
       project.summary = project.overview.replace(/\s+/g, ' ').slice(0, 90);
       project.hidden = $('hidden').checked;
       project.tags = splitLines($('tags').value);
+      project.categories = Array.from(document.querySelectorAll('[name="project-category"]:checked')).map(input => input.value);
       project.document = project.document?.src ? { ...project.document, label: $('docLabel').value || '查看完整项目 PDF' } : undefined;
       return project;
     }
@@ -509,7 +526,8 @@
     function renderStudies() {
       $('studiesCount').textContent = studies.filter(item => !item.hidden).length + ' 张展示中 / 共 ' + studies.length + ' 张';
       $('studiesList').innerHTML = studies.map((item, index) => `
-        <article class="study-admin-card">
+        <article class="study-admin-card" data-sort-id="${escapeHtml(item.id)}" data-sort-kind="studies">
+          <div class="toolbar" style="justify-content:space-between;margin:0 0 8px"><span class="hint">${String(index+1).padStart(2,'0')}</span><button class="sort-handle" type="button" aria-label="拖拽排序：${escapeHtml(item.title)}" aria-describedby="studySortStatus">⋮⋮</button></div>
           <img src="${escapeHtml(item.thumbnail || item.src)}" alt="${escapeHtml(item.title)}" loading="lazy" />
           <label for="study-title-${index}">作品名称</label>
           <input id="study-title-${index}" value="${escapeHtml(item.title)}" onchange="studies[${index}].title = this.value" />
@@ -517,8 +535,6 @@
           <input id="study-category-${index}" value="${escapeHtml(item.category)}" onchange="studies[${index}].category = this.value" placeholder="例如：产品渲染" />
           <label><input type="checkbox" style="width:auto" ${item.hidden ? 'checked' : ''} onchange="studies[${index}].hidden = this.checked" /> 隐藏这张作品</label>
           <div class="toolbar">
-            <button onclick="moveStudy(${index}, -1)" ${index === 0 ? 'disabled' : ''}>前移</button>
-            <button onclick="moveStudy(${index}, 1)" ${index === studies.length - 1 ? 'disabled' : ''}>后移</button>
             <button onclick="document.getElementById('replace-study-${index}').click()">替换图片</button>
             <input id="replace-study-${index}" hidden type="file" accept="image/png,image/jpeg,image/webp,image/avif,image/gif" onchange="replaceStudy(${index}, this.files[0])" />
           </div>
@@ -582,5 +598,6 @@
     window.addEventListener('unhandledrejection', event => { $('status').textContent = event.reason?.message || '操作失败，请重试。'; });
     loadAll().catch(error => { $('status').textContent = error.message; });
   </script>
+  <script src="/sort-editor.js"></script>
 </body>
 </html>

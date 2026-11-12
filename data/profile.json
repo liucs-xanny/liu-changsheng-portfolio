@@ -92,11 +92,19 @@
       "hidden": false
     },
     {
-      "id": "internet-plus",
+      "id": "b794dde3-be12-4720-8e1b-dc91521633ea",
       "type": "award",
-      "time": "",
-      "title": "省赛银奖",
-      "detail": "互联网+大学生创新创业大赛",
+      "time": "2026.11",
+      "title": "2026第十八届 UXDA 国际用户体验创新大赛 全国三等奖",
+      "detail": "候鸟DADA山声接力agent设计项目",
+      "hidden": false
+    },
+    {
+      "id": "rebuild-z",
+      "type": "award",
+      "time": "2026",
+      "title": "Rebuild-Z 2026具身智能黑客松 全场三等奖 / 最佳视觉表达奖",
+      "detail": "Hammy 双栖桌面AI宠物",
       "hidden": false
     },
     {
@@ -108,19 +116,11 @@
       "hidden": false
     },
     {
-      "id": "ncda",
+      "id": "internet-plus",
       "type": "award",
       "time": "",
-      "title": "省赛二等奖",
-      "detail": "NCDA未来设计师 · 乡村设计、UI设计",
-      "hidden": false
-    },
-    {
-      "id": "rebuild-z",
-      "type": "award",
-      "time": "2026",
-      "title": "全场三等奖 / 最佳视觉表达奖",
-      "detail": "Rebuild-Z 2026具身智能黑客松 · Hammy 双栖桌面AI宠物",
+      "title": "省赛银奖",
+      "detail": "互联网+大学生创新创业大赛",
       "hidden": false
     },
     {
@@ -177,6 +177,14 @@
       "time": "2024.09—2025.09",
       "title": "学院研究生会宣传部干事",
       "detail": "负责公众号内容运营、活动海报视觉设计，统筹推文排版与宣传物料输出，保障学院宣传工作落地。",
+      "hidden": false
+    },
+    {
+      "id": "ncda",
+      "type": "award",
+      "time": "2026.04",
+      "title": "省赛二等奖",
+      "detail": "NCDA未来设计师 · 乡村设计、UI设计",
       "hidden": false
     }
   ],

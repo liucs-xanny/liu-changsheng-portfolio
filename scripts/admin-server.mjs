@@ -5,6 +5,8 @@ import { spawn, spawnSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { readProfile, saveProfile } from "./profile-store.mjs";
 import { createPublisher } from "./publish-job.mjs";
+import { getProjectCategories, projectCategories } from "../lib/project-categories.ts";
+import { reorderItems } from "./reorder-items.mjs";
 
 const root = process.cwd();
 const publicRoot = join(root, "public");
@@ -193,6 +195,7 @@ function normalizeProject(project) {
     role: String(project.role || ""),
     time: String(project.time || ""),
     tags: normalizeList(project.tags),
+    categories: getProjectCategories({ ...project, tags: normalizeList(project.tags) }),
     cover: String(project.cover || ""),
     accent: String(project.accent || "#356FE8"),
     overview: String(project.overview || ""),
@@ -237,9 +240,9 @@ const server = createServer(async (request, response) => {
       return;
     }
 
-    if (request.method === "GET" && url.pathname === "/profile-editor.js") {
+    if (request.method === "GET" && ["/profile-editor.js", "/sort-editor.js"].includes(url.pathname)) {
       response.writeHead(200, { "Content-Type": "text/javascript; charset=utf-8", "Cache-Control": "no-store" });
-      response.end(readFileSync(join(root, "scripts/profile-editor.js"), "utf8"));
+      response.end(readFileSync(join(root, "scripts", basename(url.pathname)), "utf8"));
       return;
     }
 
@@ -271,7 +274,7 @@ const server = createServer(async (request, response) => {
     }
 
     if (request.method === "GET" && url.pathname === "/api/projects") {
-      json(response, { projects: readProjects() });
+      json(response, { projects: readProjects().map(project => ({ ...project, categories: getProjectCategories(project) })), categories: projectCategories });
       return;
     }
 
@@ -369,6 +372,11 @@ const server = createServer(async (request, response) => {
       const body = JSON.parse((await readBody(request)).toString("utf8") || "{}");
       const { slug, direction } = body;
       const projects = readProjects();
+      if (Array.isArray(body.order)) {
+        const sorted = reorderItems(projects, body.order, "slug");
+        writeProjects(sorted);
+        return json(response, { projects: sorted });
+      }
       const index = projects.findIndex((project) => project.slug === slug);
       const nextIndex = direction === "up" ? index - 1 : index + 1;
       if (index < 0 || nextIndex < 0 || nextIndex >= projects.length) {
@@ -429,6 +437,13 @@ const server = createServer(async (request, response) => {
     if (request.method === "GET" && url.pathname === "/api/studies") {
       json(response, { items: readStudies() });
       return;
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/studies/order") {
+      const body = JSON.parse((await readBody(request)).toString("utf8") || "{}");
+      const sorted = reorderItems(readStudies(), body.order, "id");
+      writeStudies(sorted);
+      return json(response, { items: sorted });
     }
 
     if (request.method === "POST" && url.pathname === "/api/studies") {
