@@ -58,12 +58,12 @@ export function ProjectArchive() {
         <p className="text-[10px] tracking-[.12em] text-paper/40" aria-live="polite">{filtered.length} PROJECTS</p>
       </div>
       <div id="project-cards" className="relative mx-auto max-w-7xl pb-10">
-        {filtered.map(project => (
+        {filtered.map((project, index) => (
           <article key={project.slug} className="archive-card sticky top-[170px] mb-[18vh] h-[72svh] overflow-hidden rounded-[2rem] border border-paper/15 bg-[#1b1916]/95 shadow-[0_-24px_80px_rgba(0,0,0,.45)] backdrop-blur-xl md:top-[130px] md:h-[68vh]">
             <Image src={assetPath(project.cover)} alt={project.title} fill sizes="(max-width: 768px) 95vw, 1280px" className={`object-cover opacity-35 transition duration-700 hover:scale-105 hover:opacity-65 ${project.slug === "medical-robot" ? "object-top" : ""}`} />
             <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/45 to-transparent" />
             <div className="absolute inset-0 flex flex-col justify-between p-7 md:p-12">
-              <div className="flex items-start justify-between gap-4"><span className="font-display text-6xl text-paper/15 md:text-8xl">{project.index}</span><span className="text-xs tracking-[.12em] text-peach">{project.time}</span></div>
+              <div className="flex items-start justify-between gap-4"><span className="archive-number font-display text-6xl text-paper/15 md:text-8xl">{String(index + 1).padStart(2, "0")}</span><span className="text-xs tracking-[.12em] text-peach">{project.time}</span></div>
               <div className="max-w-3xl">
                 <h3 className="mt-3 text-2xl font-semibold md:text-5xl">{project.title}</h3>
                 {project.role && <p className="mt-4 line-clamp-2 text-xs leading-6 text-peach">{project.role}</p>}
