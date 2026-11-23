@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { assetPath } from "@/lib/assets";
+import { previewPath } from "@/lib/assets";
 import { profile } from "@/lib/profile";
 import Image from "next/image";
 
@@ -23,7 +23,7 @@ export function Dashboard() {
           <div className="grid min-h-0 flex-1 grid-cols-[.88fr_1.12fr] gap-px bg-paper/15">
             <div className="relative bg-white">
               <Image
-                src={assetPath(profile.portraits.formal)}
+                src={previewPath(profile.portraits.formal, 800)}
                 alt={`${profile.name}职业证件照`}
                 fill
                 sizes="(max-width: 768px) 45vw, 15vw"
@@ -33,7 +33,7 @@ export function Dashboard() {
             </div>
             <div className="relative bg-[#d8d3cb]">
               <Image
-                src={assetPath(profile.portraits.practice)}
+                src={previewPath(profile.portraits.practice, 800)}
                 alt={`${profile.name}阅读中的职业形象照`}
                 fill
                 sizes="(max-width: 768px) 55vw, 19vw"

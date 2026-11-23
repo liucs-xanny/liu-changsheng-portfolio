@@ -20,7 +20,7 @@ export function Nav({ project = false }: { project?: boolean }) {
     return () => window.removeEventListener("resize", close);
   }, []);
   return (
-    <header className={`fixed inset-x-0 top-0 z-50 flex items-center justify-between px-5 py-5 md:px-10 ${project ? "border-b border-paper/15 bg-ink/95 backdrop-blur-md" : "mix-blend-difference"}`}>
+    <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-paper/10 bg-ink/95 px-5 py-5 md:px-10">
       <Link href={project ? "/" : "#top"} className="font-display text-sm tracking-[.22em] text-white">
         LCS® / 2026
       </Link>

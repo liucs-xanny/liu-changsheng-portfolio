@@ -2,7 +2,7 @@
 
 import type { Project } from "@/lib/projects";
 import { MediaGallery } from "@/components/MediaGallery";
-import { assetPath } from "@/lib/assets";
+import { assetPath, previewPath } from "@/lib/assets";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -57,7 +57,7 @@ export function ProjectCase({ project, next }: { project: Project; next: Project
             <div className="mt-6 flex flex-wrap gap-2">{project.tags.map((tag) => <span key={tag} className="rounded-full border border-paper/20 px-3 py-1.5 text-[11px] text-paper/65">{tag}</span>)}</div>
             {(project.overview || project.summary) && <div className="mt-8"><h2 className="text-xs tracking-wider text-paper/40">项目介绍</h2><p className="mt-3 max-w-2xl whitespace-pre-line text-base leading-8 text-paper/80">{project.overview || project.summary}</p></div>}
           </div>
-          {project.cover && <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-paper/10 bg-white/[.035]"><Image src={assetPath(project.cover)} alt={`${project.title} 封面`} fill priority sizes="(max-width: 1024px) 100vw, 45vw" className="object-contain p-3" /></div>}
+          {project.cover && <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-paper/10 bg-white/[.035]"><Image src={previewPath(project.cover)} alt={`${project.title} 封面`} fill priority sizes="(max-width: 1024px) 100vw, 45vw" className="object-contain p-3" /></div>}
         </div>
       </section>
       <section id="project-materials" className="scroll-mt-24 px-5 pb-20 md:px-10 lg:px-16">

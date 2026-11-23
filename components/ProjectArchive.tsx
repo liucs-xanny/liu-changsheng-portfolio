@@ -2,9 +2,7 @@
 
 import { projects } from "@/lib/projects";
 import { getProjectCategories, projectCategories, type ProjectCategory } from "@/lib/project-categories";
-import { assetPath } from "@/lib/assets";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { previewPath } from "@/lib/assets";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -25,28 +23,11 @@ export function ProjectArchive() {
     return category === "全部" ? ordered : ordered.filter(project => getProjectCategories(project).includes(category));
   }, [category]);
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const context = gsap.context(() => {
-      const cards = gsap.utils.toArray<HTMLElement>(".archive-card");
-      cards.forEach((card, index) => {
-        gsap.fromTo(card, { y: 35, scale: .98, opacity: .85 }, {
-          y: 0, scale: 1, opacity: 1,
-          scrollTrigger: { trigger: card, start: "top 92%", end: "top 48%", scrub: .7 },
-        });
-        card.style.zIndex = String(index + 1);
-      });
-    }, section);
-    const frame = requestAnimationFrame(() => ScrollTrigger.refresh());
-    return () => { cancelAnimationFrame(frame); context.revert(); };
-  }, [filtered]);
-
   function selectCategory(name: ProjectCategory | "全部") {
     if (name === category) return;
     setCategory(name);
     try { sessionStorage.setItem("portfolio-project-category", name); } catch { /* Optional preference. */ }
-    requestAnimationFrame(() => section.current?.scrollIntoView({block:"start", behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}));
+    requestAnimationFrame(() => section.current?.scrollIntoView({block:"start", behavior:"instant"}));
   }
 
   return (
@@ -55,7 +36,7 @@ export function ProjectArchive() {
         <div><p className="eyebrow">03 / SELECTED WORKS</p><h2 id="archive-heading" className="section-title">PROJECT<br />ARCHIVE</h2></div>
         <p className="max-w-xs text-sm leading-7 text-paper/50">AI 影像、智能产品与多领域设计实践。<br />选择一个方向，快速了解我做过什么。</p>
       </div>
-      <div className="archive-category-bar sticky top-[54px] z-30 mb-8 flex flex-wrap items-center justify-between gap-3 border-y border-paper/15 bg-[#15130f]/95 py-4 backdrop-blur-xl">
+      <div className="archive-category-bar sticky top-[54px] z-30 mb-8 flex flex-wrap items-center justify-between gap-3 border-y border-paper/15 bg-[#15130f] py-4">
         <div className="flex flex-wrap gap-2" role="group" aria-label="项目分类">
           {([...projectCategories, "全部"] as const).map(name => {
             const count = name === "全部" ? projects.length : projects.filter(p => getProjectCategories(p).includes(name)).length;
@@ -66,13 +47,13 @@ export function ProjectArchive() {
       </div>
       <div id="project-cards" className="relative mx-auto max-w-7xl pb-10">
         {filtered.map((project, index) => (
-          <article key={project.slug} className="archive-card sticky top-[170px] mb-[18vh] h-[72svh] overflow-hidden rounded-[2rem] border border-paper/15 bg-[#1b1916]/95 shadow-[0_-24px_80px_rgba(0,0,0,.45)] backdrop-blur-xl md:top-[130px] md:h-[68vh]">
-            <Image src={assetPath(project.cover)} alt={project.title} fill sizes="(max-width: 768px) 95vw, 1280px" className={`object-cover opacity-35 transition duration-700 hover:scale-105 hover:opacity-65 ${project.slug === "medical-robot" ? "object-top" : ""}`} />
+          <article key={project.slug} style={{zIndex: index + 1}} className="archive-card group sticky mb-[18vh] h-[72svh] overflow-hidden rounded-[2rem] border border-paper/15 bg-[#1b1916] shadow-[0_-10px_28px_rgba(0,0,0,.35)] md:h-[68vh]">
+            {project.cover && <Image src={previewPath(project.cover)} alt={project.title} fill sizes="(max-width: 768px) 95vw, 1280px" className={`object-cover opacity-35 transition-opacity duration-200 group-hover:opacity-50 ${project.slug === "medical-robot" ? "object-top" : ""}`} />}
             <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/45 to-transparent" />
             <div className="absolute inset-0 flex flex-col justify-between p-7 md:p-12">
-              <div className="flex items-start justify-between gap-4"><span className="archive-number font-display text-6xl text-paper/15 md:text-8xl">{String(index + 1).padStart(2, "0")}</span><div className="flex flex-col items-end gap-4"><span className="text-sm tracking-[.06em] text-peach">{project.time}</span><Link href={`/projects/${project.slug}/`} aria-label={`查看项目：${project.title}`} className="inline-flex rounded-full bg-peach px-5 py-3 text-sm font-semibold text-ink transition hover:bg-paper">查看项目</Link></div></div>
+              <div className="flex items-start justify-between gap-4"><span className="archive-number font-display text-6xl text-paper/15 md:text-8xl">{String(index + 1).padStart(2, "0")}</span><div className="flex flex-col items-end gap-4"><span className="text-sm tracking-[.06em] text-peach">{project.time}</span><Link prefetch={false} href={`/projects/${project.slug}/`} aria-label={`查看项目：${project.title}`} className="inline-flex rounded-full bg-peach px-5 py-3 text-sm font-semibold text-ink transition hover:bg-paper">查看项目</Link></div></div>
               <div className="max-w-3xl">
-                <h3 className="mt-3 text-2xl font-semibold md:text-5xl"><Link href={`/projects/${project.slug}/`} className="transition-colors hover:text-peach">{project.title}</Link></h3>
+                <h3 className="mt-3 text-2xl font-semibold md:text-5xl"><Link prefetch={false} href={`/projects/${project.slug}/`} className="transition-colors hover:text-peach">{project.title}</Link></h3>
                 {project.role && <p className="mt-4 line-clamp-2 text-xs leading-6 text-peach">{project.role}</p>}
                 <p className="mt-3 line-clamp-2 max-w-xl text-sm leading-7 text-paper/65">{project.summary || project.overview}</p>
                 <div className="mt-5 flex flex-wrap gap-2">{project.tags.map(tag => <span key={tag} className="rounded-full border border-paper/20 px-3 py-1 text-[10px] tracking-wider">{tag}</span>)}</div>

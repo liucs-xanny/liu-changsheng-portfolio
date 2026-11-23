@@ -2,6 +2,7 @@
 node_modules/
 .next/
 out/
+public/image-previews/
 output/previews/
 tmp/
 .video-tools/

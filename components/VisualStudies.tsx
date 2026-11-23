@@ -1,6 +1,6 @@
 "use client";
 
-import { assetPath } from "@/lib/assets";
+import { assetPath, previewPath } from "@/lib/assets";
 import { studies, type Study } from "@/lib/studies";
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
@@ -139,7 +139,7 @@ export function VisualStudies() {
             transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 135, damping: 26 }}
             style={{ zIndex: position === 0 ? 3 : 1 }} aria-label={position === 0 ? `放大查看：${item.title}` : `${position < 0 ? "上一张" : "下一张"}：${item.title}`}
             onClick={() => { if (swipe.current) { swipe.current = false; return; } if (position) move(position); else setViewerIndex(activeIndex); }}>
-            <Image src={assetPath(item.src)} alt={item.title} fill sizes="(max-width: 768px) 88vw, 68vw" className={position === 0 ? "object-contain p-3 md:p-6" : "object-cover"} draggable={false} />
+            <Image src={previewPath(item.src)} alt={item.title} fill sizes="(max-width: 768px) 88vw, 68vw" className={position === 0 ? "object-contain p-3 md:p-6" : "object-cover"} draggable={false} />
             {position === 0 && <span className="absolute bottom-4 right-4 rounded-full border border-paper/15 bg-black/70 px-4 py-2 text-[10px] backdrop-blur-md">点击放大 ↗</span>}
           </motion.button>;
         })}
@@ -155,7 +155,7 @@ export function VisualStudies() {
           </div>
         </div>
         <div ref={strip} className="study-strip relative mx-auto mt-6 flex max-w-5xl gap-3 overflow-x-auto pb-3" data-lenis-prevent>
-          {items.map((item, itemIndex) => <button key={item.id} aria-label={`选择作品：${item.title}`} aria-pressed={itemIndex === activeIndex} onClick={() => setIndex(itemIndex)} className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-lg border transition md:h-20 md:w-32 ${itemIndex === activeIndex ? "border-peach opacity-100" : "border-paper/10 opacity-35 hover:opacity-80"}`}><Image src={assetPath(item.thumbnail || item.src)} alt="" fill sizes="128px" className="object-cover" /></button>)}
+          {items.map((item, itemIndex) => <button key={item.id} aria-label={`选择作品：${item.title}`} aria-pressed={itemIndex === activeIndex} onClick={() => setIndex(itemIndex)} className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-lg border transition md:h-20 md:w-32 ${itemIndex === activeIndex ? "border-peach opacity-100" : "border-paper/10 opacity-35 hover:opacity-80"}`}><Image src={previewPath(item.thumbnail || item.src, 320)} alt="" fill sizes="128px" className="object-cover" /></button>)}
         </div>
       </div>
       {viewerIndex !== null && <StudyViewer items={items} index={viewerIndex} onChange={setViewerIndex} onClose={() => setViewerIndex(null)} />}

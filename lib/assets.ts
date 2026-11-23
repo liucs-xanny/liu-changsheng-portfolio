@@ -10,3 +10,9 @@ export function assetPath(path: string) {
 
   return `${basePath}${path}`;
 }
+
+const previews: Record<string, string> = JSON.parse(process.env.NEXT_PUBLIC_IMAGE_PREVIEWS || "{}");
+
+export function previewPath(path: string, size: 320 | 800 | 1280 = 1280) {
+  return assetPath(previews[`${size}:${path}`] ?? path);
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { assetPath } from "@/lib/assets";
+import { assetPath, previewPath } from "@/lib/assets";
 import { useRef, useState } from "react";
 import Image from "next/image";
 
@@ -15,7 +15,7 @@ export function ProjectVideo({ src, title, description, poster }: {
   return (
     <article className="overflow-hidden rounded-[2rem] border border-paper/15 bg-[#181714]">
       <div className="relative">
-        <video ref={ref} controls={started} playsInline preload="none" poster={assetPath(poster)}
+        <video ref={ref} controls={started} playsInline preload="none"
           aria-label={title} data-project-video
           className="aspect-video w-full bg-black object-contain"
           onPlay={() => {
@@ -27,14 +27,17 @@ export function ProjectVideo({ src, title, description, poster }: {
           onPlaying={() => { setWaiting(false); setFailed(false); }}
           onCanPlay={() => setWaiting(false)} onPause={() => setWaiting(false)}
           onError={() => { setWaiting(false); setFailed(true); }}
-          src={url}
         />
         {!started && <button type="button" aria-label={`播放视频：${title}`} className="group absolute inset-0 grid place-items-center overflow-hidden bg-black" onClick={() => {
           setStarted(true);
           setFailed(false);
-          ref.current?.play().catch(() => { setWaiting(false); setFailed(true); });
+          const video = ref.current;
+          if (video) {
+            video.src = url;
+            video.play().catch(() => { setWaiting(false); setFailed(true); });
+          }
         }}>
-          <Image src={assetPath(poster)} alt="" fill sizes="(max-width: 768px) 100vw, 90vw" className="object-contain" />
+          {poster && <Image src={previewPath(poster)} alt="" fill sizes="(max-width: 768px) 100vw, 90vw" className="object-contain" />}
           <span className="relative rounded-full border border-paper/40 bg-black/75 px-6 py-3 text-sm font-semibold text-paper shadow-lg transition group-hover:border-peach group-hover:text-peach">点击播放</span>
         </button>}
         {waiting && !failed && <p role="status" className="pointer-events-none absolute left-4 top-4 rounded-full bg-black/80 px-4 py-2 text-sm text-paper">正在缓冲，也可下载后观看</p>}
