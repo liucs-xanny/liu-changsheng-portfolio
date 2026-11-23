@@ -5,6 +5,7 @@ import { spawn, spawnSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { readProfile, saveProfile } from "./profile-store.mjs";
 import { createPublisher } from "./publish-job.mjs";
+import { createBuilder } from "./build-job.mjs";
 import { getProjectCategories, projectCategories } from "../lib/project-categories.ts";
 import { reorderItems } from "./reorder-items.mjs";
 
@@ -15,6 +16,7 @@ const studiesFile = join(root, "data", "studies.json");
 const port = Number(process.env.ADMIN_PORT || 4188);
 const nodeExe = process.execPath;
 const publisher = createPublisher(root, nodeExe);
+const builder = createBuilder(root, nodeExe);
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -264,12 +266,18 @@ const server = createServer(async (request, response) => {
         gitStatus: gitStatus(),
         lastLog: existsSync(lastLogPath) ? readFileSync(lastLogPath, "utf8").slice(-5000) : "",
         publish: publisher.snapshot(),
+        build: builder.snapshot(),
       });
       return;
     }
 
     if (request.method === "GET" && url.pathname === "/api/publish-status") {
       json(response, publisher.snapshot());
+      return;
+    }
+
+    if (request.method === "GET" && url.pathname === "/api/build-status") {
+      json(response, builder.snapshot());
       return;
     }
 
@@ -515,6 +523,7 @@ const server = createServer(async (request, response) => {
       let result = { ok: true, output: "" };
 
       if (action === "publish") {
+        if (builder.snapshot().running) return json(response, {error:"正在生成，请完成后再上传。"}, 409);
         json(response, {ok:true, publish:publisher.start()}, 202);
         return;
       }
@@ -532,7 +541,8 @@ const server = createServer(async (request, response) => {
       } else if (action === "close-preview") {
         result = run("powershell", ["-NoProfile", "-Command", "$connections = Get-NetTCPConnection -LocalPort (4173..4183) -State Listen -ErrorAction SilentlyContinue; if ($connections) { $connections | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }; 'Portfolio server stopped.' } else { 'Portfolio server is not running.' }; if (Test-Path 'portfolio-local-url.txt') { Remove-Item 'portfolio-local-url.txt' -Force }"], 20000);
       } else if (action === "build") {
-        result = run(nodeExe, ["node_modules/next/dist/bin/next", "build"], 180000);
+        json(response, {ok:true, build:builder.start()}, 202);
+        return;
       } else if (action === "open-admin") {
         openUrl(`http://127.0.0.1:${port}/`);
         result.output = "后台已重新打开。";

@@ -88,7 +88,7 @@
       <div class="toolbar">
         <button onclick="runAction('preview')" class="primary">打开作品集</button>
         <button onclick="runAction('close-preview')">关闭预览</button>
-        <button onclick="runAction('build')">重新生成</button>
+        <button id="buildButton" onclick="runAction('build')">重新生成</button>
         <button id="publishButton" onclick="runAction('publish')" class="blue">上传 GitHub</button>
       </div>
     </header>
@@ -99,6 +99,11 @@
       <button id="personalTab" aria-selected="false" onclick="switchTab('personal')">个人简历 · 介绍与获奖</button>
     </nav>
     <p class="notice">修改后先「保存修改」，再点「重新生成」查看效果；确认后点「上传 GitHub」更新线上作品集。</p>
+    <section id="buildPanel" class="panel" style="margin-bottom:16px" hidden>
+      <h3 id="buildTitle">生成进度</h3>
+      <p class="hint">任务在后台执行，不用连续点击。保持后台服务运行；页面刷新后也可继续查看进度。</p>
+      <div id="buildOutput" class="status" style="margin-top:12px" aria-live="polite"></div>
+    </section>
     <section id="publishPanel" class="panel" style="margin-bottom:16px" hidden>
       <div class="toolbar" style="justify-content:space-between"><h3 id="publishTitle">发布状态</h3><a href="https://github.com/liucs-xanny/liu-changsheng-portfolio/actions" target="_blank" rel="noreferrer">查看 GitHub 部署进度 ↗</a></div>
       <p class="hint">本地保存、上传 GitHub、网站部署是三个阶段。只有核对到线上新版本后，才会显示“网站已更新”。</p>
@@ -173,6 +178,9 @@
     let studies = [];
     let activeTab = 'projects';
     let publishTimer = null;
+    let buildTimer = null;
+    let buildRunning = false;
+    let publishRunning = false;
 
     const $ = (id) => document.getElementById(id);
     const splitLines = (value) => String(value || '').split(/[\r\n,，]+/).map((item) => item.trim()).filter(Boolean);
@@ -487,6 +495,7 @@
           body: JSON.stringify({ action })
         });
         if (action === 'publish') { showPublish(data.publish); watchPublish(data.publish); return; }
+        if (action === 'build') { showBuild(data.build); watchBuild(data.build); return; }
         $('status').textContent = data.output || '完成';
         setTimeout(refreshStatus, 900);
       } catch (error) {
@@ -501,17 +510,45 @@
         'Git 状态:\n' + data.gitStatus + '\n\n' +
         '最近操作:\n' + (data.lastLog || '暂无');
       if (data.publish) { showPublish(data.publish); watchPublish(data.publish); }
+      if (data.build) { showBuild(data.build); watchBuild(data.build); }
+    }
+
+    function syncJobButtons() {
+      $('buildButton').disabled = buildRunning || publishRunning;
+      $('publishButton').disabled = buildRunning || publishRunning;
+    }
+
+    function showBuild(job) {
+      if (!job || job.status === 'idle') return;
+      buildRunning = job.running;
+      syncJobButtons();
+      $('buildPanel').hidden = false;
+      $('buildButton').textContent = job.running ? '正在生成…' : '重新生成';
+      $('buildTitle').textContent = ({running:'正在生成 · 可在下方查看进度',success:'生成完成 · 可以打开作品集',error:'生成未完成 · 内容已保存',interrupted:'上次生成未确认完成'})[job.status] || '生成状态';
+      $('buildOutput').textContent = job.output || '正在准备…';
+      $('buildOutput').scrollTop = $('buildOutput').scrollHeight;
+      if (job.running) $('status').textContent = job.output || '正在生成…';
+    }
+
+    function watchBuild(job) {
+      if (buildTimer) clearTimeout(buildTimer);
+      if (!job?.running) return;
+      buildTimer = setTimeout(async () => {
+        try { const data = await api('/api/build-status'); showBuild(data); watchBuild(data); }
+        catch { $('buildTitle').textContent = '正在重新连接生成进度，请勿重复生成…'; watchBuild({running:true}); }
+      }, 1500);
     }
 
     function showPublish(job) {
       if (!job || job.status === 'idle') return;
       $('publishPanel').hidden = false;
-      $('publishButton').disabled = job.running;
+      publishRunning = job.running;
+      syncJobButtons();
       $('publishButton').textContent = job.running ? '正在上传 / 部署…' : '上传 GitHub';
       $('publishTitle').textContent = ({running:'正在上传并等待网站部署',success:'网站已更新 · 已核对线上版本',pending:'代码已上传 · 网站部署尚未确认',error:'发布未完成 · 查看下方原因',interrupted:'上次发布未确认完成'})[job.status] || '发布状态';
       $('publishOutput').textContent = job.output || '正在准备…';
       $('publishOutput').scrollTop = $('publishOutput').scrollHeight;
-      $('status').textContent = job.output || '正在准备…';
+      if (!buildRunning) $('status').textContent = job.output || '正在准备…';
     }
 
     function watchPublish(job) {

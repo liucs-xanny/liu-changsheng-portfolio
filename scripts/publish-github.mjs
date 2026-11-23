@@ -9,29 +9,49 @@ const candidates = [process.env.GIT_EXE, "git", "C:\\Program Files\\Git\\cmd\\gi
 const git = candidates.find(candidate => (candidate === "git" || existsSync(candidate)) && spawnSync(candidate, ["--version"], {cwd, encoding:"utf8"}).status === 0);
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const httpOptions = ["-c", "http.version=HTTP/1.1", "-c", "http.postBuffer=1048576"];
+const baseHttpOptions = [...httpOptions, "-c", "http.lowSpeedLimit=1024", "-c", "http.lowSpeedTime=60"];
+let networkChoices = [];
+let networkIndex = 0;
+
+function activateNetwork(index) {
+  networkIndex = index;
+  const choice = networkChoices[index];
+  httpOptions.splice(0, httpOptions.length, ...baseHttpOptions, "-c", `http.proxy=${choice.proxy || ""}`);
+  if (typeof http.setGlobalProxyFromEnv === "function") http.setGlobalProxyFromEnv({http_proxy:choice.proxy || "", https_proxy:choice.proxy || "", no_proxy:"localhost,127.0.0.1"});
+  console.log(`连接方式：${choice.label}（不更改系统设置）。`);
+}
+
+function tryOtherNetwork() {
+  if (networkChoices.length < 2) return false;
+  console.log("当前连接未完成，改用另一条本机已有连接后重试。");
+  activateNetwork((networkIndex + 1) % networkChoices.length);
+  return true;
+}
 
 function configureNetwork() {
   let proxy = process.env.https_proxy || process.env.HTTPS_PROXY || process.env.http_proxy || process.env.HTTP_PROXY;
   if (!proxy) proxy = spawnSync(git, [...gitArgs,"config","--get","http.proxy"], {cwd, encoding:"utf8"}).stdout?.trim();
+  if (proxy) {
+    networkChoices = [{label:"已配置的网络代理", proxy:proxy.includes("://") ? proxy : `http://${proxy}`}];
+    activateNetwork(0);
+    return;
+  }
+  networkChoices = [{label:"直连 GitHub", proxy:""}];
   if (!proxy && process.platform === "win32") {
     const registry = spawnSync("powershell.exe", ["-NoProfile","-Command","$networkSettings = Get-ItemProperty 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings'; if ($networkSettings.ProxyEnable -eq 1) { $networkSettings.ProxyServer }"], {encoding:"utf8", windowsHide:true, timeout:10000});
     const values = registry.stdout?.trim().split(";") || [];
     const systemProxy = values.find(value => value.startsWith("https="))?.slice(6) || values.find(value => value.startsWith("http="))?.slice(5) || values.find(value => !value.includes("="));
     if (systemProxy) {
+      const alternate = {label:"本机已启用的代理", proxy:systemProxy.includes("://") ? systemProxy : `http://${systemProxy}`};
       const direct = spawnSync(git, [...gitArgs,"-c","http.proxy=","-c","http.version=HTTP/1.1","ls-remote","origin","refs/heads/main"], {cwd, encoding:"utf8", windowsHide:true, timeout:25000});
       if (direct.status === 0) {
-        httpOptions.push("-c", "http.proxy=");
-        console.log("已确认可直连 GitHub，使用直连上传（不更改系统代理）。");
-        return;
+        networkChoices.push(alternate);
+      } else {
+        networkChoices.unshift(alternate);
       }
-      proxy = systemProxy;
     }
   }
-  if (!proxy) return;
-  if (!proxy.includes("://")) proxy = `http://${proxy}`;
-  httpOptions.push("-c", `http.proxy=${proxy}`);
-  if (typeof http.setGlobalProxyFromEnv === "function") http.setGlobalProxyFromEnv({http_proxy:proxy, https_proxy:proxy, no_proxy:"localhost,127.0.0.1"});
-  console.log("使用本机已启用的代理连接 GitHub（不更改系统设置）。");
+  activateNetwork(0);
 }
 
 function run(args, {live = false, timeout = 60000, input} = {}) {
@@ -41,13 +61,13 @@ function run(args, {live = false, timeout = 60000, input} = {}) {
     let timedOut = false;
     const timer = setTimeout(() => {
       timedOut = true;
-      output += "\n连接超时，正在停止本次上传并核对远端状态。";
-      if (live) process.stdout.write("\n连接超时，正在停止本次上传并核对远端状态。\n");
+      output += "\n当前网络步骤超时；本地保存与提交不受影响。";
+      if (live) process.stdout.write("\n当前网络步骤超时；本地保存与提交不受影响。\n");
       // Git starts HTTPS helper processes on Windows. Stop the owned tree so
       // a timed-out helper cannot keep the pipes open or overlap a retry.
       if (process.platform === "win32" && child.pid) {
         spawn("taskkill", ["/PID", String(child.pid), "/T", "/F"], {windowsHide:true, stdio:"ignore"})
-          .on("error", () => child.kill());
+          .on("error", () => child.kill()).on("exit", code => { if (code) child.kill(); });
       } else child.kill();
     }, timeout);
     for (const stream of [child.stdout, child.stderr]) stream.on("data", chunk => {
@@ -129,7 +149,15 @@ async function main() {
     await must(["add", "-A"]);
     await must(["commit", "-m", "Update portfolio content"], {live:true});
   } else console.log("本地修改已保存，正在核对 GitHub 是否收到提交…");
-  await must([...httpOptions, "fetch", "origin", "main"], {timeout:90000, live:true});
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    console.log(`\n正在同步 GitHub 版本（第 ${attempt}/3 次，尚未上传素材）…`);
+    const fetched = await run([...httpOptions, "fetch", "--no-tags", "origin", "main"], {timeout:120000, live:true});
+    if (fetched.ok) break;
+    if (/authentication failed|permission denied|repository not found|could not read username/i.test(fetched.output)) throw new Error("GitHub 登录或仓库权限有误，请检查登录后重试。没有覆盖线上内容。");
+    if (attempt === 3) throw new Error(`上传前的 GitHub 版本同步未完成，不是重新生成失败。本地修改已保存。\n${fetched.output}`);
+    tryOtherNetwork();
+    await pause(2000);
+  }
   const [ahead, behind] = (await must(["rev-list", "--left-right", "--count", "HEAD...origin/main"])).split(/\s+/).map(Number);
   if (behind) throw new Error("GitHub 上有本地尚未合并的修改，请先同步后再上传。此次没有覆盖线上内容。");
   await verifyOutgoingHistory();
@@ -142,7 +170,7 @@ async function main() {
     uploaded = await verifyRemote(head);
     if (uploaded) break;
     if (/GH001|large files detected|exceeds.*limit|\[rejected\]|fetch first|permission denied|authentication failed/i.test(push.output)) throw new Error("上传被拒绝，停止重复重试。请根据上方具体错误处理。");
-    if (attempt < 3) { console.log("尚未确认远端收到更新，稍后重试…"); await pause(3000 * attempt); }
+    if (attempt < 3) { console.log("尚未确认远端收到更新，稍后重试…"); tryOtherNetwork(); uploaded = await verifyRemote(head); await pause(3000 * attempt); }
   }
   if (!uploaded) throw new Error("上传未完成：GitHub 仍未收到最新提交。本地内容和提交均已保留。请稍后重试。");
   console.log(`GitHub 已确认收到提交 ${head.slice(0, 7)}。`);

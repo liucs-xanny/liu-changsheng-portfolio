@@ -12,9 +12,14 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; background: var(--ink); }
+/* Avoid competing browser and Lenis scroll animations, including #work on return. */
+html.lenis { scroll-behavior: auto !important; height: auto; }
+.lenis [data-lenis-prevent] { overscroll-behavior: contain; }
 body { margin: 0; background: var(--ink); color: var(--paper); font-family: Arial, "Noto Sans SC", sans-serif; overflow-x: hidden; }
 ::selection { background: var(--peach); color: var(--ink); }
 a, button { -webkit-tap-highlight-color: transparent; }
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline: 2px solid var(--peach); outline-offset: 4px; }
+section[id] { scroll-margin-top: 90px; }
 
 @layer components {
   .eyebrow { @apply text-[10px] tracking-[.22em] text-peach md:text-xs; }

@@ -1,48 +1,81 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { assetPath } from "@/lib/assets";
 import { profile } from "@/lib/profile";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function Cover() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const pointerRatio = useRef(0.5);
-  const seekFrame = useRef(0);
+  const reduceMotion = useReducedMotion();
   const [videoReady, setVideoReady] = useState(false);
   const [star, setStar] = useState(false);
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.12], [1, 0.96]);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || reduceMotion) return;
+    let frame = 0;
+    let disposed = false;
+    let seeking = false;
+    let firstFrame = true;
+    const reveal = () => { if (!disposed) setVideoReady(true); };
+    const seek = () => {
+      frame = 0;
+      if (disposed || seeking || video.readyState < 1 || !Number.isFinite(video.duration)) return;
+      const target = pointerRatio.current * Math.max(0, video.duration - 1 / 30);
+      if (Math.abs(video.currentTime - target) < 1 / 60 && !firstFrame) return;
+      // Decode one frame at a time, then seek to the latest pointer position.
+      // Repeated pointer events must not cancel an in-flight decode.
+      seeking = true;
+      firstFrame = false;
+      video.pause();
+      video.currentTime = target;
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(seek); };
+    const decoded = () => { seeking = false; reveal(); schedule(); };
+    const ready = () => { if (!seeking) schedule(); };
+    const move = (event: PointerEvent) => {
+      if (event.pointerType === "touch") return;
+      // Remember movements before media is ready; never autoplay the clip.
+      pointerRatio.current = Math.max(0, Math.min(1, event.clientX / window.innerWidth));
+      schedule();
+    };
+    const resume = () => {
+      seeking = video.seeking;
+      if (video.readyState === 0) video.load();
+      else ready();
+    };
+    video.addEventListener("loadedmetadata", ready);
+    video.addEventListener("loadeddata", ready);
+    video.addEventListener("canplay", ready);
+    video.addEventListener("seeked", decoded);
+    window.addEventListener("pointermove", move, { passive: true });
+    window.addEventListener("pageshow", resume);
+    // Hydration may run after a cached loadeddata event. Check readiness too.
+    if (video.readyState >= 1) ready();
+    else video.load();
+    return () => {
+      disposed = true;
+      cancelAnimationFrame(frame);
+      video.removeEventListener("loadedmetadata", ready);
+      video.removeEventListener("loadeddata", ready);
+      video.removeEventListener("canplay", ready);
+      video.removeEventListener("seeked", decoded);
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pageshow", resume);
+    };
+  }, [reduceMotion]);
+
   return (
     <motion.section
       id="top"
-      style={{ opacity, scale }}
+      style={reduceMotion ? undefined : { opacity, scale }}
       className="sticky top-0 h-screen overflow-hidden bg-[#221d17]"
-      onPointerMove={(event) => {
-        if (event.pointerType === "touch") return;
-        const video = videoRef.current;
-        if (!video || video.readyState < 2 || !Number.isFinite(video.duration)) return;
-
-        const bounds = event.currentTarget.getBoundingClientRect();
-        pointerRatio.current = Math.max(
-          0,
-          Math.min(1, (event.clientX - bounds.left) / bounds.width),
-        );
-
-        if (seekFrame.current) return;
-        seekFrame.current = requestAnimationFrame(() => {
-          seekFrame.current = 0;
-          const activeVideo = videoRef.current;
-          if (!activeVideo || !Number.isFinite(activeVideo.duration)) return;
-
-          const lastFrameTime = Math.max(0, activeVideo.duration - 1 / 30);
-          activeVideo.pause();
-          activeVideo.currentTime = pointerRatio.current * lastFrameTime;
-        });
-      }}
     >
       <div className="absolute inset-0">
         <Image
@@ -50,22 +83,16 @@ export function Cover() {
           alt="蓝色插画角色"
           fill
           priority
-          className="object-cover"
+          className="object-cover object-[70%_center] lg:object-center"
         />
         <video
           ref={videoRef}
           muted
           playsInline
-          preload="auto"
+          preload={reduceMotion ? "none" : "auto"}
           aria-label="眼睛跟随鼠标移动的蓝色插画角色"
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${videoReady ? "opacity-100" : "opacity-0"}`}
-          onLoadedData={() => {
-            setVideoReady(true);
-            if (videoRef.current) {
-              videoRef.current.pause();
-              videoRef.current.currentTime = videoRef.current.duration / 2;
-            }
-          }}
+          className={`absolute inset-0 h-full w-full object-cover object-[70%_center] transition-opacity duration-300 lg:object-center ${videoReady && !reduceMotion ? "opacity-100" : "opacity-0"}`}
+          onError={() => setVideoReady(false)}
         >
           <source src={assetPath("/media/cover-gaze-hair-v4.mp4")} type="video/mp4" />
         </video>
@@ -113,7 +140,7 @@ export function Cover() {
           <p className="text-2xl font-semibold md:text-4xl">{profile.name}</p>
           <p className="mt-2 text-[10px] uppercase tracking-[.18em] opacity-80">{profile.headline}</p>
         </div>
-        <a href="#about" className="animate-pulse text-xs tracking-[.2em]">
+        <a href="#about" className="text-xs tracking-[.2em] transition-colors hover:text-paper">
           SCROLL TO EXPLORE ↓
         </a>
       </div>

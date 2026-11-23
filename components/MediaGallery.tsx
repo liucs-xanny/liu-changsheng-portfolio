@@ -4,7 +4,8 @@ import type { GalleryItem, Project } from "@/lib/projects";
 import { AnimatePresence, motion } from "framer-motion";
 import { assetPath } from "@/lib/assets";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ProjectVideo } from "@/components/ProjectVideo";
 
 const normalizeItem = (item: string | GalleryItem): GalleryItem =>
   typeof item === "string" ? { src: item, format: "landscape" } : item;
@@ -27,6 +28,8 @@ export function MediaGallery({ project }: { project: Project }) {
   const [activeImage, setActiveImage] = useState<number | null>(null);
   const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(1);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const imageOpen = activeImage !== null;
   const videos = project.videos ?? (project.video ? [{
     src: project.video,
     title: "项目演示视频",
@@ -34,19 +37,26 @@ export function MediaGallery({ project }: { project: Project }) {
   }] : []);
 
   useEffect(() => {
-    if (activeImage === null) return;
+    if (!imageOpen) return;
+    const dialog = dialogRef.current;
+    const previousOverflow = document.body.style.overflow;
+    dialog?.showModal();
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setActiveImage(null);
-      if (event.key === "ArrowRight") setActiveImage((activeImage + 1) % allItems.length);
-      if (event.key === "ArrowLeft") setActiveImage((activeImage - 1 + allItems.length) % allItems.length);
+      if (["ArrowRight", "ArrowLeft"].includes(event.key)) {
+        event.preventDefault();
+        setRotation(0); setZoom(1);
+        setActiveImage(index => ((index ?? 0) + (event.key === "ArrowRight" ? 1 : -1) + allItems.length) % allItems.length);
+      }
     };
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", handleKey);
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
+      dialog?.close();
       window.removeEventListener("keydown", handleKey);
     };
-  }, [activeImage, allItems.length]);
+  }, [imageOpen, allItems.length]);
 
   const openImage = (item: GalleryItem) => {
     setRotation(0);
@@ -87,21 +97,7 @@ export function MediaGallery({ project }: { project: Project }) {
       {videos.length > 0 && (
         <div className="grid gap-6">
           {videos.map((video) => (
-            <article key={video.src} className="overflow-hidden rounded-[2rem] border border-paper/15 bg-[#181714]">
-              <video
-                controls
-                playsInline
-                preload="metadata"
-                poster={assetPath(video.poster ?? project.cover)}
-                className="aspect-video w-full bg-black object-contain"
-              >
-                <source src={assetPath(video.src)} type="video/mp4" />
-              </video>
-              <div className="p-6 md:flex md:items-end md:justify-between">
-                <h3 className="text-xl">{video.title}</h3>
-                <p className="mt-2 max-w-xl text-sm leading-6 text-paper/50 md:mt-0 md:text-right">{video.description}</p>
-              </div>
-            </article>
+            <ProjectVideo key={video.src} {...video} poster={video.poster ?? project.cover} />
           ))}
         </div>
       )}
@@ -144,11 +140,15 @@ export function MediaGallery({ project }: { project: Project }) {
 
       <AnimatePresence>
         {activeImage !== null && (
-          <motion.div
+          <motion.dialog
+            ref={dialogRef}
+            aria-label="项目图片查看器"
+            data-lenis-prevent
+            onCancel={() => setActiveImage(null)}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] grid place-items-center bg-black/95 p-4 backdrop-blur-xl"
+            className="fixed inset-0 z-[100] m-0 h-dvh max-h-none w-screen max-w-none place-items-center border-0 bg-black/95 p-4 text-paper backdrop:bg-black/95 open:grid"
             onClick={() => setActiveImage(null)}
           >
             <div className="absolute left-4 right-4 top-4 z-20 flex items-center justify-between md:left-8 md:right-8 md:top-6">
@@ -199,7 +199,7 @@ export function MediaGallery({ project }: { project: Project }) {
                 priority
               />
             </motion.div>
-          </motion.div>
+          </motion.dialog>
         )}
       </AnimatePresence>
     </div>

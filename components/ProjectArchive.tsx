@@ -12,6 +12,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 export function ProjectArchive() {
   const section = useRef<HTMLElement>(null);
   const [category, setCategory] = useState<ProjectCategory | "全部">("AIGC影视");
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem("portfolio-project-category");
+      if (saved === "全部" || projectCategories.includes(saved as ProjectCategory)) setCategory(saved as ProjectCategory | "全部");
+    } catch { /* Browsing still works when storage is disabled. */ }
+  }, []);
   const filtered = useMemo(() => {
     // AIGC leads in the complete archive; preserve the editor's order within
     // each group. Filtering never changes the underlying project content.
@@ -25,7 +31,7 @@ export function ProjectArchive() {
     const context = gsap.context(() => {
       const cards = gsap.utils.toArray<HTMLElement>(".archive-card");
       cards.forEach((card, index) => {
-        gsap.fromTo(card, { y: 60, scale: .96, opacity: .55 }, {
+        gsap.fromTo(card, { y: 35, scale: .98, opacity: .85 }, {
           y: 0, scale: 1, opacity: 1,
           scrollTrigger: { trigger: card, start: "top 92%", end: "top 48%", scrub: .7 },
         });
@@ -39,6 +45,7 @@ export function ProjectArchive() {
   function selectCategory(name: ProjectCategory | "全部") {
     if (name === category) return;
     setCategory(name);
+    try { sessionStorage.setItem("portfolio-project-category", name); } catch { /* Optional preference. */ }
     requestAnimationFrame(() => section.current?.scrollIntoView({block:"start", behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}));
   }
 
@@ -63,13 +70,12 @@ export function ProjectArchive() {
             <Image src={assetPath(project.cover)} alt={project.title} fill sizes="(max-width: 768px) 95vw, 1280px" className={`object-cover opacity-35 transition duration-700 hover:scale-105 hover:opacity-65 ${project.slug === "medical-robot" ? "object-top" : ""}`} />
             <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/45 to-transparent" />
             <div className="absolute inset-0 flex flex-col justify-between p-7 md:p-12">
-              <div className="flex items-start justify-between gap-4"><span className="archive-number font-display text-6xl text-paper/15 md:text-8xl">{String(index + 1).padStart(2, "0")}</span><span className="text-xs tracking-[.12em] text-peach">{project.time}</span></div>
+              <div className="flex items-start justify-between gap-4"><span className="archive-number font-display text-6xl text-paper/15 md:text-8xl">{String(index + 1).padStart(2, "0")}</span><div className="flex flex-col items-end gap-4"><span className="text-sm tracking-[.06em] text-peach">{project.time}</span><Link href={`/projects/${project.slug}/`} aria-label={`查看项目：${project.title}`} className="inline-flex rounded-full bg-peach px-5 py-3 text-sm font-semibold text-ink transition hover:bg-paper">查看项目</Link></div></div>
               <div className="max-w-3xl">
-                <h3 className="mt-3 text-2xl font-semibold md:text-5xl">{project.title}</h3>
+                <h3 className="mt-3 text-2xl font-semibold md:text-5xl"><Link href={`/projects/${project.slug}/`} className="transition-colors hover:text-peach">{project.title}</Link></h3>
                 {project.role && <p className="mt-4 line-clamp-2 text-xs leading-6 text-peach">{project.role}</p>}
                 <p className="mt-3 line-clamp-2 max-w-xl text-sm leading-7 text-paper/65">{project.summary || project.overview}</p>
                 <div className="mt-5 flex flex-wrap gap-2">{project.tags.map(tag => <span key={tag} className="rounded-full border border-paper/20 px-3 py-1 text-[10px] tracking-wider">{tag}</span>)}</div>
-                <Link href={`/projects/${project.slug}/`} className="mt-6 inline-flex items-center gap-4 rounded-full bg-peach px-6 py-3 text-xs font-bold tracking-[.16em] text-ink transition hover:shadow-[0_0_30px_rgba(255,184,148,.45)]">VIEW CASE <span>↗</span></Link>
               </div>
             </div>
           </article>
