@@ -115,40 +115,6 @@
   },
   {
     "hidden": false,
-    "slug": "project-24db0e3f",
-    "index": "12",
-    "title": "用数据说话 —— 纵腾集团企业文化 AIGC 创意影像项目",
-    "english": "",
-    "summary": "负责纵腾集团企业文化系列片《用数据说话》的 AIGC 视频创作，同时输出一套标准化生产 SOP（分镜 — 资产 — 生成 — 修补 — 声音 — 剪辑 — 归档九步，含固定提示词模",
-    "role": "AIGC视频创作",
-    "time": "2026.11",
-    "tags": [
-      "AIGC"
-    ],
-    "categories": [
-      "AIGC影视"
-    ],
-    "cover": "/images/projects/project-24db0e3f/selected/5d7cc8ec-06149256-6f5c-4fcd-abce-86ef0b8fbf9a.png",
-    "accent": "#356FE8",
-    "overview": "负责纵腾集团企业文化系列片《用数据说话》的 AIGC 视频创作，同时输出一套标准化生产 SOP（分镜 — 资产 — 生成 — 修补 — 声音 — 剪辑 — 归档九步，含固定提示词模板与工具链）。独立完成从剧本到成片的全部环节，解决 AI 生成的角色不一致、画面 BUG、口型对不上等问题，成片用于集团价值观宣发，并作为团队的流程样板推广到其余 11 支视频。",
-    "problem": "",
-    "research": [],
-    "strategy": [],
-    "workflow": [],
-    "outputs": [],
-    "result": "",
-    "reflection": "",
-    "gallery": [],
-    "videos": [
-      {
-        "src": "/media/fc35aa27-aigc-.mp4",
-        "title": "项目视频",
-        "description": ""
-      }
-    ]
-  },
-  {
-    "hidden": false,
     "slug": "project-b96b10a5",
     "index": "08",
     "title": "潮阳抽纱非遗文化宣传AI短片",
@@ -212,6 +178,197 @@
     "videos": [
       {
         "src": "/media/672135de-39.mp4",
+        "title": "项目视频",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "hidden": false,
+    "slug": "project-b50f434f",
+    "index": "14",
+    "title": "APEC广交会岭南好物分享",
+    "english": "",
+    "summary": "以 \"岭南好物遇见 AI\" 为核心，借 APEC 盛会带动广货出海的契机，将荔枝、冰酒、香云纱等岭南特产融入民国复古美学，用 AI 让静态老海报 \"活\" 起来，呈现传统风物与现代科",
+    "role": "",
+    "time": "2026.11",
+    "tags": [
+      "AIGC"
+    ],
+    "categories": [
+      "AIGC影视",
+      "视觉设计"
+    ],
+    "cover": "",
+    "accent": "#356FE8",
+    "overview": "以 \"岭南好物遇见 AI\" 为核心，借 APEC 盛会带动广货出海的契机，将荔枝、冰酒、香云纱等岭南特产融入民国复古美学，用 AI 让静态老海报 \"活\" 起来，呈现传统风物与现代科技交融的广货新形象。",
+    "problem": "",
+    "research": [],
+    "strategy": [],
+    "workflow": [],
+    "outputs": [],
+    "result": "",
+    "reflection": "",
+    "gallery": [],
+    "videos": [
+      {
+        "src": "/media/bdc95755-asset-20261123113144.mp4",
+        "title": "项目视频",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "hidden": false,
+    "slug": "lechang",
+    "index": "04",
+    "title": "乐后昌城---广东广播电视台珠江频道实习项目",
+    "english": "Lehou Changcheng",
+    "summary": "本设计以广东省韶关乐昌市为研究对象，针对当地文旅资源丰富但品牌认知分散、产品同质化严重、传播方式单一等问题，提出“从过境地到目的地”的农文旅品牌重塑策略。 项目以乐昌特色资源“黄金",
+    "role": "项目组长｜区域品牌策略、IP设计与AIGC内容创作",
+    "time": "2026.02—2026.05",
+    "tags": [
+      "Brand Experience",
+      "IP Design",
+      "AIGC",
+      "Rural Culture"
+    ],
+    "categories": [
+      "AIGC影视",
+      "视觉设计"
+    ],
+    "cover": "/images/projects/lechang/selected/cover.png",
+    "accent": "#FFB894",
+    "overview": "本设计以广东省韶关乐昌市为研究对象，针对当地文旅资源丰富但品牌认知分散、产品同质化严重、传播方式单一等问题，提出“从过境地到目的地”的农文旅品牌重塑策略。 项目以乐昌特色资源“黄金奈李”、丹霞地貌、竹编工艺及乡村生活文化为核心，构建“乐后昌城”区域公共消费品牌。",
+    "problem": "乐昌资源丰富但认知分散，城市记忆点不足，产品同质化且传播方式单一。",
+    "research": [
+      "建立文化识别度、设计转化潜力、传播爆发力三维评价\n识别认知、叙事、渠道、产品与价值五类错位\n研究地貌、农产、非遗、乡村生活与红色文化"
+    ],
+    "strategy": [
+      "从“过境地”转向“文化消费目的地”\n提出“石间无岁月，李下不急时”品牌理念\n形成资源—文化—品牌—产品—场景—传播链路"
+    ],
+    "workflow": [
+      "地域资源筛选→品牌定位→视觉系统→石乐乐IP→文创与空间触点→AI音乐与视频传播"
+    ],
+    "outputs": [
+      "Logo、标准色、字体与辅助图形+石乐乐三视图、毛绒形象、表情与系列服装+包装、家居、首饰、乡村市集与助农直播场景"
+    ],
+    "result": "完成区域公共消费品牌、IP、产品与AIGC传播的完整设计，并形成AI音乐和数字MV工作流。",
+    "reflection": "区域品牌不是资源清单，而是一套让人愿意停留、消费并分享的体验叙事。",
+    "gallery": [
+      {
+        "src": "/images/projects/lechang/selected/creative-market.webp",
+        "title": "文创产品展卖厅",
+        "description": "城市文创产品合集，与线下体验与销售空间。",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/lechang/slides/page-43.webp",
+        "title": "石乐乐 IP 形象",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/lechang/selected/record-materials.webp",
+        "title": "唱片物料设计（AI英语+MV）",
+        "description": "围绕《石缝里的光》的唱片与传播物料。",
+        "format": "landscape"
+      },
+      {
+        "src": "/images/projects/lechang/selected/rural-agriculture-culture-tourism-live-streaming-studio.png",
+        "title": "乡村农文旅直播间",
+        "description": "",
+        "format": "landscape"
+      }
+    ],
+    "mediaSections": [
+      {
+        "eyebrow": "CITY IP / SHI LELE",
+        "title": "石乐乐城市 IP 设计",
+        "description": "从丹霞岩石、黄金柰李与乐昌地域性格中提炼角色语言，延展到三视图、表情、服装、毛绒与公共传播触点。",
+        "items": [
+          {
+            "src": "/images/projects/lechang/ip/ip-0.webp",
+            "title": "IP 概念与角色定位",
+            "format": "portrait"
+          },
+          {
+            "src": "/images/projects/lechang/ip/ip-1.webp",
+            "title": "石乐乐造型系统",
+            "format": "portrait"
+          },
+          {
+            "src": "/images/projects/lechang/ip/ip-2.webp",
+            "title": "表情与动作延展",
+            "format": "portrait"
+          },
+          {
+            "src": "/images/projects/lechang/ip/ip-3.webp",
+            "title": "服装与应用场景",
+            "format": "portrait"
+          },
+          {
+            "src": "/images/projects/lechang/ip/ip-4.webp",
+            "title": "IP 完整展示展板",
+            "format": "portrait"
+          }
+        ]
+      },
+      {
+        "eyebrow": "AIGC MUSIC / DIGITAL MV",
+        "title": "AI 音乐与 MV 设计",
+        "description": "以地域故事和项目品牌叙事为基础，完成歌词、AI 音乐、视觉分镜与数字 MV 的整合传播实验；上方可直接播放《石缝里的光》成片。",
+        "items": [
+          {
+            "src": "/images/projects/lechang/aigc/music-video-board.webp",
+            "title": "音乐与视频设计展板",
+            "description": "记录主题提炼、音乐生成、视觉语言与 MV 制作过程。",
+            "format": "portrait"
+          }
+        ]
+      }
+    ],
+    "videos": [
+      {
+        "src": "/media/lechang-mv.mp4",
+        "poster": "/images/projects/lechang/mv-poster.webp",
+        "title": "《石缝里的光》数字 MV",
+        "description": "结合 Suno AI 音乐、歌词与生成式视频完成的乐昌品牌传播实验。"
+      }
+    ],
+    "document": {
+      "src": "/docs/projects/lechang.pdf",
+      "label": "查看 53 页完整项目汇报"
+    }
+  },
+  {
+    "hidden": false,
+    "slug": "project-24db0e3f",
+    "index": "12",
+    "title": "用数据说话 —— 纵腾集团企业文化 AIGC 创意影像项目",
+    "english": "",
+    "summary": "负责纵腾集团企业文化系列片《用数据说话》的 AIGC 视频创作，同时输出一套标准化生产 SOP（分镜 — 资产 — 生成 — 修补 — 声音 — 剪辑 — 归档九步，含固定提示词模",
+    "role": "AIGC视频创作",
+    "time": "2026.11",
+    "tags": [
+      "AIGC"
+    ],
+    "categories": [
+      "AIGC影视"
+    ],
+    "cover": "/images/projects/project-24db0e3f/selected/5d7cc8ec-06149256-6f5c-4fcd-abce-86ef0b8fbf9a.png",
+    "accent": "#356FE8",
+    "overview": "负责纵腾集团企业文化系列片《用数据说话》的 AIGC 视频创作，同时输出一套标准化生产 SOP（分镜 — 资产 — 生成 — 修补 — 声音 — 剪辑 — 归档九步，含固定提示词模板与工具链）。独立完成从剧本到成片的全部环节，解决 AI 生成的角色不一致、画面 BUG、口型对不上等问题，成片用于集团价值观宣发，并作为团队的流程样板推广到其余 11 支视频。",
+    "problem": "",
+    "research": [],
+    "strategy": [],
+    "workflow": [],
+    "outputs": [],
+    "result": "",
+    "reflection": "",
+    "gallery": [],
+    "videos": [
+      {
+        "src": "/media/fc35aa27-aigc-.mp4",
         "title": "项目视频",
         "description": ""
       }
@@ -622,128 +779,6 @@
       }
     ],
     "videos": []
-  },
-  {
-    "hidden": false,
-    "slug": "lechang",
-    "index": "04",
-    "title": "乐后昌城---广东广播电视台珠江频道实习项目",
-    "english": "Lehou Changcheng",
-    "summary": "本设计以广东省韶关乐昌市为研究对象，针对当地文旅资源丰富但品牌认知分散、产品同质化严重、传播方式单一等问题，提出“从过境地到目的地”的农文旅品牌重塑策略。 项目以乐昌特色资源“黄金",
-    "role": "项目组长｜区域品牌策略、IP设计与AIGC内容创作",
-    "time": "2026.02—2026.05",
-    "tags": [
-      "Brand Experience",
-      "IP Design",
-      "AIGC",
-      "Rural Culture"
-    ],
-    "categories": [
-      "AIGC影视",
-      "视觉设计"
-    ],
-    "cover": "/images/projects/lechang/selected/cover.png",
-    "accent": "#FFB894",
-    "overview": "本设计以广东省韶关乐昌市为研究对象，针对当地文旅资源丰富但品牌认知分散、产品同质化严重、传播方式单一等问题，提出“从过境地到目的地”的农文旅品牌重塑策略。 项目以乐昌特色资源“黄金奈李”、丹霞地貌、竹编工艺及乡村生活文化为核心，构建“乐后昌城”区域公共消费品牌。",
-    "problem": "乐昌资源丰富但认知分散，城市记忆点不足，产品同质化且传播方式单一。",
-    "research": [
-      "建立文化识别度、设计转化潜力、传播爆发力三维评价\n识别认知、叙事、渠道、产品与价值五类错位\n研究地貌、农产、非遗、乡村生活与红色文化"
-    ],
-    "strategy": [
-      "从“过境地”转向“文化消费目的地”\n提出“石间无岁月，李下不急时”品牌理念\n形成资源—文化—品牌—产品—场景—传播链路"
-    ],
-    "workflow": [
-      "地域资源筛选→品牌定位→视觉系统→石乐乐IP→文创与空间触点→AI音乐与视频传播"
-    ],
-    "outputs": [
-      "Logo、标准色、字体与辅助图形+石乐乐三视图、毛绒形象、表情与系列服装+包装、家居、首饰、乡村市集与助农直播场景"
-    ],
-    "result": "完成区域公共消费品牌、IP、产品与AIGC传播的完整设计，并形成AI音乐和数字MV工作流。",
-    "reflection": "区域品牌不是资源清单，而是一套让人愿意停留、消费并分享的体验叙事。",
-    "gallery": [
-      {
-        "src": "/images/projects/lechang/selected/creative-market.webp",
-        "title": "文创产品展卖厅",
-        "description": "城市文创产品合集，与线下体验与销售空间。",
-        "format": "landscape"
-      },
-      {
-        "src": "/images/projects/lechang/slides/page-43.webp",
-        "title": "石乐乐 IP 形象",
-        "format": "landscape"
-      },
-      {
-        "src": "/images/projects/lechang/selected/record-materials.webp",
-        "title": "唱片物料设计（AI英语+MV）",
-        "description": "围绕《石缝里的光》的唱片与传播物料。",
-        "format": "landscape"
-      },
-      {
-        "src": "/images/projects/lechang/selected/rural-agriculture-culture-tourism-live-streaming-studio.png",
-        "title": "乡村农文旅直播间",
-        "description": "",
-        "format": "landscape"
-      }
-    ],
-    "mediaSections": [
-      {
-        "eyebrow": "CITY IP / SHI LELE",
-        "title": "石乐乐城市 IP 设计",
-        "description": "从丹霞岩石、黄金柰李与乐昌地域性格中提炼角色语言，延展到三视图、表情、服装、毛绒与公共传播触点。",
-        "items": [
-          {
-            "src": "/images/projects/lechang/ip/ip-0.webp",
-            "title": "IP 概念与角色定位",
-            "format": "portrait"
-          },
-          {
-            "src": "/images/projects/lechang/ip/ip-1.webp",
-            "title": "石乐乐造型系统",
-            "format": "portrait"
-          },
-          {
-            "src": "/images/projects/lechang/ip/ip-2.webp",
-            "title": "表情与动作延展",
-            "format": "portrait"
-          },
-          {
-            "src": "/images/projects/lechang/ip/ip-3.webp",
-            "title": "服装与应用场景",
-            "format": "portrait"
-          },
-          {
-            "src": "/images/projects/lechang/ip/ip-4.webp",
-            "title": "IP 完整展示展板",
-            "format": "portrait"
-          }
-        ]
-      },
-      {
-        "eyebrow": "AIGC MUSIC / DIGITAL MV",
-        "title": "AI 音乐与 MV 设计",
-        "description": "以地域故事和项目品牌叙事为基础，完成歌词、AI 音乐、视觉分镜与数字 MV 的整合传播实验；上方可直接播放《石缝里的光》成片。",
-        "items": [
-          {
-            "src": "/images/projects/lechang/aigc/music-video-board.webp",
-            "title": "音乐与视频设计展板",
-            "description": "记录主题提炼、音乐生成、视觉语言与 MV 制作过程。",
-            "format": "portrait"
-          }
-        ]
-      }
-    ],
-    "videos": [
-      {
-        "src": "/media/lechang-mv.mp4",
-        "poster": "/images/projects/lechang/mv-poster.webp",
-        "title": "《石缝里的光》数字 MV",
-        "description": "结合 Suno AI 音乐、歌词与生成式视频完成的乐昌品牌传播实验。"
-      }
-    ],
-    "document": {
-      "src": "/docs/projects/lechang.pdf",
-      "label": "查看 53 页完整项目汇报"
-    }
   },
   {
     "hidden": false,
