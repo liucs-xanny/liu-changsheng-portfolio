@@ -42,7 +42,8 @@ export function Cover() {
     const move = (event: PointerEvent) => {
       if (event.pointerType === "touch") return;
       // Remember movements before media is ready; never autoplay the clip.
-      pointerRatio.current = Math.max(0, Math.min(1, event.clientX / window.innerWidth));
+      const width = document.documentElement.clientWidth || window.innerWidth;
+      pointerRatio.current = Math.max(0, Math.min(1, event.clientX / Math.max(1, width - 1)));
       schedule();
     };
     const resume = () => {
