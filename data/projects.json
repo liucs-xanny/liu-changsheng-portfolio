@@ -209,7 +209,14 @@
     "outputs": [],
     "result": "",
     "reflection": "",
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/images/projects/project-b50f434f/selected/847db6bf-asset-20261123115409.png",
+        "title": "",
+        "description": "",
+        "format": "portrait"
+      }
+    ],
     "videos": [
       {
         "src": "/media/bdc95755-asset-20261123113144.mp4",
