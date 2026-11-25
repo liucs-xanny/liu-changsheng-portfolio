@@ -89,7 +89,9 @@
     "role": "AIGC视频创作",
     "time": "2026.10",
     "tags": [
-      "AIGC"
+      "AIGC",
+      "剪辑",
+      "AI视频"
     ],
     "categories": [
       "AIGC影视"
@@ -122,7 +124,11 @@
     "summary": "HolyMolly 是一款 VAST公司旗下的 AI 驱动的 3D 游戏创作平台，支持通过文字或图片快速生成可交互的 3D 游戏内容，让创意轻松变成可玩的游戏世界。我的设计灵感主要",
     "role": "",
     "time": "2026.11.25",
-    "tags": [],
+    "tags": [
+      "AIGC",
+      "剪辑",
+      "AI视频"
+    ],
     "categories": [
       "AIGC影视",
       "视觉设计"
@@ -231,7 +237,9 @@
     "role": "",
     "time": "2026.11",
     "tags": [
-      "AIGC"
+      "AIGC",
+      "剪辑",
+      "AI视频"
     ],
     "categories": [
       "AIGC影视",
@@ -388,7 +396,9 @@
     "role": "AIGC视频创作",
     "time": "2026.11",
     "tags": [
-      "AIGC"
+      "AIGC",
+      "剪辑",
+      "AI视频"
     ],
     "categories": [
       "AIGC影视"
